@@ -1,6 +1,6 @@
 # Medify
 
-| Team Name: BBY-34
+> Team Name: BBY-34
 
 Our team, BBY-34, is developing a medical application with climate change-related health information and a chatbot for minor ailments and booking doctors appointments to help patients and medical professionals solve rising climate change concerns and overcrowding in our medical system by providing localized information on climate change and reducing the number of patients that need to see a doctor.
 
