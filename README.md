@@ -7,5 +7,6 @@ Team Members:
 - Simon Lotzkar
 - Soomin Jeong
 - Steven Xie
+
 ## More details to come
 TBA
