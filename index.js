@@ -31,14 +31,17 @@ const userCollection = database.db(mongodb_database).collection('users');
 
 app.set('view engine', 'ejs');
 
-app.use(express.urlencoded({extended: false}));
-
 var mongoStore = MongoStore.create({
 	mongoUrl: `mongodb+srv://${mongodb_user}:${mongodb_password}@${mongodb_host}/sessions`,
 	crypto: {
 		secret: mongodb_session_secret
 	}
 })
+
+// USES
+
+app.use(express.urlencoded({extended: false}));
+app.use(express.static(__dirname + "/public"));
 
 app.use(session({ 
     secret: node_session_secret,
@@ -150,10 +153,6 @@ app.post('/submitLogin', async (req,res) => {
         }
     }	
 });
-
-// USES
-
-app.use(express.static(__dirname + "/public"));
 
 // LISTENS
 
