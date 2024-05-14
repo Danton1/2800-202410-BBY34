@@ -111,7 +111,7 @@ app.post('/editPass', async(req,res) => {
     res.redirect('/getPassEdit');
 });
 
-app.post('/loginSubmit', async (req,res) => {
+app.post('/submitLogin', async (req,res) => {
     var email = req.body.email;
     var password = req.body.password;
 
