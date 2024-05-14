@@ -48,6 +48,8 @@ app.use(session({
 }
 ));
 
+// FUNCTIONS
+
 function isValidSession(req) {
     if (req.session.authenticated) {
         return true;
@@ -84,24 +86,76 @@ function adminAuthorization(req, res, next) {
     }
 }
 
-app.get('/getProfile', (req,res) => {
-    res.render('profile', {name:req.session.name});
-});
+// GETS
 
-app.post('/editPass', async(req,res) => {
-    res.redirect('/getPassEdit');
+app.get('/getProfile', (req,res) => {
+    res.render('profilePage', {name:req.session.name});
 });
 
 app.get('/getPassEdit', (req,res) => {
     res.render("passEdit");
 });
 
-app.use(express.static(__dirname + "/public"));
+app.get('/login', (req, res) => {
+    res.render("loginPage");
+});
 
 app.get("*", (req,res) => {
 	res.status(404);
-	res.render("404");
+	res.render("404Page");
 })
+
+// POSTS
+
+app.post('/editPass', async(req,res) => {
+    res.redirect('/getPassEdit');
+});
+
+app.post('/loginSubmit', async (req,res) => {
+    var email = req.body.email;
+    var password = req.body.password;
+
+	const schema = Joi.object(
+		{
+			email: Joi.string().max(20).required(),
+			password: Joi.string().max(20).required()
+		});
+
+	const validationResult = schema.validate({email, password});
+	if (validationResult.error != null) {
+        res.render("error", {error: validationResult.error});
+        return;
+	}
+
+	const result = await userCollection.find({email: email}).project({email: 1, password: 1, _id: 1}).toArray();
+
+	if (result.length == 0) {
+        res.render("error", {error: "No user with that email found"});
+        return;
+	} else if (result.length != 1) {
+        res.render("error", {error: "More than one user found."});
+        return;
+    } else {
+        if (await bcrypt.compare(password, result[0].password)) {
+            req.session.authenticated = true;
+            req.session.cookie.maxAge = expireTime;
+            req.session.email = result[0].email;
+
+            res.redirect('/members');
+            return;
+        }
+        else {
+            res.render("error", {error: "Invalid password."});
+            return;
+        }
+    }	
+});
+
+// USES
+
+app.use(express.static(__dirname + "/public"));
+
+// LISTENS
 
 app.listen(port, () => {
 	console.log("Node application listening on port "+port);
