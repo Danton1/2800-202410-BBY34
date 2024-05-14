@@ -1,0 +1,20 @@
+<%- include("templates/headerTemplate") %> 
+
+<div>
+    <h1>Login</h1>
+    <div>
+        <form action="/loginSubmit" method="post">
+            <div>
+                <input name="loginPageEmailInput" type="email" placeholder="Email" required>
+            </div>
+            <div>
+                <input name="loginPagePasswordInput" type="password" placeholder="Password" required>
+            </div>
+            <button type="submit">
+                Submit
+            </button>
+        </form>
+    </div>
+</div>
+
+<%- include("templates/footerTemplate") %> 
