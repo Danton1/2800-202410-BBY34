@@ -91,21 +91,8 @@ function adminAuthorization(req, res, next) {
 
 // GETS
 
-app.get('/getProfile', (req,res) => {
-    res.render('profilePage');
-});
-
-app.get('/getPersonalInfo', (req,res) => {
-    res.render('personalInfoPage');
-});
-
-app.get('/getContactInfo', (req,res) => {
-    res.render('contactInfoPage');
-});
-
-app.get('/getMedHistory', (req,res) => {
-    res.render('medicalHistoryPage');
-});
+const profileRoute = require('./scripts/profile');
+app.use('/profile', profileRoute);
 
 app.get('/getPassEdit', (req,res) => {
     res.render("passEdit");

@@ -1,0 +1,116 @@
+<%- include("templates/headerTemplate")%>
+<div class="w-[450px] min-h-svh mx-auto px-[50px] bg-gray-900 flex flex-col py-20 items-center space-y-5 text-sky-100 text-md font-semibold">
+    <!-- Page title -->
+    <h1 class="text-sky-300 text-3xl font-bold mb-5">Medical History</h1>
+
+    <!-- List of Medications -->
+    <div id="medication" class="w-full bg-gray-700 shadow-lg py-5 px-5 flex flex-col rounded-2xl">
+        <h1 class="w-full flex justify-between items-center">
+            Medications 
+            <i id="medicationTitle" class="fa-solid fa-chevron-down duration-200"></i>
+        </h1>
+        <ul id="medications" class="w-full h-0 overflow-hidden flex flex-col space-y-3 duration-200">
+            <li class="w-full bg-gray-800 py-3 px-4 rounded-xl">
+                medicine 1
+            </li>
+            <li class="w-full bg-gray-800 py-3 px-4 rounded-xl">
+                medicine 2
+            </li>
+            <li class="w-full bg-gray-800 py-3 px-4 rounded-xl">
+                medicine 3
+            </li>
+            <button class="w-full bg-sky-300 py-3 px-4 rounded-xl text-gray-900 font-extrabold">
+                EDIT
+                <i class="fa-solid fa-pen"></i>
+            </button>
+            <button class="w-full bg-sky-300 py-3 px-4 rounded-xl text-gray-900 font-extrabold">
+                <i class="fa-solid fa-plus"></i>
+                ADD
+            </button>
+        </ul>
+    </div>
+
+    <!-- List of Illnesses -->
+    <div id="illness" class="w-full bg-gray-700 shadow-lg py-5 px-5 flex flex-col rounded-2xl">
+        <h1 class="w-full flex justify-between items-center">
+            Illnesses 
+            <i id="illnessTitle" class="fa-solid fa-chevron-down duration-200"></i>
+        </h1>
+        <ul id="illnesses" class="w-full h-0 overflow-hidden flex flex-col space-y-3 duration-200">
+            <li class="w-full bg-gray-800 py-3 px-4 rounded-xl">
+                illness 1
+            </li>
+            <li class="w-full bg-gray-800 py-3 px-4 rounded-xl">
+                illness 2
+            </li>
+            <button class="w-full bg-sky-300 py-3 px-4 rounded-xl text-gray-900 font-extrabold">
+                EDIT
+                <i class="fa-solid fa-pen"></i>
+            </button>
+            <button class="w-full bg-sky-300 py-3 px-4 rounded-xl text-gray-900 font-extrabold">
+                <i class="fa-solid fa-plus"></i>
+                ADD
+            </button>
+        </ul>
+    </div>
+
+    <!-- List of Allergies -->
+    <div id="allergy" class="w-full bg-gray-700 shadow-lg py-5 px-5 flex flex-col rounded-2xl">
+        <h1 class="w-full flex justify-between items-center">
+            Allergies 
+            <i id="allergyTitle" class="fa-solid fa-chevron-down duration-200"></i>
+        </h1>
+        <ul id="allergies" class="w-full h-0 overflow-hidden flex flex-col space-y-3 duration-200">
+            <li class="w-full bg-gray-800 py-3 px-4 rounded-xl">
+                allergy 1
+            </li>
+            <button class="w-full bg-sky-300 py-3 px-4 rounded-xl text-gray-900 font-extrabold">
+                EDIT
+                <i class="fa-solid fa-pen"></i>
+            </button>
+            <button class="w-full bg-sky-300 py-3 px-4 rounded-xl text-gray-900 font-extrabold">
+                <i class="fa-solid fa-plus"></i>
+                ADD
+            </button>
+        </ul>
+    </div>
+
+</div>
+
+<script>
+    $(document).ready();
+    document.getElementById("medication").onclick = function(){
+        if (document.getElementById("medications").classList.contains("h-0")) {
+            document.getElementById("medications").classList.remove("h-0");
+            document.getElementById("medications").classList.add("mt-4");
+            document.getElementById("medicationTitle").classList.add("rotate-180");
+        } else {
+            document.getElementById("medications").classList.add("h-0");
+            document.getElementById("medications").classList.remove("mt-4");
+            document.getElementById("medicationTitle").classList.remove("rotate-180");
+        }
+    }
+    document.getElementById("illness").onclick = function(){
+        if (document.getElementById("illnesses").classList.contains("h-0")) {
+            document.getElementById("illnesses").classList.remove("h-0");
+            document.getElementById("illnesses").classList.add("mt-4");
+            document.getElementById("illnessTitle").classList.add("rotate-180");
+        } else {
+            document.getElementById("illnesses").classList.add("h-0");
+            document.getElementById("illnesses").classList.remove("mt-4");
+            document.getElementById("illnessTitle").classList.remove("rotate-180");
+        }
+    }
+    document.getElementById("allergy").onclick = function(){
+        if (document.getElementById("allergies").classList.contains("h-0")) {
+            document.getElementById("allergies").classList.remove("h-0");
+            document.getElementById("allergies").classList.add("mt-4");
+            document.getElementById("allergyTitle").classList.add("rotate-180");
+        } else {
+            document.getElementById("allergies").classList.add("h-0");
+            document.getElementById("allergies").classList.remove("mt-4");
+            document.getElementById("allergyTitle").classList.remove("rotate-180");
+        }
+    }
+</script>
+<%- include("templates/footerTemplate")%>
