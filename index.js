@@ -12,8 +12,12 @@ const app = express();
 
 const Joi = require("joi");
 
-
 const expireTime = 60 * 60 * 1000; //expires after 1 hr  (minutes * seconds * millis)
+
+/*Imported routes js files*/
+const settingsRoute = require('./scripts/settings');
+app.use('/settings', settingsRoute);
+/*Imported routes js files end*/
 
 /* secret information section */
 const mongodb_host = process.env.MONGODB_HOST;
@@ -21,7 +25,6 @@ const mongodb_user = process.env.MONGODB_USER;
 const mongodb_password = process.env.MONGODB_PASSWORD;
 const mongodb_database = process.env.MONGODB_DATABASE;
 const mongodb_session_secret = process.env.MONGODB_SESSION_SECRET;
-
 const node_session_secret = process.env.NODE_SESSION_SECRET;
 /* END secret section */
 
@@ -69,7 +72,6 @@ function sessionValidation(req,res,next) {
     }
 }
 
-
 function isAdmin(req) {
     if (req.session.user_type == 'admin') {
         return true;
@@ -95,8 +97,12 @@ app.get('/getProfile', (req,res) => {
     res.render('profilePage', {name:req.session.name});
 });
 
-app.get('/getPassEdit', (req,res) => {
-    res.render("passEdit");
+app.get('/settings', (req,res) => {
+    res.render('settingsPage');
+});
+
+app.get('/login', (req, res) => {
+    res.render("loginPage");
 });
 
 app.get('/login', (req, res) => {
