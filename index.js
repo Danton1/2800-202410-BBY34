@@ -99,6 +99,7 @@ app.get('/getProfile', (req,res) => {
 
 app.get('/settings', (req,res) => {
     res.render('settingsPage');
+    res.render('settingsPage');
 });
 
 app.get('/login', (req, res) => {
