@@ -95,6 +95,18 @@ app.get('/getProfile', (req,res) => {
     res.render('profilePage');
 });
 
+app.get('/getPersonalInfo', (req,res) => {
+    res.render('personalInfoPage');
+});
+
+app.get('/getContactInfo', (req,res) => {
+    res.render('contactInfoPage');
+});
+
+app.get('/getMedHistory', (req,res) => {
+    res.render('medicalHistoryPage');
+});
+
 app.get('/getPassEdit', (req,res) => {
     res.render("passEdit");
 });

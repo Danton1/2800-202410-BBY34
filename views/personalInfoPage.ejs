@@ -1,0 +1,31 @@
+<%- include("templates/headerTemplate")%>
+<div class="w-[450px] h-svh mx-auto px-[50px] bg-gray-700 flex flex-col py-20 items-center space-y-5 text-sky-100">
+    <!-- Page title -->
+    <h1 class="text-3xl font-bold mb-5">Personal Information</h1>
+
+    <!-- List of personal information -->
+    <div class="w-full flex flex-col items-center space-y-3 text-md">
+        <div class="w-full bg-gray-900 py-4 px-5 rounded-2xl cursor-pointer">
+            First Name
+        </div>
+        <div class="w-full bg-gray-900 py-4 px-5 rounded-2xl cursor-pointer">
+            Last Name
+        </div>
+        <div class="w-full bg-gray-900 py-4 px-5 rounded-2xl cursor-pointer">
+            Birth Date
+        </div>
+        <div class="w-full bg-gray-900 py-4 px-5 rounded-2xl cursor-pointer">
+            Country
+        </div>
+        <div class="w-full bg-gray-900 py-4 px-5 rounded-2xl cursor-pointer">
+            City
+        </div>
+    </div>
+
+    <!-- Edit & save button -->
+    <div class="w-full flex flex-col items-center space-y-3 text-gray-900 font-bold">
+        <button class="w-full bg-sky-200 py-4 px-5 rounded-2xl">EDIT</button>
+        <button class="w-full bg-sky-200 py-4 px-5 rounded-2xl">SAVE</button>
+    </div>
+</div>
+<%- include("templates/footerTemplate")%>
