@@ -1,0 +1,61 @@
+<%- include("templates/headerTemplate") %>
+
+    <div class="flex justify-center items-center h-screen">
+        <div class="bg-white p-8 rounded-lg shadow-lg">
+            <h1 class="text-3xl font-bold mb-4">Sign Up</h1>
+            <form action="/submitSignUp" method="post">
+
+                <div id="nameGroup">
+                    <h2>Name</h2>
+                    <div>
+                        <input name="firstName" type="text" placeholder="First Name" required>
+                    </div>
+                    <div>
+                        <input name="lastName" type="text" placeholder="Last Name" required>
+                    </div>
+                </div>
+
+                <div id="personalInfoGroup">
+                    <h2>Personal Information</h2>
+                    <div>
+                        <input name="birthDate" type="text" placeholder="Birth Date" required
+                        onfocus="(this.type='date')">
+                    </div>
+                    <div>
+                        <input name="country" type="text" placeholder="Country" required>
+                    </div>
+                    <div>
+                        <input name="city" type="text" placeholder="City" required>
+                    </div>
+                </div>
+
+
+                <div id="accInfoGroup">
+                    <h2>Account Information</h2>
+                    <div>
+                        <input name="email" type="email" placeholder="Email" required>
+                    </div>
+                    <div>
+                        <input name="password" type="password" placeholder="Password" required>
+                    </div>
+                    <div>
+                        <input name="passwordConfirm" type="password" placeholder=" Confirm Password" required>
+                    </div>
+                </div>
+                
+                <br><br><br>
+
+                <button type="submit">
+                    Create User
+                </button>
+                <div id="toLoginPage">
+                    Already have an account? <a href="/login">Log In</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+    <script src="signUpPage.js"></script>
+
+    <%- include("templates/footerTemplate") %>
