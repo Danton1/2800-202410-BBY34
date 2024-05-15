@@ -19,6 +19,11 @@ const settingsRoute = require('./scripts/settings');
 app.use('/settings', settingsRoute);
 /*Imported routes js files end*/
 
+/*Imported routes js files*/
+const settingsRoute = require('./scripts/settings');
+app.use('/settings', settingsRoute);
+/*Imported routes js files end*/
+
 /* secret information section */
 const mongodb_host = process.env.MONGODB_HOST;
 const mongodb_user = process.env.MONGODB_USER;
