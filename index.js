@@ -87,7 +87,7 @@ function adminAuthorization(req, res, next) {
 }
 
 app.get('/settings', (req,res) => {
-    res.render('settings');
+    res.render('settingsPage');
 });
 
 
