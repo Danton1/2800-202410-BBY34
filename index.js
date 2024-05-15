@@ -92,7 +92,7 @@ function adminAuthorization(req, res, next) {
 // GETS
 
 app.get('/getProfile', (req,res) => {
-    res.render('profilePage', {name:req.session.name});
+    res.render('profilePage');
 });
 
 app.get('/getPassEdit', (req,res) => {
