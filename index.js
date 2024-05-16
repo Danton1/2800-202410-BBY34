@@ -13,7 +13,7 @@ const app = express();
 const Joi = require("joi");
 
 
-const expireTime = 60 * 60 * 1000; //expires after 1 hr  (minutes * seconds * millis)
+const expireTime = 24 * 60 * 60 * 1000; //expires after 24 hr  (hours * minutes * seconds * millis)
 
 /* secret information section */
 const mongodb_host = process.env.MONGODB_HOST;
@@ -91,6 +91,14 @@ function adminAuthorization(req, res, next) {
 
 // GETS
 
+app.get('/', (req,res) => {
+    if(isValidSession(req)){
+        res.render('index', {username: req.session.firstName});
+        return;
+    }
+    res.redirect('/login');
+});
+
 app.get('/getProfile', (req,res) => {
     res.render('profilePage', {name:req.session.name});
 });
@@ -147,6 +155,7 @@ app.post('/submitLogin', async (req,res) => {
             req.session.authenticated = true;
             req.session.cookie.maxAge = expireTime;
             req.session.email = result[0].email;
+            req.session.firstName = result[0].firstName;
 
             res.redirect('/');
             return;

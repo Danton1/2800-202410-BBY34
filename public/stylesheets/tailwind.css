@@ -1,0 +1,4 @@
+/* To compile the tailwind just use the 'npm run tailwind' command */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
