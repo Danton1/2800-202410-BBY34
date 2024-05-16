@@ -77,7 +77,7 @@ router.post('/submitForgot', async (req, res) => {
         const encodedToken = await bcrypt.hash(token, saltRounds);
         //token expires after 30 mins
         const expiryTime = new Date(Date.now() + (30 * 60 * 1000));
-        await tokenCollection.insertOne({ email: forgotEmail, token: encodedToken, expiry: expiryTime });
+        await tokenCollection.insertOne({ email: forgotEmail, token: encodeURIComponent(encodedToken), expiry: expiryTime });
 
         //send email
         //WE MUST MAKE AN EMAIL TO SEND PASSWORD RESET EMAILS FROM
