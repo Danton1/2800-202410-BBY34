@@ -113,6 +113,12 @@ app.get('/login', (req, res) => {
     res.render("loginPage");
 });
 
+app.get('/settings/signOut', (req, res) => {
+    req.session.destroy();
+    console.log("You are now logged out.");
+    res.redirect("/login");
+});
+
 app.get("*", (req,res) => {
 	res.status(404);
 	res.render("404Page");

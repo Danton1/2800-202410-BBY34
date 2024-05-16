@@ -25,9 +25,4 @@ router.get('/faq', (req,res) => {
     res.render("faq");
 });
 
-router.get('/signOut', (req,res) => {
-    //req.session.destroy();
-    res.redirect('/login');
-});
-
 module.exports = router;
