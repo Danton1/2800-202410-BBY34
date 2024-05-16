@@ -133,14 +133,11 @@ app.post('/editPass', async(req,res) => {
 app.post('/submitLogin', async (req,res) => {
     var email = req.body.loginPageEmailInput;
     var password = req.body.loginPagePasswordInput;
-    var email = req.body.loginPageEmailInput;
-    var password = req.body.loginPagePasswordInput;
 
-	const schema = Joi.object(
-		{
-			email: Joi.string().max(20).required(),
-			password: Joi.string().max(20).required()
-		});
+	const schema = Joi.object({
+        email: Joi.string().max(20).required(),
+        password: Joi.string().max(20).required()
+	});
 
 	const validationResult = schema.validate({email, password});
 	if (validationResult.error != null) {
@@ -149,6 +146,17 @@ app.post('/submitLogin', async (req,res) => {
 	}
 
 	const result = await userCollection.find({email: email}).project({email: 1, password: 1, _id: 1}).toArray();
+
+    // Getting the userName info from the email
+	let getUser = userCollection.findOne({email: email}).then((user) => {
+        if (!user) {
+            //if user does not exist, the authentication failed
+			res.render("errorPage", {prompt: "Invalid email account"});
+            return;
+        }
+        //assign the user to getUser variable
+        getUser = user;
+    })
 
 	if (result.length == 0) {
         res.render("errorPage", {error: "No user with that email found"});
@@ -161,10 +169,9 @@ app.post('/submitLogin', async (req,res) => {
             req.session.authenticated = true;
             req.session.cookie.maxAge = expireTime;
             req.session.email = result[0].email;
-            req.session.firstName = result[0].firstName;
-            req.session.firstName = result[0].firstName;
+            req.session.firstName = getUser.firstName;
+            req.session.lastName = getUser.lastName;
 
-            res.redirect('/');
             res.redirect('/');
             return;
         }
