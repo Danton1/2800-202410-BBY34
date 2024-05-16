@@ -39,10 +39,18 @@
   transform: rotate(45deg) skewX(75deg);
 }
 
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
+.signupWrap input:-webkit-autofill,
+.signupWrap input:-webkit-autofill:hover,
+.signupWrap input:-webkit-autofill:focus,
+.signupWrap input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: #e0f2fe;
+}
+
+.loginWrap input:-webkit-autofill,
+.loginWrap input:-webkit-autofill:hover,
+.loginWrap input:-webkit-autofill:focus,
+.loginWrap input:-webkit-autofill:active {
   transition: background-color 5000s ease-in-out 0s;
   -webkit-text-fill-color: #e0f2fe;
 }
