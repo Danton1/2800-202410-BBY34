@@ -13,7 +13,7 @@ const app = express();
 const Joi = require("joi");
 
 
-const expireTime = 60 * 60 * 1000; //expires after 1 hr  (minutes * seconds * millis)
+const expireTime = 24 * 60 * 60 * 1000; //expires after 24 hr  (hours * minutes * seconds * millis)
 
 
 /*Imported routes js files*/
@@ -98,6 +98,14 @@ function adminAuthorization(req, res, next) {
 
 // GETS
 
+app.get('/', (req,res) => {
+    if(isValidSession(req)){
+        res.render('index', {username: req.session.firstName});
+        return;
+    }
+    res.redirect('/login');
+});
+
 app.get('/getProfile', (req,res) => {
     res.render('profilePage', {name:req.session.name});
 });
@@ -122,8 +130,8 @@ app.post('/editPass', async(req,res) => {
 });
 
 app.post('/submitLogin', async (req,res) => {
-    var email = req.body.email;
-    var password = req.body.password;
+    var email = req.body.loginPageEmailInput;
+    var password = req.body.loginPagePasswordInput;
 
 	const schema = Joi.object(
 		{
@@ -150,8 +158,9 @@ app.post('/submitLogin', async (req,res) => {
             req.session.authenticated = true;
             req.session.cookie.maxAge = expireTime;
             req.session.email = result[0].email;
+            req.session.firstName = result[0].firstName;
 
-            res.redirect('/members');
+            res.redirect('/');
             return;
         }
         else {
