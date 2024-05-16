@@ -1,17 +1,25 @@
-<%- include("templates/header")%>
-<div>
-    <div id="accLang" class="w-full bg-gray-700 shadow-lg rounded-2xl cursor-pointer">
-        <a href="/account" class="w-full h-full py-4 px-5 flex justify-between items-center">Account</a>
-        <a href="/language" class="w-full h-full py-4 px-5 flex justify-between items-center">Language</a>
-    </div>
-    <div id="addnSettings" class="w-full bg-gray-700 shadow-lg rounded-2xl cursor-pointer">
-        <a href="/about" class="w-full h-full py-4 px-5 flex justify-between items-center">About Us</a>
-        <a href="/terms" class="w-full h-full py-4 px-5 flex justify-between items-center">Terms of Service</a>
-        <a href="/contact" class="w-full h-full py-4 px-5 flex justify-between items-center">Contact Us</a>
-        <a href="/faq" class="w-full h-full py-4 px-5 flex justify-between items-center">FAQs</a>
-    </div>
-    <div id="signOut" class="w-full bg-gray-700 shadow-lg rounded-2xl cursor-pointer">
-        <a href="/signOut" class="w-full h-full py-4 px-5 flex justify-between items-center">Sign Out</a>
-    </div>
-</div>
-<%- include("templates/footer")%>
+<%- include("templates/headerTemplate")%>
+            <div class="grid grid-rows-3 py-40 mt-100 justify-items-center">
+                <div class="w-full grid justify-items-center ">
+                    <div
+                        class="grid grid-rows-2 w-4/5 h-1/2 bg-gray-700 shadow-lg rounded-2xl m-2 justify-items-center">
+                        <a href="/settings/account" class="h-full py-4 px-5 items-center">Account</a>
+                        <a href="/settings/language" class="h-full py-4 px-5 items-center">Language</a>
+                    </div>
+                </div>
+                <div class="w-full grid justify-items-center">
+                    <div class="grid grid-rows-4 grid w-4/5 bg-gray-700 shadow-lg rounded-2xl m-2 justify-items-center">
+                        <a href="/settings/about" class="h-full py-4 px-5 items-center">About Us</a>
+                        <a href="/settings/terms" class="h-full py-4 px-5 items-center">Terms of Service</a>
+                        <a href="/settings/contact" class="h-full py-4 px-5 items-center">Contact Us</a>
+                        <a href="/settings/faq" class="h-full py-4 px-5 items-center">FAQs</a>
+                    </div>
+                </div>
+                <div class="w-full grid justify-items-center">
+                    <div class="grid w-4/5 h-1/4 bg-gray-700 shadow-lg rounded-2xl m-2 justify-items-center">
+                        <a href="/settings/signOut" class="h-full py-4 px-5 text-center items-center">Sign Out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <%- include("templates/footerTemplate")%>

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 router.get('/account', (req,res) => {
-    res.render('account');
+    res.redirect('/getProfilePage');
 });
 
 router.get('/language', (req,res) => {
@@ -26,8 +26,8 @@ router.get('/faq', (req,res) => {
 });
 
 router.get('/signOut', (req,res) => {
-    req.session.destroy();
-    res.redirect('/');
+    //req.session.destroy();
+    res.redirect('/login');
 });
 
 module.exports = router;

@@ -19,11 +19,6 @@ const settingsRoute = require('./scripts/settings');
 app.use('/settings', settingsRoute);
 /*Imported routes js files end*/
 
-/*Imported routes js files*/
-const settingsRoute = require('./scripts/settings');
-app.use('/settings', settingsRoute);
-/*Imported routes js files end*/
-
 /* secret information section */
 const mongodb_host = process.env.MONGODB_HOST;
 const mongodb_user = process.env.MONGODB_USER;
@@ -104,11 +99,6 @@ app.get('/getProfile', (req,res) => {
 
 app.get('/settings', (req,res) => {
     res.render('settingsPage');
-    res.render('settingsPage');
-});
-
-app.get('/login', (req, res) => {
-    res.render("loginPage");
 });
 
 app.get('/login', (req, res) => {
