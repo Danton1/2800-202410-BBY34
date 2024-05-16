@@ -1,12 +1,15 @@
 <%- include("templates/headerTemplate") %> 
 <div class="flex justify-center items-center h-screen bg-gray-700">
     <div>
-        <h1>Forgot Password</h1>
+        <h1 class="text-sky-200">Forgot Password</h1>
         <form action="/forgot/submitForgot" method="post">
             <div class="mb-4">
                 <input name="forgotEmail" type="email" placeholder="Email" required
                     class="bg-gray-500 placeholder-sky-200 text-sky-200 w-full px-4 py-2 rounded-full focus:outline-none">
             </div>
+            <button type="submit" class="p-3 rounded-lg bg-sky-200 font-bold uppercase shadow-md shadow-sky-200/20 transition-all hover:shadow-lg hover:shadow-sky-200/40  focus:opacity-[0.85] focus:shadow-none">
+                Submit
+            </button>
         </form>
     </div>
 </div>
