@@ -15,6 +15,13 @@ const Joi = require("joi");
 
 const expireTime = 60 * 60 * 1000; //expires after 1 hr  (minutes * seconds * millis)
 
+
+/*Imported routes js files*/
+const signUpRoute = require('./scripts/signUpPage.js');
+app.use('/signUp', signUpRoute);
+/*Imported routes js files end*/
+
+
 /* secret information section */
 const mongodb_host = process.env.MONGODB_HOST;
 const mongodb_user = process.env.MONGODB_USER;
@@ -103,10 +110,6 @@ app.get('/login', (req, res) => {
     res.render("loginPage");
 });
 
-app.get('/signUp', (req, res) => {
-    res.render("signUpPage");
-});
-
 app.get("*", (req,res) => {
 	res.status(404);
 	res.render("404Page");
@@ -156,53 +159,6 @@ app.post('/submitLogin', async (req,res) => {
             return;
         }
     }	
-});
-
-app.post('/submitSignUp', async (req,res) => {
-    var firstName = req.body.firstName;
-    var lastName = req.body.lastName;
-    var birthDate = req.body.birthDate;
-    var country = req.body.country;
-    var city = req.body.city;
-    var email = req.body.email;
-    var password = req.body.password;
-    var passwordConfirm = req.body.passwordConfirm;
-
-    if(password.localeCompare(passwordConfirm)!=0){
-        res.render("errorPage", {error:"Passwords do not match."});
-        return;
-    }
-
-	const schema = Joi.object(
-		{
-            firstName: Joi.string().max(20).required(),
-            lastName: Joi.string().max(20).required(),
-            birthDate: Joi.date().required(),
-            country: Joi.string().max(20).required(),
-            city: Joi.string().max(20).required(),
-			email: Joi.string().email().max(20).required(),
-			password: Joi.string().max(20).required()
-		});
-        const validationResult = schema.validate({ firstName, lastName, birthDate, country, city, email, password});
-        if (validationResult.error != null) {
-            // console.log(validationResult.error.details[0]);
-            var err = validationResult.error.details[0];
-            if(err.type.localeCompare('string.empty') == 0){
-                res.render("errorPage", { error: `${err.path[0]} is empty.` });
-                return;
-            }
-        }
-    
-        var encodedPassword = await bcrypt.hash(password, saltRounds);
-    
-        await userCollection.insertOne({ firstName: firstName, lastName: lastName, birthDate: birthDate, country: country, city: city, email: email, password: encodedPassword});
-    
-        req.session.authenticated = true;
-        // req.session.username = firstName;
-        req.session.email = email;
-        req.session.cookie.maxAge = expireTime;
-    
-        res.redirect('/');
 });
 
 // LISTENS

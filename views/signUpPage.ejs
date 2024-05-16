@@ -1,58 +1,70 @@
 <%- include("templates/headerTemplate") %>
 
-    <div class="flex justify-center items-center h-screen">
-        <div class="bg-white p-8 rounded-lg shadow-lg">
-            <h1 class="text-3xl font-bold mb-4">Sign Up</h1>
-            <form action="/submitSignUp" method="post">
+    <div class="w-full h-screen rounded bg-gradient-to-br from-gray-800 to-gray-700">
+        <h1 class="text-3xl font-bold p-4 text-center text-sky-400">Sign Up</h1>
 
-                <div id="nameGroup">
-                    <h2>Name</h2>
-                    <div>
-                        <input name="firstName" type="text" placeholder="First Name" required>
+        <form action="/signUp/submitSignUp" method="post" class="grid justify-items-center">
+
+            <div class="p-8 w-1/2 grid-cols-1 grid grid-rows-4 gap-4 justify-items-center rounded bg-gray-900">
+
+                <div id="nameGroup" class="grid gap-2 h-7/12 self-end ">
+                    <h2 class="text-sky-400">Name</h2>
+                    <div class="">
+                        <input name="firstName" type="text" placeholder="First Name" required
+                        class="bg-gray-700 rounded text-sky-200 placeholder-sky-200">
                     </div>
                     <div>
-                        <input name="lastName" type="text" placeholder="Last Name" required>
+                        <input name="lastName" type="text" placeholder="Last Name" required
+                        class="bg-gray-700 rounded text-sky-200 placeholder-sky-200">
                     </div>
+                    
                 </div>
 
-                <div id="personalInfoGroup">
-                    <h2>Personal Information</h2>
+                <div id="personalInfoGroup" class="grid gap-2 ">
+                    <h2 class="text-sky-400">Personal Information</h2>
                     <div>
                         <input name="birthDate" type="text" placeholder="Birth Date" required
-                        onfocus="(this.type='date')">
+                        class="bg-gray-700 rounded text-sky-200 placeholder-sky-200"
+                            onfocus="(this.type='date')">
                     </div>
                     <div>
-                        <input name="country" type="text" placeholder="Country" required>
+                        <input name="country" type="text" placeholder="Country" required
+                        class="bg-gray-700 rounded text-sky-200 placeholder-sky-200">
                     </div>
                     <div>
-                        <input name="city" type="text" placeholder="City" required>
+                        <input name="city" type="text" placeholder="City" required
+                        class="bg-gray-700 rounded text-sky-200 placeholder-sky-200">
                     </div>
                 </div>
 
 
-                <div id="accInfoGroup">
-                    <h2>Account Information</h2>
+                <div id="accInfoGroup" class="grid gap-2">
+                    <h2 class="text-sky-400">Account Information</h2>
                     <div>
-                        <input name="email" type="email" placeholder="Email" required>
+                        <input name="email" type="email" placeholder="Email" required
+                        class="bg-gray-700 rounded text-sky-200 placeholder-sky-200">
                     </div>
                     <div>
-                        <input name="password" type="password" placeholder="Password" required>
+                        <input name="password" type="password" placeholder="Password" required
+                        class="bg-gray-700 rounded text-sky-200 placeholder-sky-200">
                     </div>
                     <div>
-                        <input name="passwordConfirm" type="password" placeholder=" Confirm Password" required>
+                        <input name="passwordConfirm" type="password" placeholder=" Confirm Password" required
+                        class="bg-gray-700 rounded text-sky-200 placeholder-sky-200">
                     </div>
                 </div>
+
                 
-                <br><br><br>
-
-                <button type="submit">
-                    Create User
-                </button>
-                <div id="toLoginPage">
-                    Already have an account? <a href="/login">Log In</a>
+                <div class="grid justify-items-center">
+                    <button type="submit" class="p-3 rounded-lg bg-sky-200 font-bold uppercase shadow-md shadow-sky-200/20 transition-all hover:shadow-lg hover:shadow-sky-200/40  focus:opacity-[0.85] focus:shadow-none">
+                        Create User
+                    </button>
+                    <br>
+                    <div class="text-sky-200">Already have an account?</div> <a href="/login" class="text-blue-600 underline">Log In</a>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
+
     </div>
 
     <script src="index.js"></script>
