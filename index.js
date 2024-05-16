@@ -37,6 +37,7 @@ const node_session_secret = process.env.NODE_SESSION_SECRET;
 var {database} = include('databaseConnection');
 
 const userCollection = database.db(mongodb_database).collection('users');
+const tokenCollection = database.db(mongodb_database).collection('forgotToken');
 
 app.set('view engine', 'ejs');
 

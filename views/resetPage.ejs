@@ -1,0 +1,23 @@
+<%- include("templates/headerTemplate") %>
+    <div class="flex justify-center items-center h-screen bg-gray-700">
+        <div>
+            <h1>Forgot Password</h1>
+            <form action="/forgot/submitForgot" method="post">
+                <div class="mb-4">
+                    <h2 class="text-sky-400">Password Reset</h2>
+                    <div>
+                        <h4><%= email %></h4>
+                    </div>
+                    <div>
+                        <input name="password" type="password" placeholder="Password" required
+                            class="bg-gray-700 rounded text-sky-200 placeholder-sky-200">
+                    </div>
+                    <div>
+                        <input name="passwordConfirm" type="password" placeholder=" Confirm Password" required
+                            class="bg-gray-700 rounded text-sky-200 placeholder-sky-200">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <%- include("templates/footerTemplate") %>
