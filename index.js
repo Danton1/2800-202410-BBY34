@@ -107,8 +107,6 @@ app.get('/', (req,res) => {
 
 app.get('/settings', (req,res) => {
     res.render('settingsPage');
-app.get('/settings', (req,res) => {
-    res.render('settingsPage');
 });
 
 app.get('/login', (req, res) => {
