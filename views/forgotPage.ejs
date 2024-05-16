@@ -1,0 +1,13 @@
+<%- include("templates/headerTemplate") %> 
+<div class="flex justify-center items-center h-screen bg-gray-700">
+    <div>
+        <h1>Forgot Password</h1>
+        <form action="/forgot/submitForgot" method="post">
+            <div class="mb-4">
+                <input name="forgotEmail" type="email" placeholder="Email" required
+                    class="bg-gray-500 placeholder-sky-200 text-sky-200 w-full px-4 py-2 rounded-full focus:outline-none">
+            </div>
+        </form>
+    </div>
+</div>
+<%- include("templates/footerTemplate") %> 

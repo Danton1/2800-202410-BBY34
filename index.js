@@ -19,6 +19,8 @@ const expireTime = 24 * 60 * 60 * 1000; //expires after 24 hr  (hours * minutes 
 /*Imported routes js files*/
 const signUpRoute = require('./scripts/signUpPage.js');
 app.use('/signUp', signUpRoute);
+const forgotRoute = require('./scripts/forgotPage.js');
+app.use('/forgot', forgotRoute);
 /*Imported routes js files end*/
 
 
