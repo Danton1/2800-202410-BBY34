@@ -18,9 +18,6 @@ const expireTime = 24 * 60 * 60 * 1000; //expires after 24 hr  (hours * minutes 
 /*Imported routes js files*/
 const signUpRoute = require('./scripts/signUpPage.js');
 app.use('/signUp', signUpRoute);
-
-const profileRoute = require('./scripts/profile');
-app.use('/profile', profileRoute);
 /*Imported routes js files end*/
 
 /* secret information section */
@@ -105,20 +102,52 @@ app.get('/', (req,res) => {
     res.redirect('/login');
 });
 
-app.get('/settings', (req,res) => {
-    res.render('settingsPage');
-});
-
+// Get for login
 app.get('/login', (req, res) => {
     res.render("loginPage");
 });
 
+// Get for profile
+app.get('/profile', (req,res) => {
+    if(isValidSession(req)){
+        res.render('profilePage', {user: req.session});
+        return;
+    }
+    res.redirect('/login');
+});
+app.get('/profile/personalInfo', (req,res) => {
+    if(isValidSession(req)){
+        res.render('personalInfoPage', {user: req.session});
+        return;
+    }
+    res.redirect('/login');
+});
+app.get('/profile/contactInfo', (req,res) => {
+    if(isValidSession(req)){
+        res.render('contactInfoPage', {user: req.session});
+        return;
+    }
+    res.redirect('/login');
+});
+app.get('/profile/medHistory', (req,res) => {
+    if(isValidSession(req)){
+        res.render('medicalHistoryPage', {user: req.session});
+        return;
+    }
+    res.redirect('/login');
+});
+
+// Get for Settings
+app.get('/settings', (req,res) => {
+    res.render('settingsPage');
+});
 app.get('/settings/signOut', (req, res) => {
     req.session.destroy();
     console.log("You are now logged out.");
     res.redirect("/login");
 });
 
+// Get for 404
 app.get("*", (req,res) => {
 	res.status(404);
 	res.render("404Page");
