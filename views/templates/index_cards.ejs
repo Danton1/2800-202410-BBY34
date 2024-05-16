@@ -1,0 +1,19 @@
+<div class="p-4 lg:w-1/4 sm:w-1/2 w-full group">
+    <% if (bgImg){ %>
+        <% bg = `bg-[url(${bgImg})] bg-cover`; %>
+    <% } else { %>
+        <% bg = "bg-gray-700"; %>
+    <% } %>
+    <div class="border-2 <%=bg%> border-gray-600 px-4 py-6 rounded-lg transform transition duration-500 hover:scale-110">
+        <% if (path) { %>
+            <svg xmlns='http://www.w3.org/2000/svg' viewBox="0 -960 960 960" class="fill-cyan-400 group-hover:animate-pulse duration-1000 w-12 h-12 mb-3 inline-block">
+                <path d="<%= path %>" />
+            </svg>
+        <% } %>
+        <% if (icon) { %>
+            <i class="text-cyan-400 group-hover:animate-pulse w-12 h-12 mb-3 inline-block <%= icon %>"></i>
+        <% } %>
+      <h2 class="title-font font-medium text-3xl "><%= title %></h2>
+      <p class="leading-relaxed"><%= content %></p>
+    </div>
+  </div>
