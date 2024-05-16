@@ -1,42 +1,36 @@
 <%- include("templates/headerTemplate") %> 
-<div class="flex justify-center items-center h-screen bg-gray-700">
-    <div class="p-8">
+<div class="w-[450px] min-h-svh bg-gray-900 mx-auto px-[50px] flex justify-center items-center">
+    <div class="w-full h-full ">
         <h1 class="text-center text-4xl text-sky-400 font-bold mb-6">Medify</h1>
-        <form action="/submitLogin" method="post">
-            <div class="mb-4">
+        <form action="/submitLogin" method="post" class="flex flex-col space-y-5">
+            <div class="flex justify-between items-center w-full bg-gray-700 px-5 py-4 rounded-2xl">
                 <input name="loginPageEmailInput" type="email" placeholder="Email" required
-                    class="bg-gray-500 placeholder-sky-200 text-sky-200 w-full px-4 py-2 rounded-full focus:outline-none">
-                    class="bg-gray-500 placeholder-sky-200 text-sky-200 w-full px-4 py-2 rounded-full focus:outline-none">
+                    class="w-full h-full bg-gray-700 placeholder-sky-100 text-sky-100 font-semibold focus:outline-none">
             </div>
-            <div class="mb-4 relative">
+            <div class="flex justify-between items-center w-full bg-gray-700 px-5 py-4 rounded-2xl">
                 <input id="loginPagePasswordInput" name="loginPagePasswordInput" type="password" placeholder="Password" required
-                    class="bg-gray-500 placeholder-sky-200 text-sky-200 w-full px-4 py-2 rounded-full focus:outline-none">
-                <button id="togglePasswordVisibility" type="button" class="absolute inset-y-0 right-0 flex items-center px-2 text-gray-500 focus:outline-none">
-                    <svg class="h-5 w-5 text-sky-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path id="eyePath1" stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
-                        <path id="eyePath2" d="" />
-                    </svg>                      
-                </button>
-            <div class="mb-4 relative">
-                <input id="loginPagePasswordInput" name="loginPagePasswordInput" type="password" placeholder="Password" required
-                    class="bg-gray-500 placeholder-sky-200 text-sky-200 w-full px-4 py-2 rounded-full focus:outline-none">
-                <button id="togglePasswordVisibility" type="button" class="absolute inset-y-0 right-0 flex items-center px-2 text-gray-500 focus:outline-none">
-                    <svg class="h-5 w-5 text-sky-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    class="w-full h-full bg-gray-700 placeholder-sky-100 text-sky-100 font-semibold focus:outline-none">
+                <button id="togglePasswordVisibility" type="button" class="flex items-center text-gray-700 focus:outline-none">
+                    <svg class="h-5 w-5 text-sky-100" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path id="eyePath1" stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
                         <path id="eyePath2" d="" />
                     </svg>                      
                 </button>
             </div>
-            <button type="submit" class="capitalize w-full bg-sky-400 font-bold text-black py-2 px-4 rounded-full focus:outline-none">
-                Log In
-            <button type="submit" class="capitalize w-full bg-sky-400 font-bold text-black py-2 px-4 rounded-full focus:outline-none">
-                Log In
+            <div class="flex justify-between items-center w-full bg-gray-700 px-5 py-4 rounded-2xl">
+                <input id="loginPagePasswordInput" name="loginPagePasswordInput" type="password" placeholder="Password" required
+                    class="w-full h-full bg-gray-700 placeholder-sky-100 text-sky-100 font-semibold focus:outline-none">
+                <button id="togglePasswordVisibility" type="button" class="flex items-center text-gray-700 focus:outline-none">
+                    <svg class="h-5 w-5 text-sky-100" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path id="eyePath1" stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+                        <path id="eyePath2" d="" />
+                    </svg>                      
+                </button>
+            </div>
+            <button type="submit" class="w-full bg-sky-400 py-4 rounded-2xl text-lg text-gray-900 font-extrabold hover:bg-sky-300 hover:text-gray-800 duration-200">
+                LOG IN
             </button>
-            <div class="mt-4 text-sky-200">
-                Don't have an account? 
-                <a href="/signup" class="text underline hover:text-sky-400">Sign Up</a>
-            </div>
-            <div class="mt-4 text-sky-200">
+            <div class="text-center text-sky-100">
                 Don't have an account? 
                 <a href="/signup" class="text underline hover:text-sky-400">Sign Up</a>
             </div>
