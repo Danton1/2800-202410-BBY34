@@ -1,73 +1,68 @@
 <%- include("templates/headerTemplate") %>
+<div class="w-[450px] min-h-svh mx-auto px-[50px] py-10 pb-[70px] bg-gray-900 text-md font-semibold flex flex-col justify-center items-center">
+    <h1 class="text-3xl font-bold text-center text-sky-400 mb-4">Sign Up</h1>
 
-    <div class="w-full h-screen rounded bg-gradient-to-br from-gray-800 to-gray-700">
-        <h1 class="text-3xl font-bold p-4 text-center text-sky-400">Sign Up</h1>
+    <form action="/signUp/submitSignUp" method="post" class="w-full justify-items-center">
+        <div class="w-full grid-rows-[repeat(4, auto)] space-y-4 justify-items-center">
 
-        <form action="/signUp/submitSignUp" method="post" class="grid justify-items-center">
-
-            <div class="p-8 w-1/2 grid-cols-1 grid grid-rows-4 gap-4 justify-items-center rounded bg-gray-900">
-
-                <div id="nameGroup" class="grid gap-2 h-7/12 self-end ">
-                    <h2 class="text-sky-400">Name</h2>
-                    <div class="">
-                        <input name="firstName" type="text" placeholder="First Name" required
-                        class="bg-gray-700 rounded text-sky-200 placeholder-sky-200">
-                    </div>
-                    <div>
-                        <input name="lastName" type="text" placeholder="Last Name" required
-                        class="bg-gray-700 rounded text-sky-200 placeholder-sky-200">
-                    </div>
-                    
+            <div id="nameGroup" class="grid gap-2">
+                <h2 class="text-lg text-sky-400">Name</h2>
+                <div class="w-full py-3 px-4 bg-gray-700 rounded-xl">
+                    <input name="firstName" type="text" placeholder="First Name" required
+                    class="w-full bg-gray-700 text-sky-200 placeholder-sky-200">
                 </div>
-
-                <div id="personalInfoGroup" class="grid gap-2 ">
-                    <h2 class="text-sky-400">Personal Information</h2>
-                    <div>
-                        <input name="birthDate" type="text" placeholder="Birth Date" required
-                        class="bg-gray-700 rounded text-sky-200 placeholder-sky-200"
-                            onfocus="(this.type='date')">
-                    </div>
-                    <div>
-                        <input name="country" type="text" placeholder="Country" required
-                        class="bg-gray-700 rounded text-sky-200 placeholder-sky-200">
-                    </div>
-                    <div>
-                        <input name="city" type="text" placeholder="City" required
-                        class="bg-gray-700 rounded text-sky-200 placeholder-sky-200">
-                    </div>
-                </div>
-
-
-                <div id="accInfoGroup" class="grid gap-2">
-                    <h2 class="text-sky-400">Account Information</h2>
-                    <div>
-                        <input name="email" type="email" placeholder="Email" required
-                        class="bg-gray-700 rounded text-sky-200 placeholder-sky-200">
-                    </div>
-                    <div>
-                        <input name="password" type="password" placeholder="Password" required
-                        class="bg-gray-700 rounded text-sky-200 placeholder-sky-200">
-                    </div>
-                    <div>
-                        <input name="passwordConfirm" type="password" placeholder=" Confirm Password" required
-                        class="bg-gray-700 rounded text-sky-200 placeholder-sky-200">
-                    </div>
-                </div>
-
-                
-                <div class="grid justify-items-center">
-                    <button type="submit" class="p-3 rounded-lg bg-sky-200 font-bold uppercase shadow-md shadow-sky-200/20 transition-all hover:shadow-lg hover:shadow-sky-200/40  focus:opacity-[0.85] focus:shadow-none">
-                        Create User
-                    </button>
-                    <br>
-                    <div class="text-sky-200">Already have an account?</div> <a href="/login" class="text-blue-600 underline">Log In</a>
+                <div class="w-full py-3 px-4 bg-gray-700 rounded-xl">
+                    <input name="lastName" type="text" placeholder="Last Name" required
+                    class="w-full bg-gray-700 text-sky-200 placeholder-sky-200">
                 </div>
             </div>
-        </form>
 
-    </div>
+            <div id="personalInfoGroup" class="grid gap-2 ">
+                <h2 class="text-lg text-sky-400">Personal Information</h2>
+                <div class="w-full py-3 px-4 bg-gray-700 rounded-xl">
+                    <input name="birthDate" type="text" placeholder="Birth Date" required
+                    class="w-full bg-gray-700 text-sky-200 placeholder-sky-200"
+                        onfocus="(this.type='date')">
+                </div>
+                <div class="w-full py-3 px-4 bg-gray-700 rounded-xl">
+                    <input name="country" type="text" placeholder="Country" required
+                    class="w-full bg-gray-700 text-sky-200 placeholder-sky-200">
+                </div>
+                <div class="w-full py-3 px-4 bg-gray-700 rounded-xl">
+                    <input name="city" type="text" placeholder="City" required
+                    class="w-full bg-gray-700 text-sky-200 placeholder-sky-200">
+                </div>
+            </div>
 
-    <script src="index.js"></script>
-    <script src="signUpPage.js"></script>
+            <div id="accInfoGroup" class="grid gap-2">
+                <h2 class="text-lg text-sky-400">Account Information</h2>
+                <div class="w-full py-3 px-4 bg-gray-700 rounded-xl">
+                    <input name="email" type="email" placeholder="Email" required
+                    class="w-full bg-gray-700 rounded text-sky-200 placeholder-sky-200">
+                </div>
+                <div class="w-full py-3 px-4 bg-gray-700 rounded-xl">
+                    <input name="password" type="password" placeholder="Password" required
+                    class="w-full bg-gray-700 rounded text-sky-200 placeholder-sky-200">
+                </div>
+                <div class="w-full py-3 px-4 bg-gray-700 rounded-xl">
+                    <input name="passwordConfirm" type="password" placeholder=" Confirm Password" required
+                    class="w-full bg-gray-700 rounded text-sky-200 placeholder-sky-200">
+                </div>
+            </div>
+            
+            <div class="grid justify-items-center pt-3 space-y-3">
+                <button type="submit" class="w-full bg-sky-400 py-4 rounded-2xl text-lg text-gray-900 font-extrabold hover:bg-sky-300 hover:text-gray-800 duration-200">
+                    SIGN UP
+                </button>
+                <div class="text-center text-sky-100 text-md font-normal">
+                    Don't have an account? 
+                    <a href="/login" class="text underline hover:text-sky-400 duration-150">Log in</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 
-    <%- include("templates/footerTemplate") %>
+<script src="index.js"></script>
+<script src="signUpPage.js"></script>
+<%- include("templates/footerTemplate") %>
