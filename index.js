@@ -171,6 +171,9 @@ app.post('/submitLogin', async (req,res) => {
             req.session.email = result[0].email;
             req.session.firstName = getUser.firstName;
             req.session.lastName = getUser.lastName;
+            req.session.birthDate = getUser.birthDate;
+            req.session.country = getUser.country;
+            req.session.city = getUser.city;
 
             res.redirect('/');
             return;
