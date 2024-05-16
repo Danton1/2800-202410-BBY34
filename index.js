@@ -12,8 +12,16 @@ const app = express();
 
 const Joi = require("joi");
 
+const expireTime = 24 * 60 * 60 * 1000; //expires after 24 hr  (hours * minutes * seconds * millis)
 
-const expireTime = 60 * 60 * 1000; //expires after 1 hr  (minutes * seconds * millis)
+
+/*Imported routes js files*/
+const signUpRoute = require('./scripts/signUpPage.js');
+app.use('/signUp', signUpRoute);
+
+const profileRoute = require('./scripts/profile');
+app.use('/profile', profileRoute);
+/*Imported routes js files end*/
 
 /* secret information section */
 const mongodb_host = process.env.MONGODB_HOST;
@@ -21,7 +29,6 @@ const mongodb_user = process.env.MONGODB_USER;
 const mongodb_password = process.env.MONGODB_PASSWORD;
 const mongodb_database = process.env.MONGODB_DATABASE;
 const mongodb_session_secret = process.env.MONGODB_SESSION_SECRET;
-
 const node_session_secret = process.env.NODE_SESSION_SECRET;
 /* END secret section */
 
@@ -69,7 +76,6 @@ function sessionValidation(req,res,next) {
     }
 }
 
-
 function isAdmin(req) {
     if (req.session.user_type == 'admin') {
         return true;
@@ -91,19 +97,20 @@ function adminAuthorization(req, res, next) {
 
 // GETS
 
-const profileRoute = require('./scripts/profile');
-app.use('/profile', profileRoute);
+app.get('/', (req,res) => {
+    if(isValidSession(req)){
+        res.render('index', {username: req.session.firstName});
+        return;
+    }
+    res.redirect('/login');
+});
 
-app.get('/getPassEdit', (req,res) => {
-    res.render("passEdit");
+app.get('/settings', (req,res) => {
+    res.render('settingsPage');
 });
 
 app.get('/login', (req, res) => {
     res.render("loginPage");
-});
-
-app.get('/signUp', (req, res) => {
-    res.render("signUpPage");
 });
 
 app.get("*", (req,res) => {
@@ -118,8 +125,8 @@ app.post('/editPass', async(req,res) => {
 });
 
 app.post('/submitLogin', async (req,res) => {
-    var email = req.body.email;
-    var password = req.body.password;
+    var email = req.body.loginPageEmailInput;
+    var password = req.body.loginPagePasswordInput;
 
 	const schema = Joi.object(
 		{
@@ -146,8 +153,9 @@ app.post('/submitLogin', async (req,res) => {
             req.session.authenticated = true;
             req.session.cookie.maxAge = expireTime;
             req.session.email = result[0].email;
+            req.session.firstName = result[0].firstName;
 
-            res.redirect('/members');
+            res.redirect('/');
             return;
         }
         else {
@@ -155,53 +163,6 @@ app.post('/submitLogin', async (req,res) => {
             return;
         }
     }	
-});
-
-app.post('/submitSignUp', async (req,res) => {
-    var firstName = req.body.firstName;
-    var lastName = req.body.lastName;
-    var birthDate = req.body.birthDate;
-    var country = req.body.country;
-    var city = req.body.city;
-    var email = req.body.email;
-    var password = req.body.password;
-    var passwordConfirm = req.body.passwordConfirm;
-
-    if(password.localeCompare(passwordConfirm)!=0){
-        res.render("errorPage", {error:"Passwords do not match."});
-        return;
-    }
-
-	const schema = Joi.object(
-		{
-            firstName: Joi.string().max(20).required(),
-            lastName: Joi.string().max(20).required(),
-            birthDate: Joi.date().required(),
-            country: Joi.string().max(20).required(),
-            city: Joi.string().max(20).required(),
-			email: Joi.string().email().max(20).required(),
-			password: Joi.string().max(20).required()
-		});
-        const validationResult = schema.validate({ firstName, lastName, birthDate, country, city, email, password});
-        if (validationResult.error != null) {
-            // console.log(validationResult.error.details[0]);
-            var err = validationResult.error.details[0];
-            if(err.type.localeCompare('string.empty') == 0){
-                res.render("errorPage", { error: `${err.path[0]} is empty.` });
-                return;
-            }
-        }
-    
-        var encodedPassword = await bcrypt.hash(password, saltRounds);
-    
-        await userCollection.insertOne({ firstName: firstName, lastName: lastName, birthDate: birthDate, country: country, city: city, email: email, password: encodedPassword});
-    
-        req.session.authenticated = true;
-        // req.session.username = firstName;
-        req.session.email = email;
-        req.session.cookie.maxAge = expireTime;
-    
-        res.redirect('/');
 });
 
 // LISTENS

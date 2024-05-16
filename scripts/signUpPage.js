@@ -1,0 +1,57 @@
+const express = require("express");
+const router = express.Router();
+
+router.get('/', (req, res) => {
+    res.render("signUpPage");
+});
+
+
+router.post('/submitSignUp', async (req,res) => {
+    var firstName = req.body.firstName;
+    var lastName = req.body.lastName;
+    var birthDate = req.body.birthDate;
+    var country = req.body.country;
+    var city = req.body.city;
+    var email = req.body.email;
+    var password = req.body.password;
+    var passwordConfirm = req.body.passwordConfirm;
+
+    if(password.localeCompare(passwordConfirm)!=0){
+        res.render("errorPage", {error:"Passwords do not match."});
+        return;
+    }
+
+	const schema = Joi.object(
+		{
+            firstName: Joi.string().max(20).required(),
+            lastName: Joi.string().max(20).required(),
+            birthDate: Joi.date().required(),
+            country: Joi.string().max(20).required(),
+            city: Joi.string().max(20).required(),
+			email: Joi.string().email().max(20).required(),
+			password: Joi.string().max(20).required()
+		});
+        const validationResult = schema.validate({ firstName, lastName, birthDate, country, city, email, password});
+        if (validationResult.error != null) {
+            // console.log(validationResult.error.details[0]);
+            var err = validationResult.error.details[0];
+            if(err.type.localeCompare('string.empty') == 0){
+                res.render("errorPage", { error: `${err.path[0]} is empty.` });
+                return;
+            }
+        }
+    
+        var encodedPassword = await bcrypt.hash(password, saltRounds);
+    
+        await userCollection.insertOne({ firstName: firstName, lastName: lastName, birthDate: birthDate, country: country, city: city, email: email, password: encodedPassword});
+    
+        req.session.authenticated = true;
+        // req.session.username = firstName;
+        req.session.email = email;
+        req.session.cookie.maxAge = expireTime;
+    
+        res.redirect('/');
+});
+
+
+module.exports = router;
