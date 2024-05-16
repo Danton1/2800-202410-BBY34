@@ -127,6 +127,8 @@ app.post('/editPass', async(req,res) => {
 app.post('/submitLogin', async (req,res) => {
     var email = req.body.loginPageEmailInput;
     var password = req.body.loginPagePasswordInput;
+    var email = req.body.loginPageEmailInput;
+    var password = req.body.loginPagePasswordInput;
 
 	const schema = Joi.object(
 		{
@@ -154,7 +156,9 @@ app.post('/submitLogin', async (req,res) => {
             req.session.cookie.maxAge = expireTime;
             req.session.email = result[0].email;
             req.session.firstName = result[0].firstName;
+            req.session.firstName = result[0].firstName;
 
+            res.redirect('/');
             res.redirect('/');
             return;
         }
