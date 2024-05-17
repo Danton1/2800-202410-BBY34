@@ -18,6 +18,8 @@ const expireTime = 24 * 60 * 60 * 1000; //expires after 24 hr  (hours * minutes 
 /*Imported routes js files*/
 const signUpRoute = require('./scripts/signUpPage.js');
 app.use('/signUp', signUpRoute);
+const forgotRoute = require('./scripts/forgotPage.js');
+app.use('/forgot', forgotRoute);
 /*Imported routes js files end*/
 
 /* secret information section */
@@ -32,6 +34,7 @@ const node_session_secret = process.env.NODE_SESSION_SECRET;
 var {database} = include('databaseConnection');
 
 const userCollection = database.db(mongodb_database).collection('users');
+const tokenCollection = database.db(mongodb_database).collection('forgotToken');
 
 app.set('view engine', 'ejs');
 
