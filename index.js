@@ -6,7 +6,7 @@ const MongoStore = require('connect-mongo');
 const bcrypt = require('bcrypt');
 const saltRounds = 12;
 const favicon = require('serve-favicon');
-const path = require('path')
+const path = require('path');
 
 
 const port = process.env.PORT || 3000;
@@ -16,9 +16,6 @@ const app = express();
 const Joi = require("joi");
 
 const expireTime = 24 * 60 * 60 * 1000; //expires after 24 hr  (hours * minutes * seconds * millis)
-
-// Favicon
-app.use(favicon('favicon.ico'));
 
 /*Imported routes js files*/
 const signUpRoute = require('./scripts/signUpPage');
@@ -56,6 +53,9 @@ var mongoStore = MongoStore.create({
 
 app.use(express.urlencoded({extended: false}));
 app.use(express.static(__dirname + "/public"));
+
+
+app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
 
 app.use(session({ 
     secret: node_session_secret,
