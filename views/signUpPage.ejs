@@ -1,9 +1,11 @@
 <%- include("templates/headerTemplate") %>
-<div class="w-[450px] min-h-svh mx-auto px-[50px] py-10 pb-[70px] bg-gray-900 text-md font-semibold flex flex-col justify-center items-center">
+<div class="min-h-svh mx-auto px-[50px] pb-[70px] pt-10 bg-gray-900 text-md font-semibold flex flex-col justify-center items-center">
     <h1 class="text-3xl font-bold text-center text-sky-400 mb-4">Sign Up</h1>
+
 
     <form action="/signUp/submitSignUp" method="post" class="w-full justify-items-center">
         <div class="signupWrap w-full grid-rows-[repeat(4, auto)] space-y-4 justify-items-center">
+
 
             <div id="nameGroup" class="grid gap-2">
                 <h2 class="text-lg text-sky-400">Name</h2>
@@ -108,4 +110,5 @@
         }
     });
 </script>
-<%- include("templates/footerTemplate") %>
+</body>
+</html>

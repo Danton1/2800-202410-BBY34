@@ -18,6 +18,8 @@ const expireTime = 24 * 60 * 60 * 1000; //expires after 24 hr  (hours * minutes 
 /*Imported routes js files*/
 const signUpRoute = require('./scripts/signUpPage.js');
 app.use('/signUp', signUpRoute);
+const forgotRoute = require('./scripts/forgotPage.js');
+app.use('/forgot', forgotRoute);
 /*Imported routes js files end*/
 
 /* secret information section */
@@ -32,6 +34,7 @@ const node_session_secret = process.env.NODE_SESSION_SECRET;
 var {database} = include('databaseConnection');
 
 const userCollection = database.db(mongodb_database).collection('users');
+const tokenCollection = database.db(mongodb_database).collection('forgotToken');
 
 app.set('view engine', 'ejs');
 
@@ -180,17 +183,6 @@ app.post('/submitLogin', async (req,res) => {
 	}
 
 	const result = await userCollection.find({email: email}).project({email: 1, password: 1, _id: 1}).toArray();
-
-    // Getting the userName info from the email
-	let getUser = userCollection.findOne({email: email}).then((user) => {
-        if (!user) {
-            //if user does not exist, the authentication failed
-			res.render("errorPage", {prompt: "Invalid email account"});
-            return;
-        }
-        //assign the user to getUser variable
-        getUser = user;
-    })
 
 	if (result.length == 0) {
         res.render("errorPage", {error: "No user with that email found"});
