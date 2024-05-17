@@ -5,9 +5,9 @@
             <form action="/forgot/resetPassword" method="post">
                 <div class="mb-4">
                     <h2 class="text-sky-400">Password Reset</h2>
-                    <!-- <div>
-                        
-                    </div> -->
+                    <input name="temp1" value="<%=email%>" class="hidden"></input>
+                    <input name="temp2" value="<%=token%>" class="hidden"></input>
+
                     <div>
                         <input name="password" type="password" placeholder="Password" required
                         class="bg-gray-500 placeholder-sky-200 text-sky-200 w-full px-4 py-2 rounded-full focus:outline-none">

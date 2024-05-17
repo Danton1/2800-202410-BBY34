@@ -115,16 +115,14 @@ router.post('/submitForgot', async (req, res) => {
 });
 
 router.get('/resetPassword', (req, res) => {
-    console.log(req.query.email);
-    console.log(req.query.token);
-    res.render("resetPage");
+    res.render("resetPage", {email: req.query.email, token: req.query.token});
 });
 
 
 router.post('/resetPassword', async (req, res) => {
-    console.log('e');
-    var email = decodeURIComponent(req.query.email);
-    var token = decodeURIComponent(req.query.token);
+    // console.log('e');
+    var email = req.body.temp1;
+    var token = req.body.temp2;
     var password = req.body.password;
     var passwordConfirm = req.body.passwordConfirm;
 
@@ -147,12 +145,10 @@ router.post('/resetPassword', async (req, res) => {
 
     var hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    console.log(email);
-    console.log(token);
     const tokenResult = await tokenCollection.find({ email: email, token: token }).project({ email: 1, token: 1, expiry: 1, _id: 1 }).toArray();
 
     if (tokenResult.length == 0) {
-        res.render("errorPage", { error: `${email} ... ${token}` });
+        res.render("errorPage", { error: "token not found" });
         return;
     } else {
         console.log(Date.now());
@@ -161,7 +157,8 @@ router.post('/resetPassword', async (req, res) => {
 
             await userCollection.updateOne({ email: email }, { $set: { password: hashedPassword } });
             
-
+            res.render('loginPage');
+            return;
 
         } else {
             res.render("errorPage", { error: "Token expired" });
