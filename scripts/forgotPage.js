@@ -148,7 +148,7 @@ router.post('/resetPassword', async (req, res) => {
     const tokenResult = await tokenCollection.find({ email: email, token: token }).project({ email: 1, token: 1, expiry: 1, _id: 1 }).toArray();
 
     if (tokenResult.length == 0) {
-        res.render("errorPage", { error: "No token found" });
+        res.render("errorPage", { error: `${email} ... ${token}` });
         return;
     } else {
         console.log(Date.now());
