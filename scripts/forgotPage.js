@@ -115,7 +115,9 @@ router.post('/submitForgot', async (req, res) => {
 });
 
 router.get('/resetPassword', (req, res) => {
-    res.render("resetPage", { email: req.query.email });
+    console.log(req.query.email);
+    console.log(req.query.token);
+    res.render("resetPage");
 });
 
 
@@ -125,6 +127,8 @@ router.post('/resetPassword', async (req, res) => {
     var token = decodeURIComponent(req.query.token);
     var password = req.body.password;
     var passwordConfirm = req.body.passwordConfirm;
+
+
 
     if (password.localeCompare(passwordConfirm) != 0) {
         res.render("errorPage", { error: "passwords don't match" });
