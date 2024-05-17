@@ -5,8 +5,8 @@
         <form action="/forgot/resetPassword" method="post" class="flex flex-col space-y-5">
             <div class="flex flex-col space-y-5">
                 <!-- <h2 class="text-sky-400"></h2> -->
-                <input name="temp1" value="e" class="hidden"></input>
-                <input name="temp2" value="t" class="hidden"></input>
+                <input name="temp1" value=<%=email%> class="hidden"></input>
+                <input name="temp2" value="<%=token%>" class="hidden"></input>
 
                 <div class="flex flex-col space-y-5">
                     <div class="flex justify-between px-5 py-4 bg-gray-700 rounded-2xl overflow-hidden">
