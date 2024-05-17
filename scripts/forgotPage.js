@@ -143,6 +143,8 @@ router.post('/resetPassword', async (req, res) => {
 
     var hashedPassword = await bcrypt.hash(password, saltRounds);
 
+    console.log(email);
+    console.log(token);
     const tokenResult = await tokenCollection.find({ email: email, token: token }).project({ email: 1, token: 1, expiry: 1, _id: 1 }).toArray();
 
     if (tokenResult.length == 0) {
@@ -154,6 +156,8 @@ router.post('/resetPassword', async (req, res) => {
         if (new Date(Date.now()) <= tokenResult[0].expiry) {
 
             await userCollection.updateOne({ email: email }, { $set: { password: hashedPassword } });
+            
+
 
         } else {
             res.render("errorPage", { error: "Token expired" });
