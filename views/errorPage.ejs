@@ -1,0 +1,19 @@
+<%- include("templates/headerTemplate") %> 
+<div class="max-w-[450px] min-h-svh bg-gray-900 mx-auto px-[35px] flex justify-center items-center">
+    <div class="w-full h-full ">
+        <h1 class="text-center text-6xl text-sky-400 font-bold mb-6">
+            OH NO!
+        </h1>
+        <h3 class="text-center text-4xl text-sky-200 font-bold mb-6">
+            An error ocurred.
+        </h3>
+        <p class="text-center text-2xl text-sky-100 mb-6">
+            <%= error %>
+        </p>
+        <button class="w-full bg-sky-400 py-4 rounded-2xl text-xl text-gray-900 font-extrabold hover:bg-sky-300 hover:text-gray-800 duration-200" onclick="history.back()">
+            GO BACK
+        </button>
+    </div>
+</div>
+</body>
+</html>
