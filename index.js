@@ -179,17 +179,6 @@ app.post('/submitLogin', async (req,res) => {
 
 	const result = await userCollection.find({email: email}).project({email: 1, password: 1, _id: 1}).toArray();
 
-    // Getting the userName info from the email
-	let getUser = userCollection.findOne({email: email}).then((user) => {
-        if (!user) {
-            //if user does not exist, the authentication failed
-			res.render("errorPage", {prompt: "Invalid email account"});
-            return;
-        }
-        //assign the user to getUser variable
-        getUser = user;
-    })
-
 	if (result.length == 0) {
         res.render("errorPage", {error: "No user with that email found"});
         return;
