@@ -6,6 +6,7 @@ const MongoStore = require('connect-mongo');
 const bcrypt = require('bcrypt');
 const saltRounds = 12;
 
+
 const port = process.env.PORT || 3000;
 
 const app = express();
@@ -14,12 +15,13 @@ const Joi = require("joi");
 
 const expireTime = 24 * 60 * 60 * 1000; //expires after 24 hr  (hours * minutes * seconds * millis)
 
-
 /*Imported routes js files*/
-const signUpRoute = require('./scripts/signUpPage.js');
+const signUpRoute = require('./scripts/signUpPage');
 app.use('/signUp', signUpRoute);
-const forgotRoute = require('./scripts/forgotPage.js');
+const forgotRoute = require('./scripts/forgotPage');
 app.use('/forgot', forgotRoute);
+const settingsRoute = require('./scripts/settings');
+app.use('/settings', settingsRoute);
 /*Imported routes js files end*/
 
 /* secret information section */
@@ -150,6 +152,11 @@ app.get('/settings/signOut', (req, res) => {
     res.redirect("/login");
 });
 
+// Get for chatbot
+app.get('/chatbot', (req, res) => {
+    res.render("chatbotPage");
+});
+
 // Get for 404
 app.get("*", (req,res) => {
 	res.status(404);
@@ -178,6 +185,17 @@ app.post('/submitLogin', async (req,res) => {
 	}
 
 	const result = await userCollection.find({email: email}).project({email: 1, password: 1, _id: 1}).toArray();
+
+    // Getting the userName info from the email
+	let getUser = userCollection.findOne({email: email}).then((user) => {
+        if (!user) {
+            //if user does not exist, the authentication failed
+			res.render("errorPage", {prompt: "Invalid email account"});
+            return;
+        }
+        //assign the user to getUser variable
+        getUser = user;
+    })
 
 	if (result.length == 0) {
         res.render("errorPage", {error: "No user with that email found"});

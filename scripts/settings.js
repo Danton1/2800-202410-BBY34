@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 router.get('/account', (req,res) => {
-    res.redirect('/getProfilePage');
+    res.redirect('/profile');
 });
 
 router.get('/language', (req,res) => {

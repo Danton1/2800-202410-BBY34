@@ -1,5 +1,5 @@
 <%- include("templates/headerTemplate")%>
-<div class="w-[450px] min-h-svh mx-auto px-[50px] bg-gray-900 flex flex-col py-10 pb-[90px] items-center justify-center space-y-5 text-sky-100 text-md font-semibold">
+<div class="max-w-[450px] w-full min-h-svh mx-auto px-[35px] bg-gray-900 flex flex-col py-[55px] pb-[90px] items-center justify-center space-y-5 text-sky-100 text-md font-medium">
     <!-- Page title -->
     <h1 class="text-sky-300 text-3xl font-bold mb-2">Contact Information</h1>
 
@@ -19,9 +19,12 @@
     </div>    
 
     <!-- Edit & save button -->
-    <div class="w-full flex flex-col items-center space-y-4 text-gray-900 font-extrabold">
-        <button class="w-full bg-sky-300 py-3 rounded-2xl hover:bg-sky-400 duration-200">EDIT</button>
-        <button class="w-full bg-sky-300 py-3 rounded-2xl hover:bg-sky-400 duration-200">SAVE</button>
+    <div class="w-full flex flex-col items-center space-y-4 text-gray-900 text-lg font-extrabold">
+        <button class="w-full bg-sky-400 py-3 rounded-2xl hover:bg-sky-300 duration-200">
+            EDIT
+            <i class="fa-solid fa-pen"></i>
+        </button>
+        <button class="w-full bg-sky-400 py-3 rounded-2xl hover:bg-sky-300 duration-200">SAVE</button>
     </div>
 </div>
 <%- include("templates/footerTemplate")%>
