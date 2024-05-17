@@ -1,16 +1,20 @@
 <%- include("templates/headerTemplate") %> 
-<div class="flex justify-center items-center h-screen bg-gray-700">
-    <div>
-        <h1 class="text-sky-200">Forgot Password</h1>
-        <form action="/forgot/submitForgot" method="post">
-            <div class="mb-4">
-                <input name="forgotEmail" type="email" placeholder="Email" required
-                    class="bg-gray-500 placeholder-sky-200 text-sky-200 w-full px-4 py-2 rounded-full focus:outline-none">
-            </div>
-            <button type="submit" class="p-3 rounded-lg bg-sky-200 font-bold uppercase shadow-md shadow-sky-200/20 transition-all hover:shadow-lg hover:shadow-sky-200/40  focus:opacity-[0.85] focus:shadow-none">
-                Submit
-            </button>
-        </form>
-    </div>
+<div class="max-w-[450px] w-full min-h-svh mx-auto px-[35px] flex flex-col justify-center items-center h-screen bg-gray-900">
+    <h1 class="text-center text-4xl text-sky-400 font-bold mb-6">Forgot Password?</h1>
+    <form action="/forgot/submitForgot" method="post" class="w-full flex flex-col space-y-5">
+        <div class="flex justify-between items-center w-full bg-gray-700 px-5 py-4 rounded-2xl">
+            <input name="forgotEmail" type="email" placeholder="Enter your email address" required
+                class="w-full h-full bg-gray-700 placeholder-sky-100 text-sky-100 font-semibold focus:outline-none">
+        </div>
+        <button type="submit" class="w-full bg-sky-400 py-4 rounded-2xl text-lg text-gray-900 font-extrabold hover:bg-sky-300 hover:text-gray-800 duration-200">
+            Submit
+        </button>
+        <div class="text-center text-sky-100">
+            <a href="/login" class="hover:text-sky-400 duration-150">Go back to Login <i class="ml-2 fa-solid fa-angle-right"></i></a>
+            <p class="mt-2">
+                Don't have an account? 
+                <a href="/signup" class="underline hover:text-sky-400 duration-150">Sign Up</a>
+            </p>
+        </div>
+    </form>
 </div>
-<%- include("templates/footerTemplate") %> 

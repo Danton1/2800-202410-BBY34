@@ -1,12 +1,8 @@
 <%- include("templates/headerTemplate") %>
-<div class="min-h-svh mx-auto px-[50px] pb-[70px] pt-10 bg-gray-900 text-md font-semibold flex flex-col justify-center items-center">
+<div class="max-w-[450px] min-h-svh mx-auto px-[35px] py-[60px] bg-gray-900 text-md font-semibold flex flex-col justify-center items-center">
     <h1 class="text-3xl font-bold text-center text-sky-400 mb-4">Sign Up</h1>
-
-
     <form action="/signUp/submitSignUp" method="post" class="w-full justify-items-center">
         <div class="signupWrap w-full grid-rows-[repeat(4, auto)] space-y-4 justify-items-center">
-
-
             <div id="nameGroup" class="grid gap-2">
                 <h2 class="text-lg text-sky-400">Name</h2>
                 <div class="w-full py-3 px-5 bg-gray-700 rounded-xl">
@@ -69,7 +65,7 @@
                     SIGN UP
                 </button>
                 <div class="text-center text-sky-100 text-md font-normal">
-                    Don't have an account? 
+                    Already have an account? 
                     <a href="/login" class="text underline hover:text-sky-400 duration-150">Log in</a>
                 </div>
             </div>

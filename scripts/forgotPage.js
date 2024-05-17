@@ -127,8 +127,6 @@ router.post('/resetPassword', async (req, res) => {
     var password = req.body.password;
     var passwordConfirm = req.body.passwordConfirm;
 
-
-
     if (password.localeCompare(passwordConfirm) != 0) {
         res.render("errorPage", { error: "passwords don't match" });
         return;
