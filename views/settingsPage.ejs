@@ -1,14 +1,14 @@
 <%- include("templates/headerTemplate")%>
-<div class="w-[450px] mx-auto grid grid-rows-[repeat(4, auto)] py-20 px-[50px] mt-100 justify-items-center text-sky-100 text-md font-semibold text-center">
+<div class="max-w-[450px] w-full min-h-svh mx-auto py-[50px] px-[35px] flex flex-col justify-center items-center text-sky-100 text-md font-medium text-center">
     <h1 class="text-sky-300 text-3xl font-bold mb-5">Settings</h1>
     <div class="w-full grid justify-items-center">
-        <div class="w-full grid grid-rows-2 bg-gray-700 shadow-lg rounded-2xl m-2 justify-items-center overflow-hidden">
+        <div class="w-full grid grid-rows-[repeat(2, auto)] bg-gray-700 shadow-lg rounded-2xl m-2 justify-items-center overflow-hidden">
             <a href="/settings/account" class="w-full h-full py-4 px-5 items-center border-b border-gray-800 hover:bg-gray-800 duration-150">Account</a>
             <a href="/settings/language" class="w-full h-full py-4 px-5 items-center hover:bg-gray-800 duration-150">Language</a>
         </div>
     </div>
     <div class="w-full grid justify-items-center">
-        <div class="w-full grid grid-rows-4 bg-gray-700 shadow-lg rounded-2xl m-2 justify-items-center overflow-hidden">
+        <div class="w-full grid grid-rows-[repeat(4, auto)] bg-gray-700 shadow-lg rounded-2xl m-2 justify-items-center overflow-hidden">
             <a href="/settings/about" class="w-full h-full py-4 px-5 items-center border-b border-gray-800 hover:bg-gray-800 duration-150">About Us</a>
             <a href="/settings/terms" class="w-full h-full py-4 px-5 items-center border-b border-gray-800 hover:bg-gray-800 duration-150">Terms of Service</a>
             <a href="/settings/contact" class="w-full h-full py-4 px-5 items-center border-b border-gray-800 hover:bg-gray-800 duration-150">Contact Us</a>
@@ -16,8 +16,8 @@
         </div>
     </div>
     <div class="w-full grid justify-items-center">
-        <div class="w-full grid bg-sky-400 shadow-lg rounded-2xl m-2 justify-items-center hover:bg-sky-300 duration-200 font-bold">
-            <a href="/settings/signOut" class="w-full h-full py-4 px-5 text-gray-900">Sign Out</a>
+        <div class="w-full grid bg-sky-400 shadow-lg rounded-2xl m-2 justify-items-center hover:bg-sky-300 duration-200 text-lg font-bold">
+            <a href="/settings/signOut" class="w-full h-full py-4 px-5 text-gray-900">SIGN OUT</a>
         </div>
     </div>
 </div>

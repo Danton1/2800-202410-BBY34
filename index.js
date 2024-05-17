@@ -21,8 +21,12 @@ const expireTime = 24 * 60 * 60 * 1000; //expires after 24 hr  (hours * minutes 
 app.use(favicon('favicon.ico'));
 
 /*Imported routes js files*/
-const signUpRoute = require('./scripts/signUpPage.js');
+const signUpRoute = require('./scripts/signUpPage');
 app.use('/signUp', signUpRoute);
+const forgotRoute = require('./scripts/forgotPage');
+app.use('/forgot', forgotRoute);
+const settingsRoute = require('./scripts/settings');
+app.use('/settings', settingsRoute);
 /*Imported routes js files end*/
 
 /* secret information section */
@@ -37,6 +41,7 @@ const node_session_secret = process.env.NODE_SESSION_SECRET;
 var {database} = include('databaseConnection');
 
 const userCollection = database.db(mongodb_database).collection('users');
+const tokenCollection = database.db(mongodb_database).collection('forgotToken');
 
 app.set('view engine', 'ejs');
 
@@ -150,6 +155,11 @@ app.get('/settings/signOut', (req, res) => {
     req.session.destroy();
     console.log("You are now logged out.");
     res.redirect("/login");
+});
+
+// Get for chatbot
+app.get('/chatbot', (req, res) => {
+    res.render("chatbotPage");
 });
 
 // Get for 404
