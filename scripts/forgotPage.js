@@ -89,7 +89,7 @@ router.post('/submitForgot', async (req, res) => {
             }
         });
         //generate url
-        const resetPasswordBaseUrl = 'https://two800-202410-bby34.onrender.com/forgot/resetPassword';
+        const resetPasswordBaseUrl = 'https://two800-202410-bby34-sjiu.onrender.com/forgot/resetPassword';
         const resetPasswordLink = `${resetPasswordBaseUrl}?email=${encodeURIComponent(forgotEmail)}&token=${encodeURIComponent(encodedToken)}`;
 
         // Define email options
