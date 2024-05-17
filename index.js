@@ -147,6 +147,11 @@ app.get('/settings/signOut', (req, res) => {
     res.redirect("/login");
 });
 
+// Get for chatbot
+app.get('/chatbot', (req, res) => {
+    res.render("chatbotPage");
+});
+
 // Get for 404
 app.get("*", (req,res) => {
 	res.status(404);
