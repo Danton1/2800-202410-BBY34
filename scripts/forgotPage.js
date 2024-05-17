@@ -103,15 +103,17 @@ router.post('/submitForgot', async (req, res) => {
         // Send email
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
-                console.log('Error occurred:', error);
+                res.render("errorPage", {error: "Email failed to send, please try again!"});
+                return;
             } else {
-                console.log('Email sent:', info.response);
+                res.render("errorPage", {error: "Email was sent successfully"}); //temporary, should make an ejs file later
+                return;
             }
         });
 
     }
 
-    res.render("forgotPage");
+    // res.render("forgotPage");
 });
 
 router.get('/resetPassword', (req, res) => {
@@ -120,7 +122,6 @@ router.get('/resetPassword', (req, res) => {
 
 
 router.post('/resetPassword', async (req, res) => {
-    // console.log('e');
     var email = req.body.temp1;
     var token = req.body.temp2;
     var password = req.body.password;
@@ -151,13 +152,12 @@ router.post('/resetPassword', async (req, res) => {
         res.render("errorPage", { error: "token not found" });
         return;
     } else {
-        console.log(Date.now());
-        console.log(tokenResult[0].expiry);
+
         if (new Date(Date.now()) <= tokenResult[0].expiry) {
 
             await userCollection.updateOne({ email: email }, { $set: { password: hashedPassword } });
-            
-            res.render('loginPage');
+            await tokenCollection.updateOne({ token: token }, { $set: { expiry: Date.now() } });
+            res.redirect('/login');
             return;
 
         } else {
