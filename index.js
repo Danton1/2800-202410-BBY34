@@ -5,6 +5,9 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const bcrypt = require('bcrypt');
 const saltRounds = 12;
+const favicon = require('serve-favicon');
+const path = require('path')
+
 
 const port = process.env.PORT || 3000;
 
@@ -12,8 +15,15 @@ const app = express();
 
 const Joi = require("joi");
 
-
 const expireTime = 24 * 60 * 60 * 1000; //expires after 24 hr  (hours * minutes * seconds * millis)
+
+// Favicon
+app.use(favicon('favicon.ico'));
+
+/*Imported routes js files*/
+const signUpRoute = require('./scripts/signUpPage.js');
+app.use('/signUp', signUpRoute);
+/*Imported routes js files end*/
 
 /* secret information section */
 const mongodb_host = process.env.MONGODB_HOST;
@@ -21,7 +31,6 @@ const mongodb_user = process.env.MONGODB_USER;
 const mongodb_password = process.env.MONGODB_PASSWORD;
 const mongodb_database = process.env.MONGODB_DATABASE;
 const mongodb_session_secret = process.env.MONGODB_SESSION_SECRET;
-
 const node_session_secret = process.env.NODE_SESSION_SECRET;
 /* END secret section */
 
@@ -69,7 +78,6 @@ function sessionValidation(req,res,next) {
     }
 }
 
-
 function isAdmin(req) {
     if (req.session.user_type == 'admin') {
         return true;
@@ -99,22 +107,52 @@ app.get('/', (req,res) => {
     res.redirect('/login');
 });
 
-app.get('/getProfile', (req,res) => {
-    res.render('profilePage', {name:req.session.name});
-});
-
-app.get('/getPassEdit', (req,res) => {
-    res.render("passEdit");
-});
-
+// Get for login
 app.get('/login', (req, res) => {
     res.render("loginPage");
 });
 
-app.get('/signUp', (req, res) => {
-    res.render("signUpPage");
+// Get for profile
+app.get('/profile', (req,res) => {
+    if(isValidSession(req)){
+        res.render('profilePage', {user: req.session});
+        return;
+    }
+    res.redirect('/login');
+});
+app.get('/profile/personalInfo', (req,res) => {
+    if(isValidSession(req)){
+        res.render('personalInfoPage', {user: req.session});
+        return;
+    }
+    res.redirect('/login');
+});
+app.get('/profile/contactInfo', (req,res) => {
+    if(isValidSession(req)){
+        res.render('contactInfoPage', {user: req.session});
+        return;
+    }
+    res.redirect('/login');
+});
+app.get('/profile/medHistory', (req,res) => {
+    if(isValidSession(req)){
+        res.render('medicalHistoryPage', {user: req.session});
+        return;
+    }
+    res.redirect('/login');
 });
 
+// Get for Settings
+app.get('/settings', (req,res) => {
+    res.render('settingsPage');
+});
+app.get('/settings/signOut', (req, res) => {
+    req.session.destroy();
+    console.log("You are now logged out.");
+    res.redirect("/login");
+});
+
+// Get for 404
 app.get("*", (req,res) => {
 	res.status(404);
 	res.render("404Page");
@@ -127,14 +165,13 @@ app.post('/editPass', async(req,res) => {
 });
 
 app.post('/submitLogin', async (req,res) => {
-    var email = req.body.email;
-    var password = req.body.password;
+    var email = req.body.loginPageEmailInput;
+    var password = req.body.loginPagePasswordInput;
 
-	const schema = Joi.object(
-		{
-			email: Joi.string().max(20).required(),
-			password: Joi.string().max(20).required()
-		});
+	const schema = Joi.object({
+        email: Joi.string().max(20).required(),
+        password: Joi.string().max(20).required()
+	});
 
 	const validationResult = schema.validate({email, password});
 	if (validationResult.error != null) {
@@ -143,6 +180,17 @@ app.post('/submitLogin', async (req,res) => {
 	}
 
 	const result = await userCollection.find({email: email}).project({email: 1, password: 1, _id: 1}).toArray();
+
+    // Getting the userName info from the email
+	let getUser = userCollection.findOne({email: email}).then((user) => {
+        if (!user) {
+            //if user does not exist, the authentication failed
+			res.render("errorPage", {prompt: "Invalid email account"});
+            return;
+        }
+        //assign the user to getUser variable
+        getUser = user;
+    })
 
 	if (result.length == 0) {
         res.render("errorPage", {error: "No user with that email found"});
@@ -155,9 +203,13 @@ app.post('/submitLogin', async (req,res) => {
             req.session.authenticated = true;
             req.session.cookie.maxAge = expireTime;
             req.session.email = result[0].email;
-            req.session.firstName = result[0].firstName;
+            req.session.firstName = getUser.firstName;
+            req.session.lastName = getUser.lastName;
+            req.session.birthDate = getUser.birthDate;
+            req.session.country = getUser.country;
+            req.session.city = getUser.city;
 
-            res.redirect('/members');
+            res.redirect('/');
             return;
         }
         else {
@@ -165,53 +217,6 @@ app.post('/submitLogin', async (req,res) => {
             return;
         }
     }	
-});
-
-app.post('/submitSignUp', async (req,res) => {
-    var firstName = req.body.firstName;
-    var lastName = req.body.lastName;
-    var birthDate = req.body.birthDate;
-    var country = req.body.country;
-    var city = req.body.city;
-    var email = req.body.email;
-    var password = req.body.password;
-    var passwordConfirm = req.body.passwordConfirm;
-
-    if(password.localeCompare(passwordConfirm)!=0){
-        res.render("errorPage", {error:"Passwords do not match."});
-        return;
-    }
-
-	const schema = Joi.object(
-		{
-            firstName: Joi.string().max(20).required(),
-            lastName: Joi.string().max(20).required(),
-            birthDate: Joi.date().required(),
-            country: Joi.string().max(20).required(),
-            city: Joi.string().max(20).required(),
-			email: Joi.string().email().max(20).required(),
-			password: Joi.string().max(20).required()
-		});
-        const validationResult = schema.validate({ firstName, lastName, birthDate, country, city, email, password});
-        if (validationResult.error != null) {
-            // console.log(validationResult.error.details[0]);
-            var err = validationResult.error.details[0];
-            if(err.type.localeCompare('string.empty') == 0){
-                res.render("errorPage", { error: `${err.path[0]} is empty.` });
-                return;
-            }
-        }
-    
-        var encodedPassword = await bcrypt.hash(password, saltRounds);
-    
-        await userCollection.insertOne({ firstName: firstName, lastName: lastName, birthDate: birthDate, country: country, city: city, email: email, password: encodedPassword});
-    
-        req.session.authenticated = true;
-        // req.session.username = firstName;
-        req.session.email = email;
-        req.session.cookie.maxAge = expireTime;
-    
-        res.redirect('/');
 });
 
 // LISTENS
