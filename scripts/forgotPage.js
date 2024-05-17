@@ -154,7 +154,7 @@ router.post('/resetPassword', async (req, res) => {
         if (new Date(Date.now()) <= tokenResult[0].expiry) {
 
             await userCollection.updateOne({ email: email }, { $set: { password: hashedPassword } });
-            await tokenCollection.updateOne({ token: token }, { $set: { expiry: Date.now() } });
+            await tokenCollection.updateOne({ token: token }, { $set: { expiry: new Date(Date.now()) } });
             res.redirect('/login');
             return;
 
