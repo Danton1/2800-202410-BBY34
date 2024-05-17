@@ -1,5 +1,11 @@
 /* Main stylesheet file for global custom styles */
 
+body {
+  font-family: sofia-pro-soft, sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
 .speech-bubble {
   position: relative;
   margin: .5em auto;
