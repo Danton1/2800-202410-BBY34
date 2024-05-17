@@ -12,7 +12,6 @@ const app = express();
 
 const Joi = require("joi");
 
-
 const expireTime = 24 * 60 * 60 * 1000; //expires after 24 hr  (hours * minutes * seconds * millis)
 
 
@@ -23,14 +22,12 @@ const forgotRoute = require('./scripts/forgotPage.js');
 app.use('/forgot', forgotRoute);
 /*Imported routes js files end*/
 
-
 /* secret information section */
 const mongodb_host = process.env.MONGODB_HOST;
 const mongodb_user = process.env.MONGODB_USER;
 const mongodb_password = process.env.MONGODB_PASSWORD;
 const mongodb_database = process.env.MONGODB_DATABASE;
 const mongodb_session_secret = process.env.MONGODB_SESSION_SECRET;
-
 const node_session_secret = process.env.NODE_SESSION_SECRET;
 /* END secret section */
 
@@ -79,7 +76,6 @@ function sessionValidation(req,res,next) {
     }
 }
 
-
 function isAdmin(req) {
     if (req.session.user_type == 'admin') {
         return true;
@@ -109,18 +105,52 @@ app.get('/', (req,res) => {
     res.redirect('/login');
 });
 
-app.get('/getProfile', (req,res) => {
-    res.render('profilePage', {name:req.session.name});
-});
-
-app.get('/getPassEdit', (req,res) => {
-    res.render("passEdit");
-});
-
+// Get for login
 app.get('/login', (req, res) => {
     res.render("loginPage");
 });
 
+// Get for profile
+app.get('/profile', (req,res) => {
+    if(isValidSession(req)){
+        res.render('profilePage', {user: req.session});
+        return;
+    }
+    res.redirect('/login');
+});
+app.get('/profile/personalInfo', (req,res) => {
+    if(isValidSession(req)){
+        res.render('personalInfoPage', {user: req.session});
+        return;
+    }
+    res.redirect('/login');
+});
+app.get('/profile/contactInfo', (req,res) => {
+    if(isValidSession(req)){
+        res.render('contactInfoPage', {user: req.session});
+        return;
+    }
+    res.redirect('/login');
+});
+app.get('/profile/medHistory', (req,res) => {
+    if(isValidSession(req)){
+        res.render('medicalHistoryPage', {user: req.session});
+        return;
+    }
+    res.redirect('/login');
+});
+
+// Get for Settings
+app.get('/settings', (req,res) => {
+    res.render('settingsPage');
+});
+app.get('/settings/signOut', (req, res) => {
+    req.session.destroy();
+    console.log("You are now logged out.");
+    res.redirect("/login");
+});
+
+// Get for 404
 app.get("*", (req,res) => {
 	res.status(404);
 	res.render("404Page");
@@ -136,11 +166,10 @@ app.post('/submitLogin', async (req,res) => {
     var email = req.body.loginPageEmailInput;
     var password = req.body.loginPagePasswordInput;
 
-	const schema = Joi.object(
-		{
-			email: Joi.string().max(20).required(),
-			password: Joi.string().max(20).required()
-		});
+	const schema = Joi.object({
+        email: Joi.string().max(20).required(),
+        password: Joi.string().max(20).required()
+	});
 
 	const validationResult = schema.validate({email, password});
 	if (validationResult.error != null) {
@@ -149,6 +178,17 @@ app.post('/submitLogin', async (req,res) => {
 	}
 
 	const result = await userCollection.find({email: email}).project({email: 1, password: 1, _id: 1}).toArray();
+
+    // Getting the userName info from the email
+	let getUser = userCollection.findOne({email: email}).then((user) => {
+        if (!user) {
+            //if user does not exist, the authentication failed
+			res.render("errorPage", {prompt: "Invalid email account"});
+            return;
+        }
+        //assign the user to getUser variable
+        getUser = user;
+    })
 
 	if (result.length == 0) {
         res.render("errorPage", {error: "No user with that email found"});
@@ -161,7 +201,11 @@ app.post('/submitLogin', async (req,res) => {
             req.session.authenticated = true;
             req.session.cookie.maxAge = expireTime;
             req.session.email = result[0].email;
-            req.session.firstName = result[0].firstName;
+            req.session.firstName = getUser.firstName;
+            req.session.lastName = getUser.lastName;
+            req.session.birthDate = getUser.birthDate;
+            req.session.country = getUser.country;
+            req.session.city = getUser.city;
 
             res.redirect('/');
             return;

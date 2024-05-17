@@ -1,77 +1,70 @@
 <%- include("templates/headerTemplate") %> 
-
-
-    <div class="w-full h-full bg-gradient-to-br from-gray-900 to-gray-800">
-        <div class="py-5"></div>
-        <div class="leading-none pt-1 flex text-3xl md:text-4xl font-sans text-center speech-bubble z-10 w-[75%] sm:w-fit h-52">
-            <h1 class="m-auto font-bold text-center text-cyan-500">
-                <% const hour = new Date().getHours(); %>
-                <% if (hour >= 5 && hour < 12) { %>
-                    Good morning, <%= username %>
-                <% } else if (hour >= 12 && hour < 18) { %>
-                    Good afternoon, <%= username %>
-                <% } else { %>
-                    Good evening, <%= username %>
-                <% } %>
-            </h1>
+<div class="w-full h-full bg-gradient-to-br from-gray-900 to-gray-800">
+  <div class="py-5"></div>
+  <div class="leading-none pt-1 flex text-3xl md:text-4xl font-sans text-center speech-bubble z-10 w-[75%] sm:w-fit h-52">
+    <h1 class="m-auto font-bold text-center text-cyan-500">
+      <% const hour = new Date().getHours(); %>
+      <% if (hour >= 5 && hour < 12) { %>
+        Good morning, <%= username %>
+      <% } else if (hour >= 12 && hour < 18) { %>
+        Good afternoon, <%= username %>
+      <% } else { %>
+        Good evening, <%= username %>
+      <% } %>
+    </h1>
+  </div>
+  <div class="position absolute -right-0 sm:right-16 -mt-6 md:right-1/4">
+    <img src="cute_robot_doctor.png" alt="Robot doctor" class="w-80"/>
+  </div>
+  <div class="py-12"></div>
+  <section class="text-gray-700 body-font sm:max-w-[90%] mx-auto">
+    <div class="container px-5 py-24 mx-auto text-cyan-50">
+      <div class="flex flex-wrap -m-4 text-center">
+        <!-- Appointment card start-->
+        <div class="p-4 lg:w-1/4 sm:w-1/2 w-full group">
+          <div class="border-2 bg-gray-700 border-gray-600 px-4 py-6 rounded-lg transform transition duration-500 hover:scale-110">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" class="fill-cyan-400 group-hover:animate-pulse duration-1000 w-12 h-12 mb-3 inline-block">
+              <path d="M580-240q-42 0-71-29t-29-71q0-42 29-71t71-29q42 0 71 29t29 71q0 42-29 71t-71 29ZM200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Z"/>
+            </svg>
+            <h2 class="title-font font-medium text-3xl ">Appointment</h2>
+            <p class="leading-relaxed">May 30</p>
+          </div>
         </div>
-        <div class="position absolute -right-0 sm:right-16 -mt-6 md:right-1/4">
-            <img src="cute_robot_doctor.png" alt="Robot doctor" class="w-80"/>
+        <!-- Appointment card end -->
+        <!-- Prescription card start-->
+        <div class="p-4 lg:w-1/4 sm:w-1/2 w-full group">
+          <div class="border-2 bg-gray-700 border-gray-600 px-4 py-6 rounded-lg transform transition duration-500 hover:scale-110">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" class="fill-cyan-400 group-hover:animate-pulse duration-1000 w-12 h-12 mb-3 inline-block">
+              <path d="M420-260h120v-100h100v-120H540v-100H420v100H320v120h100v100ZM280-120q-33 0-56.5-23.5T200-200v-440q0-33 23.5-56.5T280-720h400q33 0 56.5 23.5T760-640v440q0 33-23.5 56.5T680-120H280Zm0-80h400v-440H280v440Zm-40-560v-80h480v80H240Zm40 120v440-440Z"/>
+            </svg>
+            <h2 class="title-font font-medium text-3xl">Amoxicillin</h2>
+            <p class="leading-relaxed">26 minutes left</p>
+          </div>
         </div>
-        <div class="py-12"></div>
-        <section class="text-gray-700 body-font sm:max-w-[90%] mx-auto">
-            <div class="container px-5 py-24 mx-auto text-cyan-50">
-                <div class="flex flex-wrap -m-4 text-center">
-                  <!-- Appointment card start-->
-                <div class="p-4 lg:w-1/4 sm:w-1/2 w-full group">
-                    <div class="border-2 bg-gray-700 border-gray-600 px-4 py-6 rounded-lg transform transition duration-500 hover:scale-110">
-                      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" class="fill-cyan-400 group-hover:animate-pulse duration-1000 w-12 h-12 mb-3 inline-block">
-                        <path d="M580-240q-42 0-71-29t-29-71q0-42 29-71t71-29q42 0 71 29t29 71q0 42-29 71t-71 29ZM200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Z"/>
-                      </svg>
-                      <h2 class="title-font font-medium text-3xl ">Appointment</h2>
-                      <p class="leading-relaxed">May 30</p>
-                    </div>
-                  </div>
-            <!-- Appointment card end -->
-            <!-- Prescription card start-->
-                <div class="p-4 lg:w-1/4 sm:w-1/2 w-full group">
-                  <div class="border-2 bg-gray-700 border-gray-600 px-4 py-6 rounded-lg transform transition duration-500 hover:scale-110">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" class="fill-cyan-400 group-hover:animate-pulse duration-1000 w-12 h-12 mb-3 inline-block">
-                        <path d="M420-260h120v-100h100v-120H540v-100H420v100H320v120h100v100ZM280-120q-33 0-56.5-23.5T200-200v-440q0-33 23.5-56.5T280-720h400q33 0 56.5 23.5T760-640v440q0 33-23.5 56.5T680-120H280Zm0-80h400v-440H280v440Zm-40-560v-80h480v80H240Zm40 120v440-440Z"/>
-                    </svg>
-                    <h2 class="title-font font-medium text-3xl">Amoxicillin</h2>
-                    <p class="leading-relaxed">26 minutes left</p>
-                  </div>
-                </div>
-            <!-- Prescription card end -->
-            <!-- Blood Pressure card start-->
-                <div class="p-4 lg:w-1/4 sm:w-1/2 w-full group">
-                  <div class="border-2 bg-gray-700 border-gray-600 px-4 py-6 rounded-lg transform transition duration-500 hover:scale-110">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" class="fill-cyan-400 group-hover:animate-pulse duration-1000 w-12 h-12 mb-3 inline-block">
-                        <path d="M280-80v-200H80v-400h200v-200h400v200h200v400H680v200H280ZM160-520h200q10 0 19 5t14 13l35 52 54-162q4-12 14.5-20t23.5-8q10 0 19 5t14 13l68 102h179v-80H600v-200H360v200H160v80Zm200 360h240v-200h200v-80H600q-10 0-19-5t-15-13l-34-52-54 162q-4 12-15 20t-24 8q-10 0-19-5t-14-13l-68-102H160v80h200v200Zm120-320Z"/></svg>
-                    <h2 class="title-font font-medium text-3xl">110/70</h2>
-                    <p class="leading-relaxed">Blood Pressure</p>
-                  </div>
-                </div>
-            <!-- Blood pressure card end -->
-            <!-- AQI card start-->
-                <div class="p-4 lg:w-1/4 sm:w-1/2 w-full group">
-                  <div class="border-2 bg-gray-700 border-gray-600 px-4 py-6 rounded-lg transform transition duration-500 hover:scale-110">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" class="fill-cyan-400 group-hover:animate-pulse duration-1000 w-12 h-12 mb-3 inline-block">
-                        <path d="M260-160q-92 0-156-64T40-380q0-78 48.5-137.5T210-594q25-90 99-148t171-58q119 0 199.5 82.5T760-520q75 8 117.5 62T920-341q0 75-52.5 128T740-160H260Zm0-80h480q42 0 71-29t29-71q0-42-29-71t-71-29h-60v-80q0-83-58.5-141.5T480-720q-63 0-112 34.5T296-597q78 13 131 73.5T480-380h-80q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41Z"/>
-                    </svg>
-                    <h2 class="title-font font-medium text-3xl">12 AQI</h2>
-                    <p class="leading-relaxed">Good | Pollution Level</p>
-                  </div>
-                </div>
-            <!-- AQI card end -->
-            
-              
-              </div>
-            </div>
-          </section>
+        <!-- Prescription card end -->
+        <!-- Blood Pressure card start-->
+        <div class="p-4 lg:w-1/4 sm:w-1/2 w-full group">
+          <div class="border-2 bg-gray-700 border-gray-600 px-4 py-6 rounded-lg transform transition duration-500 hover:scale-110">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" class="fill-cyan-400 group-hover:animate-pulse duration-1000 w-12 h-12 mb-3 inline-block">
+              <path d="M280-80v-200H80v-400h200v-200h400v200h200v400H680v200H280ZM160-520h200q10 0 19 5t14 13l35 52 54-162q4-12 14.5-20t23.5-8q10 0 19 5t14 13l68 102h179v-80H600v-200H360v200H160v80Zm200 360h240v-200h200v-80H600q-10 0-19-5t-15-13l-34-52-54 162q-4 12-15 20t-24 8q-10 0-19-5t-14-13l-68-102H160v80h200v200Zm120-320Z"/></svg>
+            <h2 class="title-font font-medium text-3xl">110/70</h2>
+            <p class="leading-relaxed">Blood Pressure</p>
+          </div>
+        </div>
+        <!-- Blood pressure card end -->
+        <!-- AQI card start-->
+        <div class="p-4 lg:w-1/4 sm:w-1/2 w-full group">
+          <div class="border-2 bg-gray-700 border-gray-600 px-4 py-6 rounded-lg transform transition duration-500 hover:scale-110">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" class="fill-cyan-400 group-hover:animate-pulse duration-1000 w-12 h-12 mb-3 inline-block">
+              <path d="M260-160q-92 0-156-64T40-380q0-78 48.5-137.5T210-594q25-90 99-148t171-58q119 0 199.5 82.5T760-520q75 8 117.5 62T920-341q0 75-52.5 128T740-160H260Zm0-80h480q42 0 71-29t29-71q0-42-29-71t-71-29h-60v-80q0-83-58.5-141.5T480-720q-63 0-112 34.5T296-597q78 13 131 73.5T480-380h-80q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41Z"/>
+            </svg>
+            <h2 class="title-font font-medium text-3xl">12 AQI</h2>
+            <p class="leading-relaxed">Good | Pollution Level</p>
+          </div>
+        </div>
+      <!-- AQI card end -->
+      </div>
     </div>
-    
-    
-
+  </section>
+</div>
 <%- include("templates/footerTemplate") %> 

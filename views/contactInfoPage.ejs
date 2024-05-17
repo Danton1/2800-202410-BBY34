@@ -1,0 +1,27 @@
+<%- include("templates/headerTemplate")%>
+<div class="w-[450px] min-h-svh mx-auto px-[50px] bg-gray-900 flex flex-col py-10 pb-[90px] items-center justify-center space-y-5 text-sky-100 text-md font-semibold">
+    <!-- Page title -->
+    <h1 class="text-sky-300 text-3xl font-bold mb-2">Contact Information</h1>
+
+    <!-- My contact info -->
+    <div class="w-full bg-gray-700 shadow-lg py-5 px-5 flex flex-col space-y-3 rounded-2xl">
+        <h1>My Contact Information</h1>
+        <div class="w-full bg-gray-800 py-3 px-4 rounded-xl"><%= user.email %></div>
+        <div class="w-full bg-gray-800 py-3 px-4 rounded-xl">Secondary email</div>
+        <div class="w-full bg-gray-800 py-3 px-4 rounded-xl">Phone number</div>
+    </div>    
+
+    <!-- Emergency contact info -->
+    <div class="w-full bg-gray-700 shadow-lg py-5 px-5 flex flex-col space-y-3 rounded-2xl">
+        <h1>Emergency Contact</h1>
+        <div class="w-full bg-gray-800 py-3 px-4 rounded-xl">Email</div>
+        <div class="w-full bg-gray-800 py-3 px-4 rounded-xl">Phone number</div>
+    </div>    
+
+    <!-- Edit & save button -->
+    <div class="w-full flex flex-col items-center space-y-4 text-gray-900 font-extrabold">
+        <button class="w-full bg-sky-300 py-3 rounded-2xl hover:bg-sky-400 duration-200">EDIT</button>
+        <button class="w-full bg-sky-300 py-3 rounded-2xl hover:bg-sky-400 duration-200">SAVE</button>
+    </div>
+</div>
+<%- include("templates/footerTemplate")%>
