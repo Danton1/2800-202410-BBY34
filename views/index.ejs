@@ -1,27 +1,28 @@
 <%- include("templates/headerTemplate") %> 
 
 
-  <div class="w-full h-full bg-gradient-to-br from-gray-900 to-gray-800">
-      <div class="py-5"></div>
-      <div class="leading-none pt-1 flex text-3xl md:text-4xl font-sans text-center speech-bubble z-10 w-[75%] sm:w-fit h-52">
-          <h1 class="m-auto font-bold text-center text-cyan-500">
-              <% const hour = new Date().getHours(); %>
-              <% if (hour >= 5 && hour < 12) { %>
-                  Good morning, <%= username %>
-              <% } else if (hour >= 12 && hour < 18) { %>
-                  Good afternoon, <%= username %>
-              <% } else { %>
-                  Good evening, <%= username %>
-              <% } %>
-          </h1>
-      </div>
-      <div class="position absolute -right-0 sm:right-16 -mt-6 md:right-1/4">
-          <img src="cute_robot_doctor.png" alt="Robot doctor" class="w-80"/>
-      </div>
-      <div class="py-12"></div>
-      <section class="text-gray-700 body-font sm:max-w-[90%] mx-auto">
-          <div class="container px-5 py-24 mx-auto text-cyan-50">
-              <div class="flex flex-wrap -m-4 text-center">
+    <div class="w-full h-full bg-gradient-to-br from-gray-900 to-gray-800">
+        <div class="py-5"></div>
+        <div class="leading-none pt-1 flex text-3xl md:text-4xl font-sans text-center speech-bubble z-10 w-[75%] sm:w-fit h-52">
+            <h1 class="m-auto font-bold text-center text-cyan-500">
+                <% const hour = new Date().getHours(); %>
+                <% if (hour >= 5 && hour < 12) { %>
+                    Good morning, <%= username %>
+                <% } else if (hour >= 12 && hour < 18) { %>
+                    Good afternoon, <%= username %>
+                <% } else { %>
+                    Good evening, <%= username %>
+                    <% console.log(hour); %>
+                <% } %>
+            </h1>
+        </div>
+        <div class="position absolute -right-0 sm:right-16 -mt-6 md:right-1/4">
+            <img src="cute_robot_doctor.png" alt="Robot doctor" class="w-80"/>
+        </div>
+        <div class="py-12"></div>
+        <section class="text-gray-700 body-font sm:max-w-[90%] mx-auto">
+            <div class="container px-5 py-24 mx-auto text-cyan-50">
+                <div class="flex flex-wrap -m-4 text-center">
 
                 <% let cards = [
                   {
