@@ -6,7 +6,6 @@ const MongoStore = require('connect-mongo');
 const bcrypt = require('bcrypt');
 const saltRounds = 12;
 
-
 const port = process.env.PORT || 3000;
 
 const app = express();
@@ -101,7 +100,7 @@ function adminAuthorization(req, res, next) {
 
 app.get('/', (req,res) => {
     if(isValidSession(req)){
-        res.render('index', {username: req.session.firstName});
+        res.render('index', {username: req.session.firstName, openWeatherAPIKey: process.env.OPEN_WEATHER_API_KEY});
         return;
     }
     res.redirect('/login');
