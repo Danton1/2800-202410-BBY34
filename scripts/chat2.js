@@ -1,3 +1,5 @@
+// import express from 'express';
+
 // const express = require("express");
 // const router = express.Router();
 
@@ -27,7 +29,7 @@
 // })
 
 // // USES
-// router.use(express.urlencoded({ extended: false }));
+// router.use(express.urlencoded({ extended: true }));
 // router.use(express.static(__dirname + "/public"));
 
 // const { Configuration, OpenAI } = require("openai");
@@ -35,31 +37,94 @@
 
 let input = "";
 
-$(function() {
-    $('#chatButton').on("click", function() {
+$(function () {
+    $('#chatButton').on("click", function () {
         // Get the input value
         const userInput = $('#chatbotTextBox').val();
         // Send AJAX request to the server
-        console.log("userInput: "+ JSON.stringify({userInput}));
+        $('#output').append(`
+            <div class="chat chat-end">
+            <div class=" flex items-end gap-2">
+                <time class="text-xs opacity-50">12:46</time>
+                <div id="testing" class="chat-bubble py-4 px-5 bg-gray-700 text-sky-100">
+                    ${userInput}
+                </div>
+            </div>
+            <div class="flex flex-col justify-center items-center">
+                <div class="chat-header mb-2">
+                    You
+                </div>
+                <div class="chat-image avatar">
+                    <div class="w-[50px] rounded-full">
+                        <img alt="User profile"
+                            src="https://play-lh.googleusercontent.com/yvoeLsYXfwqgH3H4mgljOio6wMomgfgwguEl4yegpkgjtDoCWz71qSLVHI6UAyCxfA" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        `);
+        $('#chatbotTextBox').val("");
+        console.log("userInput: " + JSON.stringify({ userInput }));
         $.ajax({
             url: '/chatbot',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({ userInput }),
-            success: function(response) {
+            success: function (response) {
                 console.log("success");
+                // input = response;
                 // Update the page with the processed data
-                $('#output').text(response);
+
+                $('#output').append(`
+                <div class="chat chat-start">
+                    <div class="flex flex-col justify-center items-center">
+                        <div class="chat-header mb-2">
+                            Kate
+                        </div>
+                        <div class="chat-image avatar">
+                            <div class="w-[50px] rounded-full">
+                                <img alt="chatbot profile pic" src="Kate.png" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full flex items-end gap-2">
+                        <div class="chat-bubble py-4 px-5 bg-gray-700 text-sky-100">
+                        ${response.output}
+                        </div>
+                        <time class="text-xs opacity-50">12:45</time>
+                    </div>
+                </div>
+                `);
+
+                // runPrompt();
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error('Error:', error);
             }
         });
     });
 });
 
-// $(function () { 
-//     $("#chatInput").on("submit", function (event) { 
+
+// const runPrompt = async () => {
+//     const prompt = input;
+//     try {
+//         const response = await openai.completions.create({
+//             model: "gpt-3.5-turbo-instruct",
+//             prompt: prompt,
+//             max_tokens: 2048,
+//             temperature: 1
+//         });
+//         console.log(response.choices[0].text);
+//     } catch (error) {
+//         console.error("Error making API request:", error);
+//     }
+// };
+
+
+// $(function () {
+//     $("#chatInput").on("submit", function (event) {
 //        event.preventDefault();
 //        let value = $("#chatbotTextBox").val();
 //        console.log(value);
@@ -76,7 +141,7 @@ $(function() {
 
 
 //        })
-//     }); 
-//  }); 
+//     });
+//  });
 
 //  module.exports = router

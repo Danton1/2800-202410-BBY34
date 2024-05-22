@@ -18,6 +18,9 @@ const Joi = require("joi");
 
 const expireTime = 24 * 60 * 60 * 1000; //expires after 24 hr  (hours * minutes * seconds * millis)
 
+const { Configuration, OpenAI } = require("openai");
+const openai = new OpenAI({apiKey: process.env.GPT_KEY});
+
 /*Imported routes js files*/
 const signUpRoute = require('./scripts/signUpPage');
 app.use('/signUp', signUpRoute);
@@ -25,7 +28,7 @@ const forgotRoute = require('./scripts/forgotPage');
 app.use('/forgot', forgotRoute);
 const settingsRoute = require('./scripts/settings');
 app.use('/settings', settingsRoute);
-// const chatRoute = require('./scripts/chat');
+// const chatRoute = require('./scripts/chat2');
 // app.use('/chat', chatRoute);
 /*Imported routes js files end*/
 
@@ -176,16 +179,39 @@ app.get("*", (req,res) => {
 
 // POSTS
 
-app.post('/chatbot', (req, res) => {
+app.post('/chatbot', async (req, res) => {
     const input = req.body.userInput;
     // Process userInput as needed
     console.log("in the post function");
-    const processedData = `You entered: ${input}`;
+    // const processedData = `You entered: ${input}`;
+    const processedData = `${input}`;
+
+    const output = await runPrompt(input);
     // Send the processed data back to the client
-    console.log(processedData);
-    res.send(processedData);
+    // console.log(processedData);
+    // res.send(processedData);
+    // console.log(output);
+    var data = { processedData: processedData, output: output };
+    console.log(data);
+
+    res.send(data);
+
 });
 
+const runPrompt = async (input) => {
+    const prompt = input;
+    try {
+        const response = await openai.completions.create({
+            model: "gpt-3.5-turbo-instruct",
+            prompt: prompt,
+            max_tokens: 2048,
+            temperature: 1
+        });
+        return(response.choices[0].text);
+    } catch (error) {
+        console.error("Error making API request:", error);
+    }
+};
 // app.post('/chatbot', (req,res) =>{
 //     console.log(req.body.inputBox);
 //     res.send({response: req.body.inputBox});
