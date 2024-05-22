@@ -6,10 +6,13 @@ const MongoStore = require('connect-mongo');
 const bcrypt = require('bcrypt');
 const saltRounds = 12;
 
-
 const port = process.env.PORT || 3000;
 
 const app = express();
+
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const Joi = require("joi");
 
@@ -173,10 +176,20 @@ app.get("*", (req,res) => {
 
 // POSTS
 
-app.post('/chatbot', (req,res) =>{
-    console.log(req.body.inputBox);
-    res.send({response: req.body.inputBox});
-})
+app.post('/chatbot', (req, res) => {
+    const input = req.body.userInput;
+    // Process userInput as needed
+    console.log("in the post function");
+    const processedData = `You entered: ${input}`;
+    // Send the processed data back to the client
+    console.log(processedData);
+    res.send(processedData);
+});
+
+// app.post('/chatbot', (req,res) =>{
+//     console.log(req.body.inputBox);
+//     res.send({response: req.body.inputBox});
+// })
 // app.post("/request", (req, res) => { 
 //     res.json([{ 
 //        name_recieved: req.body.name, 

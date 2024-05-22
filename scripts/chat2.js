@@ -35,24 +35,48 @@
 
 let input = "";
 
-$(function () { 
-    $("#chatInput").on("submit", function (event) { 
-       event.preventDefault();
-       let value = $("#chatbotTextBox").val();
-       console.log(value);
-       $.ajax({
-            url: "/chatBot",
-            method:"POST",
-            contentType: "application/json",
-            data:JSON.stringify({inputBox: value}),
-            success: function(res){
-                console.log(res.text);
-                $("#testing").html(`${res.response}`);
+$(function() {
+    $('#chatButton').on("click", function() {
+        // Get the input value
+        const userInput = $('#chatbotTextBox').val();
+        // Send AJAX request to the server
+        console.log("userInput: "+ JSON.stringify({userInput}));
+        $.ajax({
+            url: '/chatbot',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ userInput }),
+            success: function(response) {
+                console.log("success");
+                // Update the page with the processed data
+                $('#output').text(response);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
             }
+        });
+    });
+});
+
+// $(function () { 
+//     $("#chatInput").on("submit", function (event) { 
+//        event.preventDefault();
+//        let value = $("#chatbotTextBox").val();
+//        console.log(value);
+//        $.ajax({
+//             url: "/chatBot",
+//             type:"POST",
+//             contentType: "application/json",
+//             data: JSON.stringify({value}),
+//             success: function(res){
+//                 console.log("res.text: " + res.response);
+//                 console.log("here");
+//                 $("#testing").html(`${res.response}`);
+//             }
 
 
-       })
-    }); 
- }); 
+//        })
+//     }); 
+//  }); 
 
 //  module.exports = router
