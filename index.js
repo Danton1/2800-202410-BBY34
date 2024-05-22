@@ -145,6 +145,9 @@ app.get('/profile/medHistory', (req,res) => {
 app.get('/settings', (req,res) => {
     res.render('settingsPage');
 });
+app.get('/settings/widgets', (req,res) => {
+    res.render('settings/widgetsPage');
+});
 app.get('/settings/signOut', (req, res) => {
     req.session.destroy();
     console.log("You are now logged out.");

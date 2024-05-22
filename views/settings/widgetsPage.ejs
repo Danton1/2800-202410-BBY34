@@ -1,0 +1,147 @@
+<%- include("../templates/headerTemplate")%>
+
+<div class="max-w-[450px] w-full min-h-svh mx-auto py-[50px] px-[35px] flex flex-col justify-center items-center text-sky-100 text-md font-medium text-center">
+    <h1 class="text-sky-300 text-3xl font-bold mb-5">Widgets</h1>
+    <div class="w-full grid justify-items-center">
+        <div class="w-full grid grid-rows-[repeat(2, auto)] bg-gray-700 shadow-lg rounded-2xl m-2 justify-items-center overflow-hidden">
+            <button class="w-full h-full py-4 px-5 items-center border-b border-gray-800 hover:bg-gray-800 duration-150" onclick="toggleAccordion('temperature')">
+                Temperature
+            </button>
+            <div id="temperature" class="w-full hidden py-4 px-5 flex flex-col items-center bg-gray-600 border-b border-gray-800">                <!-- Additional Buttons -->
+                <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
+                    <span>Enabled</span>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" value="" class="sr-only peer" checked>
+                        <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                    </label>
+                </div>
+                <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
+                    <span>Show Forecast</span>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" value="" class="sr-only peer" checked>
+                        <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                    </label>
+                </div>
+                <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
+                    <span>Units</span>
+                    <select class="bg-gray-600 text-white border border-gray-500 rounded p-2">
+                        <option>Celsius</option>
+                        <option>Farenheit</option>
+                        <option>Kelvin</option>
+                    </select>
+                </div>
+            </div>
+            <button class="w-full h-full py-4 px-5 items-center border-b border-gray-800 hover:bg-gray-800 duration-150" onclick="toggleAccordion('airQuality')">
+                Air Quality
+            </button>
+            <div id="airQuality" class="w-full hidden py-4 px-5 items-center bg-gray-600 border-b border-gray-800">
+                <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
+                    <span>Enabled</span>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" value="" class="sr-only peer" checked>
+                        <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                    </label>
+                </div>
+                <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
+                    <span>Show Forecast</span>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" value="" class="sr-only peer" checked>
+                        <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                    </label>
+                </div>
+                <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
+                    <span>AQI Scale</span>
+                    <select class="bg-gray-600 text-white border border-gray-500 rounded p-2">
+                        <option>OpenWeather</option>
+                        <option>USA</option>
+                        <option>Europe</option>
+                        <option>UK</option>
+                        <option>China</option>
+                    </select>
+                </div>
+                <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
+                    <span>Carbon Monoxide</span>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" value="" class="sr-only peer" checked>
+                        <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                    </label>
+                </div>
+                <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
+                    <span>Nitrogen Monoxide</span>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" value="" class="sr-only peer" checked>
+                        <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                    </label>
+                </div>
+                <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
+                    <span>Nitrogen Dioxide</span>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" value="" class="sr-only peer" checked>
+                        <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                    </label>
+                </div>
+                <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
+                    <span>Ozone</span>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" value="" class="sr-only peer" checked>
+                        <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                    </label>
+                </div>
+                <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
+                    <span>Sulphur Dioxide</span>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" value="" class="sr-only peer" checked>
+                        <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                    </label>
+                </div>
+                <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
+                    <span>Fine Particulates</span>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" value="" class="sr-only peer" checked>
+                        <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                    </label>
+                </div>
+                <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
+                    <span>Course Particulates</span>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" value="" class="sr-only peer" checked>
+                        <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                    </label>
+                </div>
+                <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
+                    <span>Ammonia</span>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" value="" class="sr-only peer" checked>
+                        <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                    </label>
+                </div>
+            </div>
+            <button class="w-full h-full py-4 px-5 items-center border-b border-gray-800 hover:bg-gray-800 duration-150" onclick="toggleAccordion('location')">
+                Location
+            </button>
+            <div id="location" class="w-full hidden py-4 px-5 items-center bg-gray-600 border-b border-gray-800">
+                <label class="inline-flex items-center me-5 cursor-pointer">
+                    <input type="checkbox" value="" class="sr-only peer" checked>
+                    <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                    <span class="ms-3 font-medium">Enable</span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="w-full grid justify-items-center">
+        <div class="w-full grid bg-sky-400 shadow-lg rounded-2xl m-2 justify-items-center hover:bg-sky-300 duration-200 text-lg font-bold">
+        </div>
+        <button class="w-full grid bg-sky-400 shadow-lg rounded-2xl m-2 justify-items-center hover:bg-sky-300 duration-200 text-lg font-bold" onclick="history.back()">
+            <span class="w-full h-full py-4 px-5 text-gray-900">GO BACK</span>
+        </button>
+    </div>
+</div>
+
+<script>
+    function toggleAccordion(id) {
+        const element = document.getElementById(id);
+        element.classList.toggle('hidden');
+    }
+</script>
+
+<%- include("../templates/footerTemplate") %> 
