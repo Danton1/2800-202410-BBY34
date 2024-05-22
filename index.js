@@ -56,6 +56,10 @@ app.use(express.urlencoded({extended: true})); // testing
 
 app.use(express.static(__dirname + "/public"));
 
+app.get('/chat2.js', function(req, res){
+    res.sendFile(__dirname + '/scripts/chat2.js');
+});
+
 app.use(session({ 
     secret: node_session_secret,
 	store: mongoStore, //default is memory store 
@@ -171,9 +175,7 @@ app.get("*", (req,res) => {
 
 app.post('/chatbot', (req,res) =>{
     console.log(req.body.inputBox);
-    res.send({
-        text: req.body.inputBox
-    } );
+    res.send({response: req.body.inputBox});
 })
 // app.post("/request", (req, res) => { 
 //     res.json([{ 
