@@ -6,6 +6,7 @@ const MongoStore = require('connect-mongo');
 const bcrypt = require('bcrypt');
 const saltRounds = 12;
 
+
 const port = process.env.PORT || 3000;
 
 const app = express();
@@ -21,8 +22,8 @@ const forgotRoute = require('./scripts/forgotPage');
 app.use('/forgot', forgotRoute);
 const settingsRoute = require('./scripts/settings');
 app.use('/settings', settingsRoute);
-const chatRoute = require('./scripts/chat');
-// chatRoute();
+// const chatRoute = require('./scripts/chat');
+// app.use('/chat', chatRoute);
 /*Imported routes js files end*/
 
 /* secret information section */
@@ -50,7 +51,9 @@ var mongoStore = MongoStore.create({
 
 // USES
 
-app.use(express.urlencoded({extended: false}));
+// app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({extended: true})); // testing
+
 app.use(express.static(__dirname + "/public"));
 
 app.use(session({ 
@@ -165,6 +168,20 @@ app.get("*", (req,res) => {
 })
 
 // POSTS
+
+app.post('/chatbot', (req,res) =>{
+    console.log(req.body.inputBox);
+    res.send({
+        text: req.body.inputBox
+    } );
+})
+// app.post("/request", (req, res) => { 
+//     res.json([{ 
+//        name_recieved: req.body.name, 
+//        designation_recieved: req.body.designation 
+//     }]) 
+//  }) 
+
 
 app.post('/editPass', async(req,res) => {
     res.redirect('/getPassEdit');

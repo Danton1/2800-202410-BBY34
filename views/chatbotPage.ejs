@@ -1,4 +1,7 @@
 <%- include("templates/headerTemplate")%>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="./chat2.js"></script>
     <div
         class="max-w-[450px] w-full min-h-svh mx-auto py-10 px-[35px] pb-[70px] bg-gray-900 flex flex-col items-center justify-between space-y-5 text-sky-100 text-md font-medium">
         <!-- Page title -->
@@ -35,7 +38,7 @@
                 <div class="chat chat-end">
                     <div class=" flex items-end gap-2">
                         <time class="text-xs opacity-50">12:46</time>
-                        <div class="chat-bubble py-4 px-5 bg-gray-700 text-sky-100">
+                        <div id="testing" class="chat-bubble py-4 px-5 bg-gray-700 text-sky-100">
                             What do you identify yourself as?
                         </div>
                     </div>
@@ -54,11 +57,15 @@
             </div>
 
             <!-- Text box -->
-            <input type="text" id="chatbotTextBox" contenteditable rows="1" style="scrollbar-width: none;"
-                class="w-full min-h-[25px] max-h-[100px] bg-gray-700 resize-none overflow-y-scroll text-sky-100 empty:before:content-['Ask_Kate...'] focus:outline-none">
-            </input>
-            <button onclick="submitQuery()" class="object-center">Submit</button>
+            <form  id="chatInput">
+                <input name="inputBox" type="text" id="chatbotTextBox" contenteditable rows="1" style="scrollbar-width: none;"
+                    class="w-full min-h-[25px] max-h-[100px] bg-gray-700 resize-none overflow-y-scroll text-sky-100 empty:before:content-['Ask_Kate...'] focus:outline-none">
+                </input>
+                <button id="chatButton" class="object-center" type="submit">Submit</button>
+
+            </form>
         </div>
     </div>
-    <script src="./chat.js"></script>
+    <!-- <script src="./chat.js"></script> -->
+
     <%- include("templates/footerTemplate")%>
