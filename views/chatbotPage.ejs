@@ -1,72 +1,54 @@
 <%- include("templates/headerTemplate")%>
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="/chat2.js"></script>
-    <div
-        class="max-w-[450px] w-full min-h-svh mx-auto py-10 px-[35px] pb-[70px] bg-gray-900 flex flex-col items-center justify-between space-y-5 text-sky-100 text-md font-medium">
-        <!-- Page title -->
-        <h1 class="text-sky-300 text-3xl font-bold mb-2">Chatbot</h1>
+<script src="/chat.js"></script>
+<div class="max-w-[450px] w-full min-h-svh mx-auto py-10 px-[35px] pb-[70px] bg-gray-900 flex flex-col items-center justify-between space-y-5 text-sky-100 text-md font-medium">
+    <!-- Page title -->
+    <h1 class="text-sky-300 text-3xl font-bold mb-2">Chatbot</h1>
 
-        <div
-            class="w-full h-[calc(100svh-175px)] flex flex-col justify-end space-y-4 pb-3 bg-gradient-to-t from-gray-900 to-[rbga(0, 0, 0, 0)] overflow-hidden">
+    <div class="w-full h-[calc(100svh-175px)] flex flex-col justify-end space-y-4 pb-3 bg-gradient-to-t from-gray-900 to-[rbga(0, 0, 0, 0)] overflow-hidden">
 
-            <!-- Chat history -->
-            <div id="chatHistoryWrap"
-                class="w-full flex flex-col border-b-2 border-gray-700 pb-4 space-y-6 overflow-y-scroll"
-                style="scrollbar-width: none;">
-                <!-- Chatbot chat bubble template -->
-                <div class="chat chat-start">
-                    <div class="flex flex-col justify-center items-center">
-                        <div class="chat-header mb-2">
-                            Kate
-                        </div>
-                        <div class="chat-image avatar">
-                            <div class="w-[50px] rounded-full">
-                                <img alt="chatbot profile pic" src="Kate.png" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="w-full flex items-end gap-2">
-                        <div class="chat-bubble py-4 px-5 bg-gray-700 text-sky-100">
-                            Welcome to MediKate! How can I help you?
-                        </div>
-                        <time class="text-xs opacity-50">12:45</time>
-                    </div>
-                </div>
-
-                <!-- User chat bubble template -->
-                <div class="chat chat-end">
-                    <div class=" flex items-end gap-2">
-                        <time class="text-xs opacity-50">12:46</time>
-                        <div id="testing" class="chat-bubble py-4 px-5 bg-gray-700 text-sky-100">
-                            What do you identify yourself as?
-                        </div>
-                    </div>
-                    <div class="flex flex-col justify-center items-center">
-                        <div class="chat-header mb-2">
-                            You
-                        </div>
-                        <div class="chat-image avatar">
-                            <div class="w-[50px] rounded-full">
-                                <img alt="User profile"
-                                    src="https://play-lh.googleusercontent.com/yvoeLsYXfwqgH3H4mgljOio6wMomgfgwguEl4yegpkgjtDoCWz71qSLVHI6UAyCxfA" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="output"></div>
-            </div>
-
-            <!-- Text box -->
-            <!-- <form id="chatInput"> -->
-                <input type="text" id="chatbotTextBox" contenteditable rows="1" style="scrollbar-width: none;"
-                    class="w-full min-h-[25px] max-h-[100px] bg-gray-700 resize-none overflow-y-scroll text-sky-100 empty:before:content-['Ask_Kate...'] focus:outline-none">
-                </input>
-                <button id="chatButton" class="object-center">Submit</button>
-
-            <!-- </form> -->
+        <!-- Chat history -->
+        <div id="chatHistoryWrap" class="w-full flex flex-col border-b-2 border-gray-700 pb-4 space-y-6 overflow-y-scroll" style="scrollbar-width: none;">
         </div>
-    </div>
-    <!-- <script src="./chat.js"></script> -->
 
-    <%- include("templates/footerTemplate")%>
+        <!-- Text box -->
+        <form class="chatbotTextBoxWrap px-5 py-4 rounded-xl bg-gray-700 flex">
+            <input type="text" id="chatbotTextBox" contenteditable rows="1" style="scrollbar-width: none;"
+            class="w-full min-h-[25px] max-h-[100px] bg-gray-700 resize-none overflow-y-scroll text-sky-100 empty:before:content-['Ask_Kate...'] focus:outline-none">
+            </input>
+            <button id="chatButton" class=""><i class="fa-regular fa-paper-plane"></i></button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const displayPrompt = () => {
+        // Getting time
+        let date = new Date;
+        let time = date.getHours() + ":" + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+
+        // Display prompt with current time
+        $('#chatHistoryWrap').append(`
+            <div class="chat chat-start">
+                <div class="flex flex-col justify-center items-center">
+                    <div class="chat-header mb-2">
+                        Kate
+                    </div>
+                    <div class="chat-image avatar">
+                        <div class="w-[50px] rounded-full">
+                            <img alt="chatbot profile pic" src="Kate.png" />
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full flex items-end gap-2">
+                    <div class="chat-bubble py-4 px-5 bg-gray-700 text-sky-100">
+                        Welcome to MediKate! How can I help you?
+                    </div>
+                    <time class="text-xs opacity-50">${time}</time>
+                </div>
+            </div>
+        `);
+    }
+    $(document).ready(displayPrompt);
+</script>
+<%- include("templates/footerTemplate")%>

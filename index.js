@@ -28,8 +28,6 @@ const forgotRoute = require('./scripts/forgotPage');
 app.use('/forgot', forgotRoute);
 const settingsRoute = require('./scripts/settings');
 app.use('/settings', settingsRoute);
-// const chatRoute = require('./scripts/chat2');
-// app.use('/chat', chatRoute);
 /*Imported routes js files end*/
 
 /* secret information section */
@@ -62,8 +60,8 @@ app.use(express.urlencoded({extended: true})); // testing
 
 app.use(express.static(__dirname + "/public"));
 
-app.get('/chat2.js', function(req, res){
-    res.sendFile(__dirname + '/scripts/chat2.js');
+app.get('/chat.js', function(req, res){
+    res.sendFile(__dirname + '/scripts/chat.js');
 });
 
 app.use(session({ 
@@ -181,21 +179,14 @@ app.get("*", (req,res) => {
 
 app.post('/chatbot', async (req, res) => {
     const input = req.body.userInput;
-    // Process userInput as needed
-    console.log("in the post function");
-    // const processedData = `You entered: ${input}`;
+    // console.log("in the post function");
     const processedData = `${input}`;
-
     const output = await runPrompt(input);
-    // Send the processed data back to the client
-    // console.log(processedData);
-    // res.send(processedData);
-    // console.log(output);
     var data = { processedData: processedData, output: output };
-    console.log(data);
+    // console.log(data);
 
+    // Send the processed data back to the client
     res.send(data);
-
 });
 
 const runPrompt = async (input) => {
@@ -212,17 +203,6 @@ const runPrompt = async (input) => {
         console.error("Error making API request:", error);
     }
 };
-// app.post('/chatbot', (req,res) =>{
-//     console.log(req.body.inputBox);
-//     res.send({response: req.body.inputBox});
-// })
-// app.post("/request", (req, res) => { 
-//     res.json([{ 
-//        name_recieved: req.body.name, 
-//        designation_recieved: req.body.designation 
-//     }]) 
-//  }) 
-
 
 app.post('/editPass', async(req,res) => {
     res.redirect('/getPassEdit');
