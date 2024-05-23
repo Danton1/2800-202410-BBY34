@@ -49,6 +49,7 @@ var mongoStore = MongoStore.create({
 // USES
 
 app.use(express.urlencoded({extended: false}));
+app.use(express.json());
 app.use(express.static(__dirname + "/public"));
 
 app.use(session({ 
@@ -146,7 +147,11 @@ app.get('/settings', (req,res) => {
     res.render('settingsPage');
 });
 app.get('/settings/widgets', (req,res) => {
-    res.render('settings/widgetsPage');
+    if(isValidSession(req)){
+        res.render('settings/widgetsPage', {widgetSettings: req.session.widgetSettings});
+        return;
+    }
+    res.redirect('/login');
 });
 app.get('/settings/signOut', (req, res) => {
     req.session.destroy();
@@ -215,6 +220,7 @@ app.post('/submitLogin', async (req,res) => {
             req.session.birthDate = getUser.birthDate;
             req.session.country = getUser.country;
             req.session.city = getUser.city;
+            req.session.widgetSettings = getUser.widgetSettings;
 
             res.redirect('/');
             return;
@@ -224,6 +230,24 @@ app.post('/submitLogin', async (req,res) => {
             return;
         }
     }	
+});
+
+app.post('/settings/widgets/update', async (req, res) => {
+    try {
+        const settings = req.body;
+        
+        await userCollection.updateOne(
+            { email: req.session.email },
+            { $set: { widgetSettings: settings } }
+        );
+
+        req.session.widgetSettings = settings;
+
+        res.status(200).send('Settings updated successfully');
+    } catch (error) {
+        console.error('Error updating settings:', error);
+        res.status(500).send('Internal server error');
+    }
 });
 
 // LISTENS
