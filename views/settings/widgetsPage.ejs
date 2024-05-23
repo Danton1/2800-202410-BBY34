@@ -10,29 +10,23 @@
             <div id="temperature" class="w-full hidden py-4 px-5 flex flex-col items-center bg-gray-600 border-b border-gray-800">
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Enabled</span>
-                    <label class="inline-flex items-center cursor-pointer">
-                        <% if (widgetSettings.temperature.enabled) { %>
-                            <input id="temperatureEnabled" type="checkbox" value="" class="sr-only peer" checked>
-                        <% } else { %>
-                            <input id="temperatureEnabled" type="checkbox" value="" class="sr-only peer">
-                        <% } %>
-                        <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
-                    </label>
+                    <%- include("../templates/widgetSettingsInputTemplate", {id: "temperatureEnabled", checked: widgetSettings.temperature.enabled}) %>
                 </div>
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Show Forecast</span>
-                    <label class="inline-flex items-center cursor-pointer">
-                        <input id="temperatureForcastEnabled" type="checkbox" value="" class="sr-only peer" checked>
-                        <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
-                    </label>
+                    <%- include("../templates/widgetSettingsInputTemplate", {id: "temperatureForcastEnabled", checked: widgetSettings.temperature.showForecast}) %>
                 </div>
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Units</span>
-                    <select id="temperatureUnits" class="bg-gray-600 text-white border border-gray-500 rounded p-2">
-                        <option value="c">Celsius</option>
-                        <option value="f">Farenheit</option>
-                        <option value="k">Kelvin</option>
-                    </select>
+                    <%- include("../templates/widgetSettingsSelectTemplate", {
+                        id: "temperatureUnits",
+                        options: [
+                            { value: "c", label: "Celsius" },
+                            { value: "f", label: "Fahrenheit" },
+                            { value: "k", label: "Kelvin" }
+                        ],
+                        selection: widgetSettings.temperature.units
+                    }) %>
                 </div>
             </div>
             <button class="w-full h-full py-4 px-5 items-center border-b border-gray-800 hover:bg-gray-800 duration-150" onclick="toggleAccordion('airQuality')">
@@ -41,94 +35,64 @@
             <div id="airQuality" class="w-full hidden py-4 px-5 items-center bg-gray-600 border-b border-gray-800">
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Enabled</span>
-                    <label class="inline-flex items-center cursor-pointer">
-                        <input id="airQualityEnabled" type="checkbox" value="" class="sr-only peer" checked>
-                        <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
-                    </label>
+                    <%- include("../templates/widgetSettingsInputTemplate", {id: "airQualityEnabled", checked: widgetSettings.airQuality.enabled}) %>
                 </div>
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Show Forecast</span>
-                    <label class="inline-flex items-center cursor-pointer">
-                        <input id="airQualityForcastEnabled" type="checkbox" value="" class="sr-only peer" checked>
-                        <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
-                    </label>
+                    <%- include("../templates/widgetSettingsInputTemplate", {id: "airQualityForcastEnabled", checked: widgetSettings.airQuality.showForecast}) %>
                 </div>
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>AQI Scale</span>
-                    <select id="airQualityScale" class="bg-gray-600 text-white border border-gray-500 rounded p-2">
-                        <option>OpenWeather</option>
-                        <option>USA</option>
-                        <option>Europe</option>
-                        <option>UK</option>
-                        <option>China</option>
-                    </select>
+                    <%- include("../templates/widgetSettingsSelectTemplate", {
+                        id: "airQualityScale",
+                        options: [
+                            { value: "OpenWeather", label: "OpenWeather" },
+                            { value: "USA", label: "USA" },
+                            { value: "Europe", label: "Europe" },
+                            { value: "UK", label: "UK" },
+                            { value: "China", label: "China" }
+                        ],
+                        selection: widgetSettings.airQuality.units
+                    }) %>
                 </div>
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Carbon Monoxide</span>
-                    <label class="inline-flex items-center cursor-pointer">
-                        <input id="coEnabled" type="checkbox" value="" class="sr-only peer" checked>
-                        <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
-                    </label>
+                    <%- include("../templates/widgetSettingsInputTemplate", {id: "coEnabled", checked: widgetSettings.airQuality.components.co}) %>
                 </div>
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Nitrogen Monoxide</span>
-                    <label class="inline-flex items-center cursor-pointer">
-                        <input id="noEnabled" type="checkbox" value="" class="sr-only peer" checked>
-                        <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
-                    </label>
+                    <%- include("../templates/widgetSettingsInputTemplate", {id: "noEnabled", checked: widgetSettings.airQuality.components.no}) %>
                 </div>
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Nitrogen Dioxide</span>
-                    <label class="inline-flex items-center cursor-pointer">
-                        <input id="no2Enabled" type="checkbox" value="" class="sr-only peer" checked>
-                        <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
-                    </label>
+                    <%- include("../templates/widgetSettingsInputTemplate", {id: "no2Enabled", checked: widgetSettings.airQuality.components.no2}) %>
                 </div>
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Ozone</span>
-                    <label class="inline-flex items-center cursor-pointer">
-                        <input id="o3Enabled" type="checkbox" value="" class="sr-only peer" checked>
-                        <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
-                    </label>
+                    <%- include("../templates/widgetSettingsInputTemplate", {id: "o3Enabled", checked: widgetSettings.airQuality.components.o3}) %>
                 </div>
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Sulphur Dioxide</span>
-                    <label class="inline-flex items-center cursor-pointer">
-                        <input id="so2Enabled" type="checkbox" value="" class="sr-only peer" checked>
-                        <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
-                    </label>
+                    <%- include("../templates/widgetSettingsInputTemplate", {id: "so2Enabled", checked: widgetSettings.airQuality.components.so2}) %>
                 </div>
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Fine Particulates</span>
-                    <label class="inline-flex items-center cursor-pointer">
-                        <input id="pm2_5Enabled" type="checkbox" value="" class="sr-only peer" checked>
-                        <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
-                    </label>
+                    <%- include("../templates/widgetSettingsInputTemplate", {id: "pm2_5Enabled", checked: widgetSettings.airQuality.components.pm2_5}) %>
                 </div>
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Course Particulates</span>
-                    <label class="inline-flex items-center cursor-pointer">
-                        <input id="pm10Enabled" type="checkbox" value="" class="sr-only peer" checked>
-                        <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
-                    </label>
+                    <%- include("../templates/widgetSettingsInputTemplate", {id: "pm10Enabled", checked: widgetSettings.airQuality.components.pm10}) %>
                 </div>
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Ammonia</span>
-                    <label class="inline-flex items-center cursor-pointer">
-                        <input id="nh3Enabled" type="checkbox" value="" class="sr-only peer" checked>
-                        <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
-                    </label>
+                    <%- include("../templates/widgetSettingsInputTemplate", {id: "nh3Enabled", checked: widgetSettings.airQuality.components.nh3}) %>
                 </div>
             </div>
             <button class="w-full h-full py-4 px-5 items-center border-b border-gray-800 hover:bg-gray-800 duration-150" onclick="toggleAccordion('location')">
                 Location
             </button>
             <div id="location" class="w-full hidden py-4 px-5 items-center bg-gray-600 border-b border-gray-800">
-                <label class="inline-flex items-center me-5 cursor-pointer">
-                    <input id="locationEnabled" type="checkbox" value="" class="sr-only peer" checked>
-                    <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
-                    <span class="ms-3 font-medium">Enable</span>
-                </label>
+                <%- include("../templates/widgetSettingsInputTemplate", {id: "locationEnabled", checked: widgetSettings.location.enabled}) %>
             </div>
         </div>
     </div>
