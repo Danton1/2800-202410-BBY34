@@ -89,7 +89,7 @@ router.post('/submitForgot', async (req, res) => {
             }
         });
         //generate url
-        const resetPasswordBaseUrl = 'https://two800-202410-bby34.onrender.com/forgot/resetPassword';
+        const resetPasswordBaseUrl = 'https://two800-202410-bby34-sjiu.onrender.com/forgot/resetPassword';
         const resetPasswordLink = `${resetPasswordBaseUrl}?email=${encodeURIComponent(forgotEmail)}&token=${encodeURIComponent(encodedToken)}`;
 
         // Define email options
@@ -154,7 +154,7 @@ router.post('/resetPassword', async (req, res) => {
         if (new Date(Date.now()) <= tokenResult[0].expiry) {
 
             await userCollection.updateOne({ email: email }, { $set: { password: hashedPassword } });
-            await tokenCollection.updateOne({ token: token }, { $set: { expiry: Date.now() } });
+            await tokenCollection.updateOne({ token: token }, { $set: { expiry: new Date(Date.now()) } });
             res.redirect('/login');
             return;
 
