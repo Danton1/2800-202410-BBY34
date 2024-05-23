@@ -6,7 +6,8 @@ const MongoStore = require('connect-mongo');
 const bcrypt = require('bcrypt');
 const saltRounds = 12;
 const webpush = require("web-push");
-const PushNotifications = require('node-pushnotifications');
+// const PushNotifications = require('node-pushnotifications');
+const bodyParser = require('body-parser');
 
 const port = process.env.PORT || 3000;
 
@@ -40,6 +41,9 @@ const vapidEmail = process.env.VAPID_EMAIL;
 
 var {database} = include('databaseConnection');
 
+// Push notification setup
+webpush.setVapidDetails('mailto:'+vapidEmail, vapidPublicKey, vapidPrivateKey);
+
 const userCollection = database.db(mongodb_database).collection('users');
 const tokenCollection = database.db(mongodb_database).collection('forgotToken');
 
@@ -56,6 +60,8 @@ var mongoStore = MongoStore.create({
 
 app.use(express.urlencoded({extended: false}));
 app.use(express.static(__dirname + "/public"));
+
+app.use(bodyParser.json());
 
 app.use(session({ 
     secret: node_session_secret,
@@ -227,6 +233,18 @@ app.post('/submitLogin', async (req,res) => {
             return;
         }
     }	
+});
+
+// Push notification subscription route
+app.post('/subscribe', (req, res) => {
+    // Get push subscription object
+    const subscription = req.body;
+    // Send 201 - resource created
+    res.status(201).json({});
+    // Create payload
+    const payload = JSON.stringify({ title: 'MediKate - Medication Reminder', message: 'Amoxicillin\n300mg' });
+    // Pass object into sendNotification
+    webpush.sendNotification(subscription, payload).catch(error => console.error(error));
 });
 
 // LISTENS
