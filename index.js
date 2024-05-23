@@ -5,6 +5,8 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const bcrypt = require('bcrypt');
 const saltRounds = 12;
+const webpush = require("web-push");
+const PushNotifications = require('node-pushnotifications');
 
 const port = process.env.PORT || 3000;
 
@@ -30,6 +32,10 @@ const mongodb_password = process.env.MONGODB_PASSWORD;
 const mongodb_database = process.env.MONGODB_DATABASE;
 const mongodb_session_secret = process.env.MONGODB_SESSION_SECRET;
 const node_session_secret = process.env.NODE_SESSION_SECRET;
+// VAPID keys
+const vapidPublicKey = process.env.VAPID_PUBLIC_KEY;
+const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY;
+const vapidEmail = process.env.VAPID_EMAIL;
 /* END secret section */
 
 var {database} = include('databaseConnection');
@@ -160,7 +166,7 @@ app.get('/chatbot', (req, res) => {
 app.get("*", (req,res) => {
 	res.status(404);
 	res.render("404Page");
-})
+});
 
 // POSTS
 
