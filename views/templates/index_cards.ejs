@@ -1,4 +1,4 @@
-<div class="p-4 lg:w-1/4 sm:w-1/2 w-full group" id="<%= id%>">
+<div class="p-4 lg:w-1/4 sm:w-1/2 w-full group" id="<%= id%>" <% if (!enabled) { %> style="display: none;" <% } %>>
     <% if (bgImg){ %>
         <% bg = `bg-[url(${bgImg})] bg-opacity-10 bg-cover`; %>
         <% } else { %>

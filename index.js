@@ -101,7 +101,7 @@ function adminAuthorization(req, res, next) {
 
 app.get('/', (req,res) => {
     if(isValidSession(req)){
-        res.render('index', {username: req.session.firstName, openWeatherAPIKey: process.env.OPEN_WEATHER_API_KEY});
+        res.render('index', {username: req.session.firstName, openWeatherAPIKey: process.env.OPEN_WEATHER_API_KEY, widgetSettings: req.session.widgetSettings});
         return;
     }
     res.redirect('/login');
