@@ -167,16 +167,11 @@ app.get('/settings/signOut', (req, res) => {
     res.redirect("/login");
 });
 
-
 // Get for chatbot
-let myAssistant;
 let myThread;
+let assistantID;
 app.get('/chatbot', async (req, res) => {
-    myAssistant = await openai.beta.assistants.create({
-        model: "gpt-3.5-turbo-16k",
-        instructions: "You are a helpful and friendly assistant named Dr. Kate and you're here to help the user diagnose any medical concerns they have or to provide general advice about personal health. If the user tries to go off topic, steer the conversation back to personal health advice. If you are unsure about something, ask the user for clarification. Try to keep your responses to around 100 words or less and use clear and simple language.",
-        name: "Dr. Kate",
-    });
+    assistantID = KATE_KEY;
     myThread = await openai.beta.threads.create();
     res.render("chatbotPage");
 });
@@ -212,7 +207,7 @@ const runPrompt = async (input) => {
 
     const myRun = await openai.beta.threads.runs.create(
         myThread.id,
-        { assistant_id: myAssistant.id }
+        { assistant_id: assistantID}
     );
 
     const retrieveRun = async () => {
@@ -247,19 +242,6 @@ const runPrompt = async (input) => {
         }
     };
     return await retrieveRun();
-
-
-    // try {
-    //     const response = await openai.completions.create({
-    //         model: "gpt-3.5-turbo-instruct",
-    //         prompt: prompt,
-    //         max_tokens: 2048,
-    //         temperature: 1
-    //     });
-    //     return(response.choices[0].text);
-    // } catch (error) {
-    //     console.error("Error making API request:", error);
-    // }
 };
 
 app.post('/editPass', async (req, res) => {
