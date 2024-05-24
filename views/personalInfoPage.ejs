@@ -5,30 +5,30 @@
 
        <!-- List of personal information -->
     <form id="personalInfoForm" action="/profile/personalInfo/edit" method="POST" class="w-full flex flex-col items-center space-y-4 text-md">
-        <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl">
+        <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl flex">
             <span class="border-r-2 pr-2 mr-3">First Name</span>
             <span id="firstNameDisplay"><%= user.firstName %></span>
-            <input type="text" name="firstName" id="firstNameInput" class="hidden bg-gray-800 text-sky-100 w-full rounded" value="<%= user.firstName %>">
+            <input type="text" name="firstName" id="firstNameInput" class="hidden bg-gray-800 text-sky-100 w-full rounded focus:outline-none" value="<%= user.firstName %>">
         </div>
-        <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl">
+        <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl flex">
             <span class="border-r-2 pr-2 mr-3">Last Name</span>
             <span id="lastNameDisplay"><%= user.lastName %></span>
-            <input type="text" name="lastName" id="lastNameInput" class="hidden bg-gray-800 text-sky-100 w-full rounded" value="<%= user.lastName %>">
+            <input type="text" name="lastName" id="lastNameInput" class="hidden bg-gray-800 text-sky-100 w-full rounded focus:outline-none" value="<%= user.lastName %>">
         </div>
-        <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl">
+        <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl flex">
             <span class="border-r-2 pr-2 mr-3">Birth Date</span>
             <span id="birthDateDisplay"><%= user.birthDate %></span>
-            <input type="date" name="birthDate" id="birthDateInput" class="hidden bg-gray-800 text-sky-100 w-full rounded" value="<%= user.birthDate %>">
+            <input type="date" name="birthDate" id="birthDateInput" class="hidden bg-gray-800 text-sky-100 w-full rounded focus:outline-none" value="<%= user.birthDate %>">
         </div>
-        <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl">
+        <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl flex">
             <span class="border-r-2 pr-2 mr-3">Country</span>
             <span id="countryDisplay"><%= user.country %></span>
-            <input type="text" name="country" id="countryInput" class="hidden bg-gray-800 text-sky-100 w-full rounded" value="<%= user.country %>">
+            <input type="text" name="country" id="countryInput" class="hidden bg-gray-800 text-sky-100 w-full rounded focus:outline-none" value="<%= user.country %>">
         </div>
-        <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl">
+        <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl flex">
             <span class="border-r-2 pr-2 mr-3">City</span>
             <span id="cityDisplay"><%= user.city %></span>
-            <input type="text" name="city" id="cityInput" class="hidden bg-gray-800 text-sky-100 w-full rounded" value="<%= user.city %>">
+            <input type="text" name="city" id="cityInput" class="hidden bg-gray-800 text-sky-100 w-full rounded focus:outline-none" value="<%= user.city %>">
         </div>
     </form>
 
