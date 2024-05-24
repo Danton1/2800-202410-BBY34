@@ -59,8 +59,6 @@ var mongoStore = MongoStore.create({
 // USES
 
 // app.use(express.urlencoded({extended: false}));
-app.use(express.urlencoded({ extended: true })); // testing
-
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 app.use(express.static(__dirname + "/public"));
