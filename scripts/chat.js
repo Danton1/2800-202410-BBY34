@@ -47,7 +47,8 @@ $(function () {
                 time = date.getHours() + ":" + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
                 console.log(response);
                 // Format the chatbot's response
-                let outputString = response.output;
+                const obj = JSON.parse(response.output);
+                let outputString = obj.message;
                 // let formattedOutput = outputString.join("\n");
                 // formattedOutput = formattedOutput.replaceAll("\n", "<br>");
 

@@ -170,8 +170,10 @@ app.get('/settings/signOut', (req, res) => {
 // Get for chatbot
 let myThread;
 let assistantID;
+let myRun;
+let cancel;
 app.get('/chatbot', async (req, res) => {
-    assistantID = KATE_KEY;
+    assistantID = process.env.KATE_KEY;
     myThread = await openai.beta.threads.create();
     res.render("chatbotPage");
 });
@@ -190,13 +192,91 @@ app.post('/chatbot', async (req, res) => {
     const processedData = `${input}`;
     const output = await runPrompt(input);
     var data = { processedData: processedData, output: output };
-    console.log(data);
     // Send the processed data back to the client
+    const egg = JSON.parse(output).isEasterEgg;
+    console.log(typeof (egg));
+    switch (egg) {
+        case "1":
+            console.log("in switch");
+            assistantID = process.env.WHO_KEY;
+            cancel = await openai.beta.threads.del(myThread.id);
+            myThread = await openai.beta.threads.create();
+            myRun = await openai.beta.threads.runs.create(
+                myThread.id,
+                { assistant_id: assistantID }
+            );
+            break;
+        case "2":
+            console.log("in switch");
+            assistantID = process.env.PHIL_KEY;
+            cancel = await openai.beta.threads.del(myThread.id);
+            myThread = await openai.beta.threads.create();
+            myRun = await openai.beta.threads.runs.create(
+                myThread.id,
+                { assistant_id: assistantID }
+            );
+            break;
+        case "3":
+            console.log("in switch");
+            assistantID = process.env.DRE_KEY;
+            cancel = await openai.beta.threads.del(myThread.id);
+            myThread = await openai.beta.threads.create();
+            myRun = await openai.beta.threads.runs.create(
+                myThread.id,
+                { assistant_id: assistantID }
+            );
+            break;
+        case "4":
+            console.log("in switch");
+            assistantID = process.env.PEPPER_KEY;
+            cancel = await openai.beta.threads.del(myThread.id);
+            myThread = await openai.beta.threads.create();
+            myRun = await openai.beta.threads.runs.create(
+                myThread.id,
+                { assistant_id: assistantID }
+            ); 
+            break;
+        case "5":
+            console.log("in switch");
+            assistantID = process.env.STRANGE_KEY;
+            cancel = await openai.beta.threads.del(myThread.id);
+            myThread = await openai.beta.threads.create();
+            myRun = await openai.beta.threads.runs.create(
+                myThread.id,
+                { assistant_id: assistantID }
+            ); 
+            break;
+        case "6":
+            console.log("in switch");
+            assistantID = process.env.HOUSE_KEY;
+            cancel = await openai.beta.threads.del(myThread.id);
+            myThread = await openai.beta.threads.create();
+            myRun = await openai.beta.threads.runs.create(
+                myThread.id,
+                { assistant_id: assistantID }
+            );
+            break;
+        case "7":
+            console.log("in switch");
+            assistantID = process.env.ZOID_KEY;
+            cancel = await openai.beta.threads.del(myThread.id);
+            myThread = await openai.beta.threads.create();
+            myRun = await openai.beta.threads.runs.create(
+                myThread.id,
+                { assistant_id: assistantID }
+            );
+            break;
+        default:
+            console.log("default")
+            break;
+    }
+
     res.send(data);
 });
 
 const runPrompt = async (input) => {
     const prompt = input;
+
     const myThreadMessage = await openai.beta.threads.messages.create(
         myThread.id,
         {
@@ -204,10 +284,11 @@ const runPrompt = async (input) => {
             content: prompt,
         }
     );
-
+    console.log(assistantID);
+    console.log(myThread.id);
     const myRun = await openai.beta.threads.runs.create(
         myThread.id,
-        { assistant_id: assistantID}
+        { assistant_id: assistantID }
     );
 
     const retrieveRun = async () => {
@@ -218,7 +299,7 @@ const runPrompt = async (input) => {
                 myThread.id,
                 (run_id = myRun.id)
             );
-            
+
             if (keepRetrievingRun.status === "completed") {
 
                 const allMessages = await openai.beta.threads.messages.list(
@@ -228,8 +309,8 @@ const runPrompt = async (input) => {
                 // console.log("User: ", myThreadMessage.content[0].text.value);
                 // console.log("User: ", myThreadMessage);
                 console.log("Assistant: ", allMessages.data[0].content[0].text.value);
-                
-                return allMessages.data[0].content[0].text.value;;
+
+                return allMessages.data[0].content[0].text.value;
             } else if (
                 keepRetrievingRun.status === "queued" ||
                 keepRetrievingRun.status === "in_progress"
