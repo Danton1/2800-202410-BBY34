@@ -244,7 +244,9 @@ app.post('/subscribe', (req, res) => {
     // Create payload
     const payload = JSON.stringify({ title: 'MediKate - Medication Reminder', message: 'Amoxicillin\n300mg' });
     // Pass object into sendNotification
-    webpush.sendNotification(subscription, payload).catch(error => console.error(error));
+    setTimeout( () => {
+        webpush.sendNotification(subscription, payload).catch(error => console.error(error));
+    }, 10000);
 });
 
 // LISTENS
