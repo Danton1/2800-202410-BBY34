@@ -6,7 +6,7 @@ $(function () {
         // Getting time
         let date = new Date;
         let time = date.getHours() + ":" + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
-        
+
         // Get the input value
         const userInput = $('#chatbotTextBox').val();
 
@@ -34,7 +34,7 @@ $(function () {
 
         // Reset input textbox
         $('#chatbotTextBox').val("");
-        
+
         // Send AJAX request to the server
         $.ajax({
             url: '/chatbot',
@@ -49,6 +49,46 @@ $(function () {
                 // Format the chatbot's response
                 const obj = JSON.parse(response.output);
                 let outputString = obj.message;
+                let egg = obj.isEasterEgg;
+                console.log(egg);
+
+                var imgSrc;
+                var imgName;
+
+                switch (egg) {
+                    case "1":
+                        imgSrc = "";
+                        imgName = "Dr. Who";
+                        break;
+                    case "2":
+                        imgSrc = "";
+                        imgName = "Dr. Phil";
+                        break;
+                    case "3":
+                        imgSrc = "";
+                        imgName = "Dr. Dre";
+                        break;
+                    case "4":
+                        imgSrc = "";
+                        imgName = "Dr. Pepper";
+                        break;
+                    case "5":
+                        imgSrc = "";
+                        imgName = "Dr. Strange";
+                        break;
+                    case "6":
+                        imgSrc = "";
+                        imgName = "Dr. House";
+                        break;
+                    case "7":
+                        imgSrc = "";
+                        imgName = "Dr. Zoid";
+                        break;
+                    default:
+                        imgSrc = "Kate.png";
+                        imgName = "Dr. Kate";
+                        break;
+                }
                 // let formattedOutput = outputString.join("\n");
                 // formattedOutput = formattedOutput.replaceAll("\n", "<br>");
 
@@ -57,11 +97,11 @@ $(function () {
                 <div class="chat chat-start items-end justify-items-end">
                     <div class="flex flex-col justify-center items-center">
                         <div class="chat-header mb-2">
-                            Kate
+                            ${imgName}
                         </div>
                         <div class="chat-image avatar">
                             <div class="w-[50px] rounded-full">
-                                <img alt="chatbot profile pic" src="Kate.png" />
+                                <img alt="chatbot profile pic" src=${imgSrc} />
                             </div>
                         </div>
                     </div>
