@@ -1,59 +1,80 @@
-require('dotenv').config();
-const express = require("express");
-const router = express.Router();
-
-const session = require('express-session');
-const MongoStore = require('connect-mongo');
-const bcrypt = require('bcrypt');
-const saltRounds = 12;
-
-const Joi = require("joi");
-
-const mongodb_host = process.env.MONGODB_HOST;
-const mongodb_user = process.env.MONGODB_USER;
-const mongodb_password = process.env.MONGODB_PASSWORD;
-const mongodb_database = process.env.MONGODB_DATABASE;
-const mongodb_session_secret = process.env.MONGODB_SESSION_SECRET;
-
-const { Configuration, OpenAI } = require("openai");
-const openai = new OpenAI({apiKey: process.env.GPT_KEY});
-
 let input = "";
 
+$(function () {
+    $('#chatButton').on("click", function () {
+        // Getting time
+        let date = new Date;
+        let time = date.getHours() + ":" + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+        
+        // Get the input value
+        const userInput = $('#chatbotTextBox').val();
 
-router.post('/chatbot', async (req, res) => {
-    const input = req.body.userInput;
-    // Process userInput as needed
-    console.log("in the post function");
-    // const processedData = `You entered: ${input}`;
-    const processedData = `${input}`;
+        // Display user input
+        $('#chatHistoryWrap').append(`
+            <div class="max-w-full chat chat-end">
+            <div class="flex items-end gap-2">
+                <time class="text-xs opacity-50">${time}</time>
+                <div id="testing" class="chat-bubble py-4 px-5 bg-gray-700 text-sky-100">
+                    ${userInput}
+                </div>
+            </div>
+            <div class="flex flex-col justify-center items-center">
+                <div class="chat-header mb-2">
+                    You
+                </div>
+                <div class="chat-image avatar">
+                    <div class="w-[50px] rounded-full">
+                        <img alt="User profile"
+                            src="https://play-lh.googleusercontent.com/yvoeLsYXfwqgH3H4mgljOio6wMomgfgwguEl4yegpkgjtDoCWz71qSLVHI6UAyCxfA" />
+                    </div>
+                </div>
+            </div>
+        </div>`);
 
-    const output = await runPrompt(input);
-    // Send the processed data back to the client
-    // console.log(processedData);
-    // res.send(processedData);
-    // console.log(output);
-    var data = { processedData: processedData, output: output };
-    console.log(data);
+        // Reset input textbox
+        $('#chatbotTextBox').val("");
+        
+        // Send AJAX request to the server
+        $.ajax({
+            url: '/chatbot',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ userInput }),
+            success: function (response) {
+                // Update time
+                date = new Date;
+                time = date.getHours() + ":" + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+                
+                // Format the chatbot's response
+                let outputString = response.output.split('\n');
+                outputString.splice(0, 1);
+                let formattedOutput = outputString.join("\n");
+                formattedOutput = formattedOutput.replaceAll("\n", "<br>");
 
-    res.send(data);
-
-});
-
-
-const runPrompt = async () => {
-    const prompt = input;
-    try {
-        const response = await openai.completions.create({
-            model: "gpt-3.5-turbo-instruct",
-            prompt: prompt,
-            max_tokens: 2048,
-            temperature: 1
+                // Display chatbot's response
+                $('#chatHistoryWrap').append(`
+                <div class="chat chat-start items-end justify-items-end">
+                    <div class="flex flex-col justify-center items-center">
+                        <div class="chat-header mb-2">
+                            Kate
+                        </div>
+                        <div class="chat-image avatar">
+                            <div class="w-[50px] rounded-full">
+                                <img alt="chatbot profile pic" src="Kate.png" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full flex items-end gap-2">
+                        <div class="chat-bubble py-4 px-5 bg-gray-700 text-sky-100">
+                        ${formattedOutput}
+                        </div>
+                        <time class="text-xs opacity-50">${time}</time>
+                    </div>
+                </div>`);
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', error);
+            }
         });
-        console.log(response.choices[0].text);
-    } catch (error) {
-        console.error("Error making API request:", error);
-    }
-};
-
-module.exports = router;
+    });
+});
