@@ -29,6 +29,8 @@ const forgotRoute = require('./scripts/forgotPage');
 app.use('/forgot', forgotRoute);
 const settingsRoute = require('./scripts/settings');
 app.use('/settings', settingsRoute);
+// const chatRoute = require('./scripts/chat');
+// app.use('/chat', chatRoute);
 /*Imported routes js files end*/
 
 /* secret information section */
