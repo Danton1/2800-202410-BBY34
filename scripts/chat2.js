@@ -67,7 +67,7 @@ $(function () {
         $('#chatbotTextBox').val("");
         console.log("userInput: " + JSON.stringify({ userInput }));
         $.ajax({
-            url: '/chatbot',
+            url: '/chat/chatbot',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({ userInput }),

@@ -28,8 +28,8 @@ const forgotRoute = require('./scripts/forgotPage');
 app.use('/forgot', forgotRoute);
 const settingsRoute = require('./scripts/settings');
 app.use('/settings', settingsRoute);
-// const chatRoute = require('./scripts/chat2');
-// app.use('/chat', chatRoute);
+const chatRoute = require('./scripts/chat');
+app.use('/chat', chatRoute);
 /*Imported routes js files end*/
 
 /* secret information section */
@@ -179,24 +179,24 @@ app.get("*", (req,res) => {
 
 // POSTS
 
-app.post('/chatbot', async (req, res) => {
-    const input = req.body.userInput;
-    // Process userInput as needed
-    console.log("in the post function");
-    // const processedData = `You entered: ${input}`;
-    const processedData = `${input}`;
+// app.post('/chatbot', async (req, res) => {
+//     const input = req.body.userInput;
+//     // Process userInput as needed
+//     console.log("in the post function");
+//     // const processedData = `You entered: ${input}`;
+//     const processedData = `${input}`;
 
-    const output = await runPrompt(input);
-    // Send the processed data back to the client
-    // console.log(processedData);
-    // res.send(processedData);
-    // console.log(output);
-    var data = { processedData: processedData, output: output };
-    console.log(data);
+//     const output = await runPrompt(input);
+//     // Send the processed data back to the client
+//     console.log(processedData);
+//     res.send(processedData);
+//     console.log(output);
+//     var data = { processedData: processedData, output: output };
+//     console.log(data);
 
-    res.send(data);
+//     res.send(data);
 
-});
+// });
 
 const runPrompt = async (input) => {
     const prompt = input;
