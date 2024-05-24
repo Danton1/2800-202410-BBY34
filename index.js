@@ -5,6 +5,9 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const bcrypt = require('bcrypt');
 const saltRounds = 12;
+const webpush = require("web-push");
+// const PushNotifications = require('node-pushnotifications');
+const bodyParser = require('body-parser');
 
 const port = process.env.PORT || 3000;
 
@@ -40,9 +43,16 @@ const mongodb_password = process.env.MONGODB_PASSWORD;
 const mongodb_database = process.env.MONGODB_DATABASE;
 const mongodb_session_secret = process.env.MONGODB_SESSION_SECRET;
 const node_session_secret = process.env.NODE_SESSION_SECRET;
+// VAPID keys
+const vapidPublicKey = process.env.VAPID_PUBLIC_KEY;
+const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY;
+const vapidEmail = process.env.VAPID_EMAIL;
 /* END secret section */
 
 var { database } = include('databaseConnection');
+
+// Push notification setup
+webpush.setVapidDetails('mailto:'+vapidEmail, vapidPublicKey, vapidPrivateKey);
 
 const userCollection = database.db(mongodb_database).collection('users');
 const tokenCollection = database.db(mongodb_database).collection('forgotToken');
@@ -67,7 +77,9 @@ app.get('/chat.js', function (req, res) {
     res.sendFile(__dirname + '/scripts/chat.js');
 });
 
-app.use(session({
+app.use(bodyParser.json());
+
+app.use(session({ 
     secret: node_session_secret,
     store: mongoStore, //default is memory store 
     saveUninitialized: false,
@@ -186,10 +198,10 @@ app.get('/chatbot', async (req, res) => {
 });
 
 // Get for 404
-app.get("*", (req, res) => {
-    res.status(404);
-    res.render("404Page");
-})
+app.get("*", (req,res) => {
+	res.status(404);
+	res.render("404Page");
+});
 
 // POSTS
 
@@ -417,6 +429,20 @@ app.post('/settings/widgets/update', async (req, res) => {
         console.error('Error updating settings:', error);
         res.status(500).send('Internal server error');
     }
+});
+
+// Push notification subscription route
+app.post('/subscribe', (req, res) => {
+    // Get push subscription object
+    const subscription = req.body;
+    // Send 201 - resource created
+    res.status(201).json({});
+    // Create payload
+    const payload = JSON.stringify({ title: 'MediKate - Medication Reminder', message: 'Amoxicillin\n300mg' });
+    // Pass object into sendNotification
+    setTimeout( () => {
+        webpush.sendNotification(subscription, payload).catch(error => console.error(error));
+    }, 10000);
 });
 
 // LISTENS
