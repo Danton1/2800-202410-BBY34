@@ -401,7 +401,6 @@ app.post('/submitLogin', async (req, res) => {
             return;
         }
     }
-    }	
 });
 
 app.post('/settings/widgets/update', async (req, res) => {
