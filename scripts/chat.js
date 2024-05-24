@@ -1,7 +1,8 @@
 let input = "";
 var imgSrc = "Kate.png";
 var imgName = "Dr.Kate";
-
+var userCounter = 0;
+var gptCounter = 0;
 
 $(function () {
     $('#chatForm').on("submit", function (event) {
@@ -10,11 +11,12 @@ $(function () {
         // Getting time
         let date = new Date;
         let time = date.getHours() + ":" + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
-
+        
+        
         // Get the input value
         const userInput = $('#chatbotTextBox').val();
 
-        if(userInput === ""){
+        if (userInput === "") {
             return;
         }
 
@@ -23,7 +25,7 @@ $(function () {
             <div class="max-w-full chat chat-end">
             <div class="flex items-end gap-2">
                 <time class="text-xs opacity-50">${time}</time>
-                <div id="testing" class="chat-bubble py-4 px-5 bg-gray-700 text-sky-100">
+                <div id="testing${userCounter}" class="chat-bubble py-4 px-5 bg-gray-700 text-sky-100">
                     ${userInput}
                 </div>
             </div>
@@ -43,9 +45,11 @@ $(function () {
         // Reset input textbox
         $('#chatbotTextBox').val("");
 
-        var box = $('#chatHistoryWrap');
-        console.log(box[0]);
-        // window.scrollTo(0, box.scrollHeight);
+        var box = $(`#testing${userCounter}`);
+        // console.log(box[0].scrollHeight);
+        box[0].scrollIntoView();
+        userCounter++;
+        // window.scrollTo(0, box[0].scrollHeight);
 
         // Send AJAX request to the server
         $.ajax({
@@ -62,12 +66,12 @@ $(function () {
                 const obj = JSON.parse(response.output);
                 let outputString = obj.message;
                 let egg = obj.isEasterEgg;
-                console.log(egg);
+                // console.log(egg);
 
                 // let formattedOutput = outputString.join("\n");
                 // formattedOutput = formattedOutput.replaceAll("\n", "<br>");
 
-                
+
 
                 // Display chatbot's response
                 $('#chatHistoryWrap').append(`
@@ -83,15 +87,18 @@ $(function () {
                         </div>
                     </div>
                     <div class="w-full flex items-end gap-2">
-                        <div class="chat-bubble py-4 px-5 bg-gray-700 text-sky-100">
+                        <div id="gptOutput${gptCounter}" class="chat-bubble py-4 px-5 bg-gray-700 text-sky-100">
                         ${outputString}
                         </div>
                         <time class="text-xs opacity-50">${time}</time>
                     </div>
                 </div>`);
+                box = $(`#gptOutput${gptCounter}`);
+                // console.log(box[0].id);
+                box[0].scrollIntoView(false);
+                gptCounter++;
 
 
-               
 
                 switch (egg) {
                     case "1":
