@@ -1,4 +1,7 @@
 let input = "";
+var imgSrc = "Kate.png";
+var imgName = "Dr.Kate";
+
 
 $(function () {
     $('#chatForm').on("submit", function (event) {
@@ -41,8 +44,8 @@ $(function () {
         $('#chatbotTextBox').val("");
 
         var box = $('#chatHistoryWrap');
-        console.log(box.scrollHeight);
-        window.scrollTo(0, box.scrollHeight);
+        console.log(box[0]);
+        // window.scrollTo(0, box.scrollHeight);
 
         // Send AJAX request to the server
         $.ajax({
@@ -61,45 +64,10 @@ $(function () {
                 let egg = obj.isEasterEgg;
                 console.log(egg);
 
-                var imgSrc;
-                var imgName;
-
-                switch (egg) {
-                    case "1":
-                        imgSrc = "";
-                        imgName = "Dr. Who";
-                        break;
-                    case "2":
-                        imgSrc = "";
-                        imgName = "Dr. Phil";
-                        break;
-                    case "3":
-                        imgSrc = "";
-                        imgName = "Dr. Dre";
-                        break;
-                    case "4":
-                        imgSrc = "";
-                        imgName = "Dr. Pepper";
-                        break;
-                    case "5":
-                        imgSrc = "";
-                        imgName = "Dr. Strange";
-                        break;
-                    case "6":
-                        imgSrc = "";
-                        imgName = "Dr. House";
-                        break;
-                    case "7":
-                        imgSrc = "";
-                        imgName = "Dr. Zoid";
-                        break;
-                    default:
-                        imgSrc = "Kate.png";
-                        imgName = "Dr. Kate";
-                        break;
-                }
                 // let formattedOutput = outputString.join("\n");
                 // formattedOutput = formattedOutput.replaceAll("\n", "<br>");
+
+                
 
                 // Display chatbot's response
                 $('#chatHistoryWrap').append(`
@@ -121,6 +89,43 @@ $(function () {
                         <time class="text-xs opacity-50">${time}</time>
                     </div>
                 </div>`);
+
+
+               
+
+                switch (egg) {
+                    case "1":
+                        imgSrc = "egg/who.jpg";
+                        imgName = "Dr. Who";
+                        break;
+                    case "2":
+                        imgSrc = "egg/phil.png";
+                        imgName = "Dr. Phil";
+                        break;
+                    case "3":
+                        imgSrc = "egg/dre.jpeg";
+                        imgName = "Dr. Dre";
+                        break;
+                    case "4":
+                        imgSrc = "egg/pepper.webp";
+                        imgName = "Dr. Pepper";
+                        break;
+                    case "5":
+                        imgSrc = "egg/strange.webp";
+                        imgName = "Dr. Strange";
+                        break;
+                    case "6":
+                        imgSrc = "egg/house.webp";
+                        imgName = "Dr. House";
+                        break;
+                    case "7":
+                        imgSrc = "egg/zoid.jpg";
+                        imgName = "Dr. Zoid";
+                        break;
+                    default:
+                        break;
+                }
+
             },
             error: function (xhr, status, error) {
                 console.error('Error:', error);
