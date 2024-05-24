@@ -98,7 +98,7 @@ $(function () {
                 box[0].scrollIntoView(false);
                 gptCounter++;
 
-                console.log(egg);
+                // console.log(egg);
 
                 switch (egg) {
                     case 1:

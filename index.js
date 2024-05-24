@@ -203,10 +203,10 @@ app.post('/chatbot', async (req, res) => {
     var data = { processedData: processedData, output: output, eggNum: eggNum };
     // Send the processed data back to the client
 
-    console.log(eggNum);
+    // console.log(eggNum);
     switch (eggNum) {
         case 1:
-            console.log("in switch");
+            // console.log("in switch");
             assistantID = process.env.WHO_KEY;
             cancel = await openai.beta.threads.del(myThread.id);
             myThread = await openai.beta.threads.create();
@@ -216,7 +216,7 @@ app.post('/chatbot', async (req, res) => {
             );
             break;
         case 2:
-            console.log("in switch");
+            // console.log("in switch");
             assistantID = process.env.PHIL_KEY;
             cancel = await openai.beta.threads.del(myThread.id);
             myThread = await openai.beta.threads.create();
@@ -226,7 +226,7 @@ app.post('/chatbot', async (req, res) => {
             );
             break;
         case 3:
-            console.log("in switch");
+            // console.log("in switch");
             assistantID = process.env.DRE_KEY;
             cancel = await openai.beta.threads.del(myThread.id);
             myThread = await openai.beta.threads.create();
@@ -236,7 +236,7 @@ app.post('/chatbot', async (req, res) => {
             );
             break;
         case 4:
-            console.log("in switch");
+            // console.log("in switch");
             assistantID = process.env.PEPPER_KEY;
             cancel = await openai.beta.threads.del(myThread.id);
             myThread = await openai.beta.threads.create();
@@ -246,7 +246,7 @@ app.post('/chatbot', async (req, res) => {
             ); 
             break;
         case 5:
-            console.log("in switch");
+            // console.log("in switch");
             assistantID = process.env.STRANGE_KEY;
             cancel = await openai.beta.threads.del(myThread.id);
             myThread = await openai.beta.threads.create();
@@ -256,7 +256,7 @@ app.post('/chatbot', async (req, res) => {
             ); 
             break;
         case 6:
-            console.log("in switch");
+            // console.log("in switch");
             assistantID = process.env.HOUSE_KEY;
             cancel = await openai.beta.threads.del(myThread.id);
             myThread = await openai.beta.threads.create();
@@ -266,7 +266,7 @@ app.post('/chatbot', async (req, res) => {
             );
             break;
         case 7:
-            console.log("in switch");
+            // console.log("in switch");
             assistantID = process.env.ZOID_KEY;
             cancel = await openai.beta.threads.del(myThread.id);
             myThread = await openai.beta.threads.create();
@@ -276,7 +276,7 @@ app.post('/chatbot', async (req, res) => {
             );
             break;
         default:
-            console.log("default")
+            // console.log("default");
             break;
     }
 
