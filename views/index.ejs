@@ -5,14 +5,13 @@
         <div class="py-5"></div>
         <div class="leading-none pt-1 flex text-3xl md:text-4xl font-sans text-center speech-bubble z-10 w-[75%] sm:w-fit h-52">
             <h1 class="m-auto font-bold text-center text-cyan-500">
-                <% const hour = new Date().getHours(); %>
+                <% const hour = new Date().getHours().toLocaleString({timeZone: 'PST'}) %>
                 <% if (hour >= 5 && hour < 12) { %>
                     Good morning, <%= username %>
                 <% } else if (hour >= 12 && hour < 18) { %>
                     Good afternoon, <%= username %>
                 <% } else { %>
                     Good evening, <%= username %>
-                    <% console.log(hour); %>
                 <% } %>
             </h1>
         </div>
