@@ -3,12 +3,17 @@ let input = "";
 $(function () {
     $('#chatForm').on("submit", function (event) {
         event.preventDefault();
+
         // Getting time
         let date = new Date;
         let time = date.getHours() + ":" + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
 
         // Get the input value
         const userInput = $('#chatbotTextBox').val();
+
+        if(userInput === ""){
+            return;
+        }
 
         // Display user input
         $('#chatHistoryWrap').append(`
@@ -34,6 +39,10 @@ $(function () {
 
         // Reset input textbox
         $('#chatbotTextBox').val("");
+
+        var box = $('#chatHistoryWrap');
+        console.log(box.scrollHeight);
+        window.scrollTo(0, box.scrollHeight);
 
         // Send AJAX request to the server
         $.ajax({
