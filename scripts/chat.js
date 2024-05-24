@@ -1,7 +1,8 @@
 let input = "";
 
 $(function () {
-    $('#chatButton').on("click", function () {
+    $('#chatForm').on("submit", function (event) {
+        event.preventDefault();
         // Getting time
         let date = new Date;
         let time = date.getHours() + ":" + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
@@ -44,12 +45,11 @@ $(function () {
                 // Update time
                 date = new Date;
                 time = date.getHours() + ":" + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
-                
+                console.log(response);
                 // Format the chatbot's response
-                let outputString = response.output.split('\n');
-                outputString.splice(0, 1);
-                let formattedOutput = outputString.join("\n");
-                formattedOutput = formattedOutput.replaceAll("\n", "<br>");
+                let outputString = response.output;
+                // let formattedOutput = outputString.join("\n");
+                // formattedOutput = formattedOutput.replaceAll("\n", "<br>");
 
                 // Display chatbot's response
                 $('#chatHistoryWrap').append(`
@@ -66,7 +66,7 @@ $(function () {
                     </div>
                     <div class="w-full flex items-end gap-2">
                         <div class="chat-bubble py-4 px-5 bg-gray-700 text-sky-100">
-                        ${formattedOutput}
+                        ${outputString}
                         </div>
                         <time class="text-xs opacity-50">${time}</time>
                     </div>
