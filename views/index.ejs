@@ -26,31 +26,12 @@
 
                 <% let cards = [
                   {
-                    id: "appointmentCard",
-                    title: "Appointment",
-                    content: "May 30, 2054",
-                    path: "M580-240q-42 0-71-29t-29-71q0-42 29-71t71-29q42 0 71 29t29 71q0 42-29 71t-71 29ZM200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Z",
-                    bgImg: null,
-                    icon: null,
-                    enabled: widgetSettings.appointments.enabled
-                  },
-                  {
                     id: "medicationCard",
                     title: "Amoxicillin",
                     content: "26 minutes left",
                     path: "M420-260h120v-100h100v-120H540v-100H420v100H320v120h100v100ZM280-120q-33 0-56.5-23.5T200-200v-440q0-33 23.5-56.5T280-720h400q33 0 56.5 23.5T760-640v440q0 33-23.5 56.5T680-120H280Zm0-80h400v-440H280v440Zm-40-560v-80h480v80H240Zm40 120v440-440Z",
                     bgImg: null,
-                    icon: null,
-                    enabled: widgetSettings.medications.enabled
-                  },
-                  {
-                    id: "bloodPressureCard",
-                    title: "Blood Pressure",
-                    content: "110/70",
-                    path: "M280-80v-200H80v-400h200v-200h400v200h200v400H680v200H280ZM160-520h200q10 0 19 5t14 13l35 52 54-162q4-12 14.5-20t23.5-8q10 0 19 5t14 13l68 102h179v-80H600v-200H360v200H160v80Zm200 360h240v-200h200v-80H600q-10 0-19-5t-15-13l-34-52-54 162q-4 12-15 20t-24 8q-10 0-19-5t-14-13l-68-102H160v80h200v200Zm120-320Z",
-                    bgImg: null,
-                    icon: null,
-                    enabled: widgetSettings.bloodPressure.enabled
+                    icon: null
                   },
                   {
                     id: "airQualityCard",
@@ -58,8 +39,7 @@
                     content: "loading...",
                     path: "M260-160q-92 0-156-64T40-380q0-78 48.5-137.5T210-594q25-90 99-148t171-58q119 0 199.5 82.5T760-520q75 8 117.5 62T920-341q0 75-52.5 128T740-160H260Zm0-80h480q42 0 71-29t29-71q0-42-29-71t-71-29h-60v-80q0-83-58.5-141.5T480-720q-63 0-112 34.5T296-597q78 13 131 73.5T480-380h-80q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41Z",
                     bgImg: null,
-                    icon: null,
-                    enabled: widgetSettings.airQuality.enabled
+                    icon: null
                   },
                   {
                     id: "outdoorTemperatureCard",
@@ -67,17 +47,7 @@
                     content: "loading...",
                     path: "M440-760v-160h80v160h-80Zm266 110-55-55 112-115 56 57-113 113Zm54 210v-80h160v80H760ZM440-40v-160h80v160h-80ZM254-652 140-763l57-56 113 113-56 54Zm508 512L651-255l54-54 114 110-57 59ZM40-440v-80h160v80H40Zm157 300-56-57 112-112 29 27 29 28-114 114Zm283-100q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm0-80q66 0 113-47t47-113q0-66-47-113t-113-47q-66 0-113 47t-47 113q0 66 47 113t113 47Zm0-160Z",
                     bgImg: null,
-                    icon: null,
-                    enabled: widgetSettings.temperature.enabled
-                  },
-                  {
-                    id: "oxygenCard",
-                    title: "Oxygen Level",
-                    content: "98%",
-                    path: "M280-80v-200H80v-400h200v-200h400v200h200v400H680v200H280ZM160-520h200q10 0 19 5t14 13l35 52 54-162q4-12 14.5-20t23.5-8q10 0 19 5t14 13l68 102h179v-80H600v-200H360v200H160v80Zm200 360h240v-200h200v-80H600q-10 0-19-5t-15-13l-34-52-54 162q-4 12-15 20t-24 8q-10 0-19-5t-14-13l-68-102H160v80h200v200Zm120-320Z",
-                    bgImg: null,
-                    icon: null,
-                    enabled: widgetSettings.oxygen.enabled
+                    icon: null
                   },
                   {
                     id: "locationCard",
@@ -85,17 +55,7 @@
                     content: "loading...",
                     path: "M480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Zm0 294q122-112 181-203.5T720-552q0-109-69.5-178.5T480-800q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186Zm0 106Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Zm0-480Z",
                     bgImg: null,
-                    icon: null,
-                    enabled: widgetSettings.location.enabled
-                  },
-                  {
-                    id: "mailCard",
-                    title: "New Message",
-                    content: "Dr. Kate needs to talk to you",
-                    path: "M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm320-280L160-640v400h640v-400L480-440Zm0-80 320-200H160l320 200ZM160-640v-80 480-400Z",
-                    bgImg: null,
-                    icon: null,
-                    enabled: true
+                    icon: null
                   }
                 ]; %>
                 
@@ -135,6 +95,11 @@
     const apiURL = `http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&appid=${apiKey}`;
     const widget = document.getElementById('locationCard');
 
+    if ('<%= widgetSettings.location.enabled %>' == 'false') { 
+      widget.setAttribute("style", "display: none;");
+      return;
+    }
+
     fetch(apiURL)
       .then(response => response.json())
       .then(locationData => {
@@ -151,6 +116,11 @@
   function populateAirQualityWidget(apiKey, lat, lon) {
     const apiURL = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`;
     const widget = document.getElementById('airQualityCard');
+
+    if ('<%= widgetSettings.airQuality.enabled %>' == 'false') { 
+      widget.setAttribute("style", "display: none;");
+      return;
+    }
 
     fetch(apiURL)
       .then(response => response.json())
@@ -178,10 +148,10 @@
         const pollutants = components.map(item => item.pollutant);
         const concentrations = components.map(item => item.concentration);
         const airQualityScale = "<%= widgetSettings.airQuality.units %>";
-        const airQualityIndex = calculateHighestAQI(airQualityScale, pollutants, concentrations);
+        const airQualityIndex = calculateHighestUKAQI(airQualityScale, pollutants, concentrations);
 
-        const airQualityIndexString = "UKAQI " + airQualityIndex;
-        const airQualityString = "Risk: " + getUKAirQualityDescription(airQualityIndex);
+        const airQualityIndexString = "AQI " + airQualityIndex;
+        const airQualityString = "Risk: " + getUKAQIDescription(airQualityIndex);
 
         widget.querySelector(".indexCardTitle").textContent = airQualityIndexString;
         widget.querySelector(".indexCardContent").textContent = airQualityString;
@@ -191,7 +161,7 @@
       });
   }
 
-  function getUKAirQualityDescription(aqi) {
+  function getUKAQIDescription(aqi) {
     switch (aqi) {
         case 1:
         case 2:
@@ -301,32 +271,13 @@
     throw new Error(`Concentration ${concentration} is out of range.`);
   }
 
-  function calculateHighestAQI(scale, pollutants, concentrations) {
+  function calculateHighestUKAQI(scale, pollutants, concentrations) {
     let highestAQI = 0;
-
-    function calculateAQI(pollutant, concentration) {
-      switch (scale) {
-        case 'uk':
-          return calculateUKAQI(pollutant, concentration);
-          break;
-        case 'europe':
-          return calculateUKAQI(pollutant, concentration);
-          break;
-        case 'usa':
-          return calculateUKQI(pollutant, concentration);
-          break;
-        case 'china':
-          return calculateUKAQI(pollutant, concentration);
-          break;
-        default:
-          throw new Error(`Invalid scale: ${scale}`);
-      }
-    }
 
     for (let i = 0; i < pollutants.length; i++) {
       const pollutant = pollutants[i];
       const concentration = concentrations[i];
-      const aqi = calculateAQI(pollutant, concentration);
+      const aqi = calculateUKAQI(pollutant, concentration);
       if (aqi > highestAQI) {
         highestAQI = aqi;
       }
@@ -342,6 +293,11 @@
 
     const apiURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`;
     const widget = document.getElementById('outdoorTemperatureCard');
+
+    if ('<%= widgetSettings.temperature.enabled %>' == 'false') { 
+      widget.setAttribute("style", "display: none;");
+      return;
+    }
 
     fetch(apiURL)
       .then(response => response.json())
