@@ -49,8 +49,6 @@ const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY;
 const vapidEmail = process.env.VAPID_EMAIL;
 /* END secret section */
 
-var { database } = include('databaseConnection');
-
 // Push notification setup
 webpush.setVapidDetails('mailto:'+vapidEmail, vapidPublicKey, vapidPrivateKey);
 
