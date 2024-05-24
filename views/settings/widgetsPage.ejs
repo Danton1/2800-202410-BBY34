@@ -46,11 +46,10 @@
                     <%- include("../templates/widgetSettingsSelectTemplate", {
                         id: "airQualityScale",
                         options: [
-                            { value: "OpenWeather", label: "OpenWeather" },
-                            { value: "USA", label: "USA" },
-                            { value: "Europe", label: "Europe" },
-                            { value: "UK", label: "UK" },
-                            { value: "China", label: "China" }
+                            { value: "usa", label: "USA" },
+                            { value: "europe", label: "Europe" },
+                            { value: "uk", label: "UK" },
+                            { value: "china", label: "China" }
                         ],
                         selection: widgetSettings.airQuality.units
                     }) %>
@@ -93,6 +92,30 @@
             </button>
             <div id="location" class="w-full hidden py-4 px-5 items-center bg-gray-600 border-b border-gray-800">
                 <%- include("../templates/widgetSettingsInputTemplate", {id: "locationEnabled", checked: widgetSettings.location.enabled}) %>
+            </div>
+            <button class="w-full h-full py-4 px-5 items-center border-b border-gray-800 hover:bg-gray-800 duration-150" onclick="toggleAccordion('medications')">
+                Medications
+            </button>
+            <div id="medications" class="w-full hidden py-4 px-5 items-center bg-gray-600 border-b border-gray-800">
+                <%- include("../templates/widgetSettingsInputTemplate", {id: "medicationsEnabled", checked: widgetSettings.medications.enabled}) %>
+            </div>
+            <button class="w-full h-full py-4 px-5 items-center border-b border-gray-800 hover:bg-gray-800 duration-150" onclick="toggleAccordion('appointments')">
+                Appointments
+            </button>
+            <div id="appointments" class="w-full hidden py-4 px-5 items-center bg-gray-600 border-b border-gray-800">
+                <%- include("../templates/widgetSettingsInputTemplate", {id: "appointmentsEnabled", checked: widgetSettings.appointments.enabled}) %>
+            </div>
+            <button class="w-full h-full py-4 px-5 items-center border-b border-gray-800 hover:bg-gray-800 duration-150" onclick="toggleAccordion('bloodPressure')">
+                Blood Pressure
+            </button>
+            <div id="bloodPressure" class="w-full hidden py-4 px-5 items-center bg-gray-600 border-b border-gray-800">
+                <%- include("../templates/widgetSettingsInputTemplate", {id: "bloodPressureEnabled", checked: widgetSettings.bloodPressure.enabled}) %>
+            </div>
+            <button class="w-full h-full py-4 px-5 items-center border-b border-gray-800 hover:bg-gray-800 duration-150" onclick="toggleAccordion('oxygen')">
+                Oxygen
+            </button>
+            <div id="oxygen" class="w-full hidden py-4 px-5 items-center bg-gray-600 border-b border-gray-800">
+                <%- include("../templates/widgetSettingsInputTemplate", {id: "oxygenEnabled", checked: widgetSettings.oxygen.enabled}) %>
             </div>
         </div>
     </div>
@@ -168,6 +191,18 @@
             },
             location: {
                 enabled: document.getElementById('locationEnabled').checked
+            },
+            medications: {
+                enabled: document.getElementById('medicationsEnabled').checked
+            },
+            appointments: {
+                enabled: document.getElementById('appointmentsEnabled').checked
+            },
+            bloodPressure: {
+                enabled: document.getElementById('bloodPressureEnabled').checked
+            },
+            oxygen: {
+                enabled: document.getElementById('oxygenEnabled').checked
             }
         };
         return settings;
