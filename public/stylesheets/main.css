@@ -68,3 +68,11 @@ body {
   transition: background-color 5000s ease-in-out 0s;
   -webkit-text-fill-color: #e0f2fe;
 }
+
+#personalInfoForm input:-webkit-autofill,
+#personalInfoForm input:-webkit-autofill:hover,
+#personalInfoForm input:-webkit-autofill:focus,
+#personalInfoForm input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: #e0f2fe;
+}
