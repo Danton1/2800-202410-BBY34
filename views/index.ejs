@@ -1,18 +1,18 @@
 <%- include("templates/headerTemplate") %> 
 
 
-    <div class="w-full h-full bg-gradient-to-br from-gray-900 to-gray-800">
+    <div class="w-full h-full bg-gradient-to-br from-gray-900 to-gray-700">
         <div class="py-5"></div>
-        <div class="leading-none pt-1 flex text-3xl md:text-4xl font-sans text-center speech-bubble z-10 w-[75%] sm:w-fit h-52">
+        <div class="leading-none pt-1 flex text-3xl md:text-4xl font-sans text-center speech-bubble z-10 w-[75%] sm:w-fit h-36">
             <h1 class="m-auto font-bold text-center text-cyan-500">
-                <% const hour = new Date().getHours(); %>
+                <% const hour = new Date().getHours().toLocaleString({timeZone: 'PST'}); %>
+                <% console.log(hour); %>
                 <% if (hour >= 5 && hour < 12) { %>
                     Good morning, <%= username %>
                 <% } else if (hour >= 12 && hour < 18) { %>
                     Good afternoon, <%= username %>
                 <% } else { %>
                     Good evening, <%= username %>
-                    <% console.log(hour); %>
                 <% } %>
             </h1>
         </div>
@@ -28,7 +28,7 @@
                   {
                     id: "medicationCard",
                     title: "Amoxicillin",
-                    content: "26 minutes left",
+                    content: "1 minute left",
                     path: "M420-260h120v-100h100v-120H540v-100H420v100H320v120h100v100ZM280-120q-33 0-56.5-23.5T200-200v-440q0-33 23.5-56.5T280-720h400q33 0 56.5 23.5T760-640v440q0 33-23.5 56.5T680-120H280Zm0-80h400v-440H280v440Zm-40-560v-80h480v80H240Zm40 120v440-440Z",
                     bgImg: null,
                     icon: null
@@ -70,6 +70,8 @@
 
 <%- include("templates/footerTemplate") %> 
     
+
+<script src="js/indexWidgets.js"></script>
 <script>
   function populateAPIWidgets(apiKey) {
     if (navigator.geolocation) {
@@ -352,7 +354,8 @@
   }
 
   const apiKey = '<%= openWeatherAPIKey %>';
-  
   populateAPIWidgets(apiKey);
-
 </script>
+
+<script src="js/notifications.js"></script>
+<%- include("templates/footerTemplate") %> 
