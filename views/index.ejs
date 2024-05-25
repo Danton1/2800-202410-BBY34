@@ -95,7 +95,7 @@
   }
 
   function populateLocationWidget(widgetSettings, apiKey, lat, lon) {
-    const apiURL = `http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+    const apiURL = `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&appid=${apiKey}`;
     const widget = document.getElementById('locationCard');
 
     if (widgetSettings.location && !widgetSettings.location.enabled) {
@@ -117,7 +117,7 @@
   }
 
   function populateAirQualityWidget(widgetSettings, apiKey, lat, lon) {
-    const apiURL = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+    const apiURL = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`;
     const widget = document.getElementById('airQualityCard');
 
     if (widgetSettings.airQuality && !widgetSettings.airQuality.enabled) {
