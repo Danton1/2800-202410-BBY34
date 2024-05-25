@@ -77,10 +77,11 @@
 
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
+        const widgetSettings = <%- JSON.stringify(widgetSettings || {}) %>;
 
-        populateLocationWidget(apiKey, lat, lon);
-        populateAirQualityWidget(apiKey, lat, lon);
-        populateTemperatureWidget(apiKey, lat, lon);
+        populateLocationWidget(widgetSettings, apiKey, lat, lon);
+        populateAirQualityWidget(widgetSettings, apiKey, lat, lon);
+        populateTemperatureWidget(widgetSettings, apiKey, lat, lon);
         
         }, error => {
           console.error('Error getting location:', error);
@@ -91,12 +92,12 @@
     }
   }
 
-  function populateLocationWidget(apiKey, lat, lon) {
+  function populateLocationWidget(widgetSettings, apiKey, lat, lon) {
     const apiURL = `http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&appid=${apiKey}`;
     const widget = document.getElementById('locationCard');
 
-    if ('<%= widgetSettings.location.enabled %>' == 'false') { 
-      widget.setAttribute("style", "display: none;");
+    if (widgetSettings.location && !widgetSettings.location.enabled) {
+      widget.style.display = "none";
       return;
     }
 
@@ -113,12 +114,12 @@
       });
   }
 
-  function populateAirQualityWidget(apiKey, lat, lon) {
+  function populateAirQualityWidget(widgetSettings, apiKey, lat, lon) {
     const apiURL = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`;
     const widget = document.getElementById('airQualityCard');
 
-    if ('<%= widgetSettings.airQuality.enabled %>' == 'false') { 
-      widget.setAttribute("style", "display: none;");
+    if (widgetSettings.airQuality && !widgetSettings.airQuality.enabled) {
+      widget.style.display = "none";
       return;
     }
 
@@ -147,8 +148,7 @@
 
         const pollutants = components.map(item => item.pollutant);
         const concentrations = components.map(item => item.concentration);
-        const airQualityScale = "<%= widgetSettings.airQuality.units %>";
-        const airQualityIndex = calculateHighestUKAQI(airQualityScale, pollutants, concentrations);
+        const airQualityIndex = calculateHighestUKAQI(pollutants, concentrations);
 
         const airQualityIndexString = "AQI " + airQualityIndex;
         const airQualityString = "Risk: " + getUKAQIDescription(airQualityIndex);
@@ -271,7 +271,7 @@
     throw new Error(`Concentration ${concentration} is out of range.`);
   }
 
-  function calculateHighestUKAQI(scale, pollutants, concentrations) {
+  function calculateHighestUKAQI(pollutants, concentrations) {
     let highestAQI = 0;
 
     for (let i = 0; i < pollutants.length; i++) {
@@ -286,18 +286,24 @@
     return highestAQI;
   }
 
-  function populateTemperatureWidget(apiKey, lat, lon) {
-    const widgetSettingsUnits = '<%= widgetSettings.temperature.units %>';
-    const units = getUnitsFromSettings(widgetSettingsUnits);
-    const unitSign = getUnitSignFromSettings(widgetSettingsUnits);
-
-    const apiURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`;
+  function populateTemperatureWidget(widgetSettings, apiKey, lat, lon) {
     const widget = document.getElementById('outdoorTemperatureCard');
 
-    if ('<%= widgetSettings.temperature.enabled %>' == 'false') { 
-      widget.setAttribute("style", "display: none;");
-      return;
+    let units = 'metric';
+    let unitSign = '°C';
+
+    if (widgetSettings.temperature) {
+      const settings = widgetSettings.temperature.units;
+      units = getUnitsFromSettings(settings);
+      unitSign = getUnitSignFromSettings(settings);
+
+      if (!widgetSettings.temperature.enabled) {
+          widget.style.display = "none";
+          return;
+      }
     }
+
+    const apiURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`;
 
     fetch(apiURL)
       .then(response => response.json())

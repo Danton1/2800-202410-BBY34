@@ -10,11 +10,11 @@
             <div id="temperature" class="w-full hidden py-4 px-5 flex flex-col items-center bg-gray-600 border-b border-gray-800">
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Enabled</span>
-                    <%- include("../templates/widgetSettingsInputTemplate", {id: "temperatureEnabled", checked: widgetSettings.temperature.enabled}) %>
+                    <%- include("../templates/widgetSettingsInputTemplate", {id: "temperatureEnabled"}) %>
                 </div>
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Show Forecast</span>
-                    <%- include("../templates/widgetSettingsInputTemplate", {id: "temperatureForcastEnabled", checked: widgetSettings.temperature.showForecast}) %>
+                    <%- include("../templates/widgetSettingsInputTemplate", {id: "temperatureForcastEnabled"}) %>
                 </div>
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Units</span>
@@ -34,23 +34,11 @@
             <div id="airQuality" class="w-full hidden py-4 px-5 items-center bg-gray-600 border-b border-gray-800">
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Enabled</span>
-                    <%- include("../templates/widgetSettingsInputTemplate", {id: "airQualityEnabled", checked: widgetSettings.airQuality.enabled}) %>
+                    <%- include("../templates/widgetSettingsInputTemplate", {id: "airQualityEnabled"}) %>
                 </div>
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Show Forecast</span>
-                    <%- include("../templates/widgetSettingsInputTemplate", {id: "airQualityForcastEnabled", checked: widgetSettings.airQuality.showForecast}) %>
-                </div>
-                <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
-                    <span>AQI Scale</span>
-                    <%- include("../templates/widgetSettingsSelectTemplate", {
-                        id: "airQualityScale",
-                        options: [
-                            { value: "usa", label: "USA" },
-                            { value: "europe", label: "Europe" },
-                            { value: "uk", label: "UK" },
-                            { value: "china", label: "China" }
-                        ]
-                    }) %>
+                    <%- include("../templates/widgetSettingsInputTemplate", {id: "airQualityForcastEnabled"}) %>
                 </div>
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Carbon Monoxide</span>
@@ -145,32 +133,35 @@
     });
 
     function loadSavedSettings() {
-        if (typeof '<%= widgetSettings.temperature %>' !== 'undefined') {
-            document.getElementById('temperatureEnabled').checked = '<%= widgetSettings.temperature.enabled %>' === 'true';
-            document.getElementById('temperatureForcastEnabled').checked = '<%= widgetSettings.temperature.showForecast %>' === 'true';
-            document.getElementById('temperatureUnits').value = '<%= widgetSettings.temperature.units %>';
+        const widgetSettings = <%- JSON.stringify(widgetSettings || {}) %>;
+
+        if (widgetSettings.temperature) {
+            document.getElementById('temperatureEnabled').checked = widgetSettings.temperature.enabled || false;
+            document.getElementById('temperatureForcastEnabled').checked = widgetSettings.temperature.showForecast || false;
+            document.getElementById('temperatureUnits').value = widgetSettings.temperature.units || '';
         }
 
-        if (typeof '<%= widgetSettings.airQuality %>' !== 'undefined') {
-            document.getElementById('airQualityEnabled').checked = '<%= widgetSettings.airQuality.enabled %>' === 'true';
-            document.getElementById('airQualityForcastEnabled').checked = '<%= widgetSettings.airQuality.showForecast %>' === 'true';
-            document.getElementById('airQualityScale').value = '<%= widgetSettings.airQuality.units %>';
-            document.getElementById('coEnabled').checked = '<%= widgetSettings.airQuality.components.co %>' === 'true';
-            document.getElementById('noEnabled').checked = '<%= widgetSettings.airQuality.components.no %>' === 'true';
-            document.getElementById('no2Enabled').checked = '<%= widgetSettings.airQuality.components.no2 %>' === 'true';
-            document.getElementById('o3Enabled').checked = '<%= widgetSettings.airQuality.components.o3 %>' === 'true';
-            document.getElementById('so2Enabled').checked = '<%= widgetSettings.airQuality.components.so2 %>' === 'true';
-            document.getElementById('pm2_5Enabled').checked = '<%= widgetSettings.airQuality.components.pm2_5 %>' === 'true';
-            document.getElementById('pm10Enabled').checked = '<%= widgetSettings.airQuality.components.pm10 %>' === 'true';
-            document.getElementById('nh3Enabled').checked = '<%= widgetSettings.airQuality.components.nh3 %>' === 'true';
+        if (widgetSettings.airQuality) {
+            document.getElementById('airQualityEnabled').checked = widgetSettings.airQuality.enabled || false;
+            document.getElementById('airQualityForcastEnabled').checked = widgetSettings.airQuality.showForecast || false;
+
+            const components = widgetSettings.airQuality.components || {};
+            document.getElementById('coEnabled').checked = components.co || false;
+            document.getElementById('noEnabled').checked = components.no || false;
+            document.getElementById('no2Enabled').checked = components.no2 || false;
+            document.getElementById('o3Enabled').checked = components.o3 || false;
+            document.getElementById('so2Enabled').checked = components.so2 || false;
+            document.getElementById('pm2_5Enabled').checked = components.pm2_5 || false;
+            document.getElementById('pm10Enabled').checked = components.pm10 || false;
+            document.getElementById('nh3Enabled').checked = components.nh3 || false;
         }
 
-        if (typeof '<%= widgetSettings.location %>' !== 'undefined') {
-            document.getElementById('locationEnabled').checked = '<%= widgetSettings.location.enabled %>' === 'true';
+        if (widgetSettings.location) {
+            document.getElementById('locationEnabled').checked = widgetSettings.location.enabled || false;
         }
 
-        if (typeof '<%= widgetSettings.medications %>' !== 'undefined') {
-            document.getElementById('medicationsEnabled').checked = '<%= widgetSettings.medications.enabled %>' === 'true';
+        if (widgetSettings.medications) {
+            document.getElementById('medicationsEnabled').checked = widgetSettings.medications.enabled || false;
         }
     }
 
@@ -189,7 +180,6 @@
             airQuality: {
                 enabled: document.getElementById('airQualityEnabled').checked,
                 showForecast: document.getElementById('airQualityForcastEnabled').checked,
-                units: document.getElementById('airQualityScale').value,
                 components: {
                     co: document.getElementById('coEnabled').checked,
                     no: document.getElementById('noEnabled').checked,
