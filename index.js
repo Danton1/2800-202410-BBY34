@@ -1,16 +1,19 @@
 require("./utils.js");
-require('dotenv').config();
+require('dotenv').config(); 
 const express = require('express');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const bcrypt = require('bcrypt');
 const saltRounds = 12;
-
+const webpush = require("web-push");
+// const PushNotifications = require('node-pushnotifications');
+const bodyParser = require('body-parser');
+const { database } = require('./databaseConnection');
+const { MongoClient } = require('mongodb');
 const port = process.env.PORT || 3000;
 
 const app = express();
 
-const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -40,14 +43,19 @@ const mongodb_password = process.env.MONGODB_PASSWORD;
 const mongodb_database = process.env.MONGODB_DATABASE;
 const mongodb_session_secret = process.env.MONGODB_SESSION_SECRET;
 const node_session_secret = process.env.NODE_SESSION_SECRET;
+// VAPID keys
+const vapidPublicKey = process.env.VAPID_PUBLIC_KEY;
+const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY;
+const vapidEmail = process.env.VAPID_EMAIL;
 /* END secret section */
 
-var { database } = include('databaseConnection');
+// Push notification setup
+webpush.setVapidDetails('mailto:'+vapidEmail, vapidPublicKey, vapidPrivateKey);
 
 const userCollection = database.db(mongodb_database).collection('users');
 const tokenCollection = database.db(mongodb_database).collection('forgotToken');
 
-app.set('view engine', 'ejs');
+    app.set('view engine', 'ejs');
 
 var mongoStore = MongoStore.create({
     mongoUrl: `mongodb+srv://${mongodb_user}:${mongodb_password}@${mongodb_host}/sessions`,
@@ -56,18 +64,20 @@ var mongoStore = MongoStore.create({
     }
 })
 
-// USES
+    // USES
 
 // app.use(express.urlencoded({extended: false}));
-app.use(express.urlencoded({ extended: true })); // testing
-
+app.use(express.urlencoded({extended: false}));
+app.use(express.json());
 app.use(express.static(__dirname + "/public"));
 
 app.get('/chat.js', function (req, res) {
     res.sendFile(__dirname + '/scripts/chat.js');
 });
 
-app.use(session({
+app.use(bodyParser.json());
+
+app.use(session({ 
     secret: node_session_secret,
     store: mongoStore, //default is memory store 
     saveUninitialized: false,
@@ -75,14 +85,14 @@ app.use(session({
 }
 ));
 
-// FUNCTIONS
+    // FUNCTIONS
 
-function isValidSession(req) {
-    if (req.session.authenticated) {
-        return true;
+    function isValidSession(req) {
+        if (req.session.authenticated) {
+            return true;
+        }
+        return false;
     }
-    return false;
-}
 
 function sessionValidation(req, res, next) {
     if (isValidSession(req)) {
@@ -93,12 +103,12 @@ function sessionValidation(req, res, next) {
     }
 }
 
-function isAdmin(req) {
-    if (req.session.user_type == 'admin') {
-        return true;
+    function isAdmin(req) {
+        if (req.session.user_type == 'admin') {
+            return true;
+        }
+        return false;
     }
-    return false;
-}
 
 function adminAuthorization(req, res, next) {
     console.log(req.session.user_type);
@@ -112,54 +122,73 @@ function adminAuthorization(req, res, next) {
     }
 }
 
-// GETS
+    // GETS
 
-app.get('/', (req, res) => {
-    if (isValidSession(req)) {
-        res.render('index', { username: req.session.firstName, openWeatherAPIKey: process.env.OPEN_WEATHER_API_KEY });
+app.get('/', (req,res) => {
+    if(isValidSession(req)){
+        res.render('index', {username: req.session.firstName, openWeatherAPIKey: process.env.OPEN_WEATHER_API_KEY, widgetSettings: req.session.widgetSettings});
         return;
     }
     res.redirect('/login');
-});
-
-// Get for login
-app.get('/login', (req, res) => {
-    res.render("loginPage");
 });
 
-// Get for profile
-app.get('/profile', (req, res) => {
-    if (isValidSession(req)) {
-        res.render('profilePage', { user: req.session });
-        return;
-    }
-    res.redirect('/login');
-});
-app.get('/profile/personalInfo', (req, res) => {
-    if (isValidSession(req)) {
-        res.render('personalInfoPage', { user: req.session });
-        return;
-    }
-    res.redirect('/login');
-});
-app.get('/profile/contactInfo', (req, res) => {
-    if (isValidSession(req)) {
-        res.render('contactInfoPage', { user: req.session });
-        return;
-    }
-    res.redirect('/login');
-});
-app.get('/profile/medHistory', (req, res) => {
-    if (isValidSession(req)) {
-        res.render('medicalHistoryPage', { user: req.session });
-        return;
-    }
-    res.redirect('/login');
-});
+    // Get for login
+    app.get('/login', (req, res) => {
+        res.render("loginPage");
+    });
+
+    // Get for profile
+    app.get('/profile', (req, res) => {
+        if (isValidSession(req)) {
+            res.render('profilePage', { user: req.session });
+            return;
+        }
+        res.redirect('/login');
+    });
+    // Get for personal Info 
+    app.get('/profile/personalInfo', async (req, res) => {
+        if (isValidSession(req)) {
+            try {
+                const user = await userCollection.findOne({ email: req.session.email });
+                res.render('personalInfoPage', { user });
+            } catch (err) {
+                console.error("Error fetching user data:", err);
+                res.status(500).send("Internal Server Error");
+            }
+            return;
+        }
+        res.redirect('/login');
+    });
+
+    // Get for Contact Info
+    app.get('/profile/contactInfo', (req,res) => {
+        if(isValidSession(req)){
+            res.render('contactInfoPage', {user: req.session});
+            return;
+        }
+        res.redirect('/login');
+    });
+    
+    // Get for medical History
+    app.get('/profile/medHistory', (req,res) => {
+        if(isValidSession(req)){
+            res.render('medicalHistoryPage', {user: req.session});
+            return;
+        }
+        res.redirect('/login');
+    });
+    
 
 // Get for Settings
 app.get('/settings', (req, res) => {
     res.render('settingsPage');
+});
+app.get('/settings/widgets', (req,res) => {
+    if(isValidSession(req)){
+        res.render('settings/widgetsPage', {widgetSettings: req.session.widgetSettings});
+        return;
+    }
+    res.redirect('/login');
 });
 app.get('/settings/signOut', (req, res) => {
     req.session.destroy();
@@ -179,25 +208,34 @@ app.get('/chatbot', async (req, res) => {
 });
 
 // Get for 404
-app.get("*", (req, res) => {
-    res.status(404);
-    res.render("404Page");
-})
+app.get("*", (req,res) => {
+	res.status(404);
+	res.render("404Page");
+});
 
-// POSTS
+    // POSTS
 
 app.post('/chatbot', async (req, res) => {
     const input = req.body.userInput;
     // console.log("in the post function");
     const processedData = `${input}`;
     const output = await runPrompt(input);
-    var data = { processedData: processedData, output: output };
-    // Send the processed data back to the client
     const egg = JSON.parse(output).isEasterEgg;
-    console.log(typeof (egg));
-    switch (egg) {
-        case "1":
-            console.log("in switch");
+    // console.log("egg: " + egg);
+    var eggNum;
+    if(egg === "true"){
+        // console.log("aaa");
+        eggNum = Math.floor(Math.random() * 7) + 1;
+    } else{
+        eggNum = 0;
+    }
+    var data = { processedData: processedData, output: output, eggNum: eggNum };
+    // Send the processed data back to the client
+
+    // console.log(eggNum);
+    switch (eggNum) {
+        case 1:
+            // console.log("in switch");
             assistantID = process.env.WHO_KEY;
             cancel = await openai.beta.threads.del(myThread.id);
             myThread = await openai.beta.threads.create();
@@ -206,8 +244,8 @@ app.post('/chatbot', async (req, res) => {
                 { assistant_id: assistantID }
             );
             break;
-        case "2":
-            console.log("in switch");
+        case 2:
+            // console.log("in switch");
             assistantID = process.env.PHIL_KEY;
             cancel = await openai.beta.threads.del(myThread.id);
             myThread = await openai.beta.threads.create();
@@ -216,8 +254,8 @@ app.post('/chatbot', async (req, res) => {
                 { assistant_id: assistantID }
             );
             break;
-        case "3":
-            console.log("in switch");
+        case 3:
+            // console.log("in switch");
             assistantID = process.env.DRE_KEY;
             cancel = await openai.beta.threads.del(myThread.id);
             myThread = await openai.beta.threads.create();
@@ -226,8 +264,8 @@ app.post('/chatbot', async (req, res) => {
                 { assistant_id: assistantID }
             );
             break;
-        case "4":
-            console.log("in switch");
+        case 4:
+            // console.log("in switch");
             assistantID = process.env.PEPPER_KEY;
             cancel = await openai.beta.threads.del(myThread.id);
             myThread = await openai.beta.threads.create();
@@ -236,8 +274,8 @@ app.post('/chatbot', async (req, res) => {
                 { assistant_id: assistantID }
             ); 
             break;
-        case "5":
-            console.log("in switch");
+        case 5:
+            // console.log("in switch");
             assistantID = process.env.STRANGE_KEY;
             cancel = await openai.beta.threads.del(myThread.id);
             myThread = await openai.beta.threads.create();
@@ -246,8 +284,8 @@ app.post('/chatbot', async (req, res) => {
                 { assistant_id: assistantID }
             ); 
             break;
-        case "6":
-            console.log("in switch");
+        case 6:
+            // console.log("in switch");
             assistantID = process.env.HOUSE_KEY;
             cancel = await openai.beta.threads.del(myThread.id);
             myThread = await openai.beta.threads.create();
@@ -256,8 +294,8 @@ app.post('/chatbot', async (req, res) => {
                 { assistant_id: assistantID }
             );
             break;
-        case "7":
-            console.log("in switch");
+        case 7:
+            // console.log("in switch");
             assistantID = process.env.ZOID_KEY;
             cancel = await openai.beta.threads.del(myThread.id);
             myThread = await openai.beta.threads.create();
@@ -267,7 +305,7 @@ app.post('/chatbot', async (req, res) => {
             );
             break;
         default:
-            console.log("default")
+            // console.log("default");
             break;
     }
 
@@ -373,6 +411,7 @@ app.post('/submitLogin', async (req, res) => {
             req.session.birthDate = getUser.birthDate;
             req.session.country = getUser.country;
             req.session.city = getUser.city;
+            req.session.widgetSettings = getUser.widgetSettings;
 
             res.redirect('/');
             return;
@@ -383,8 +422,121 @@ app.post('/submitLogin', async (req, res) => {
         }
     }
 });
+//post for Personal Info
+app.post('/profile/personalInfo/edit', async (req, res) => {
+    if (isValidSession(req)) {
+        try {
+            const { firstName, lastName, birthDate, country, city } = req.body;
+            await userCollection.updateOne(
+                { email: req.session.email },
+                { $set: { firstName, lastName, birthDate, country, city } }
+            );
+            
+            req.session.firstName = firstName;
+            req.session.lastName = lastName;
+            req.session.birthDate = birthDate;
+            req.session.country = country;
+            req.session.city = city;
+            
+            res.redirect('/profile/personalInfo');
+        } catch (err) {
+            console.error("Error updating user data:", err);
+            res.status(500).send("Internal Server Error");
+        }
+    } else {
+        res.redirect('/login');
+    }
+});
 
-// LISTENS
+//post for Medical History (meds)
+app.post('/profile/medHistory/addMedication', async (req, res) => {
+    if (isValidSession(req)) {
+        try {
+            const { medication } = req.body;
+            await userCollection.updateOne(
+                { email: req.session.email },
+                { $push: { medications: medication } }
+            );
+            res.redirect('/profile/medHistory');
+        } catch (err) {
+            console.error("Error adding medication:", err);
+            res.status(500).send("Internal Server Error");
+        }
+    } else {
+        res.redirect('/login');
+    }
+});
+
+    //post for Medical History (illness)
+app.post('/profile/medHistory/addIllness', async (req, res) => {
+    if (isValidSession(req)) {
+        try {
+            const { illness } = req.body;
+            await userCollection.updateOne(
+                { email: req.session.email },
+                { $push: { illnesses: illness } }
+            );
+            res.redirect('/profile/medHistory');
+        } catch (err) {
+            console.error("Error adding illness:", err);
+            res.status(500).send("Internal Server Error");
+        }
+    } else {
+        res.redirect('/login');
+    }
+});
+
+    //post for Medical History (allergy)
+app.post('/profile/medHistory/addAllergy', async (req, res) => {
+    if (isValidSession(req)) {
+        try {
+            const { allergy } = req.body;
+            await userCollection.updateOne(
+                { email: req.session.email },
+                { $push: { allergies: allergy } }
+            );
+            res.redirect('/profile/medHistory');
+        } catch (err) {
+            console.error("Error adding allergy:", err);
+            res.status(500).send("Internal Server Error");
+        }
+    } else {
+        res.redirect('/login');
+    }
+});
+app.post('/settings/widgets/update', async (req, res) => {
+    try {
+        const settings = req.body;
+        
+        await userCollection.updateOne(
+            { email: req.session.email },
+            { $set: { widgetSettings: settings } }
+        );
+
+        req.session.widgetSettings = settings;
+
+        res.status(200).send('Settings updated successfully');
+    } catch (error) {
+        console.error('Error updating settings:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+
+// Push notification subscription route
+app.post('/subscribe', (req, res) => {
+    // Get push subscription object
+    const subscription = req.body;
+    // Send 201 - resource created
+    res.status(201).json({});
+    // Create payload
+    const payload = JSON.stringify({ title: 'MediKate - Medication Reminder', message: 'Amoxicillin\n300mg' });
+    // Pass object into sendNotification
+    setTimeout( () => {
+        webpush.sendNotification(subscription, payload).catch(error => console.error(error));
+    }, 10000);
+});
+
+    // LISTENS
 
 app.listen(port, () => {
     console.log("Node application listening on port " + port);

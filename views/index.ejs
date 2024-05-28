@@ -1,18 +1,18 @@
 <%- include("templates/headerTemplate") %> 
 
 
-    <div class="w-full h-full bg-gradient-to-br from-gray-900 to-gray-800">
+    <div class="w-full h-full bg-gradient-to-br from-gray-900 to-gray-700">
         <div class="py-5"></div>
-        <div class="leading-none pt-1 flex text-3xl md:text-4xl font-sans text-center speech-bubble z-10 w-[75%] sm:w-fit h-52">
+        <div class="leading-none pt-1 flex text-3xl md:text-4xl font-sans text-center speech-bubble z-10 w-[75%] sm:w-fit h-36">
             <h1 class="m-auto font-bold text-center text-cyan-500">
-                <% const hour = new Date().getHours(); %>
+                <% const hour = new Date().getHours().toLocaleString({timeZone: 'PST'}); %>
+                <% console.log(hour); %>
                 <% if (hour >= 5 && hour < 12) { %>
                     Good morning, <%= username %>
                 <% } else if (hour >= 12 && hour < 18) { %>
                     Good afternoon, <%= username %>
                 <% } else { %>
                     Good evening, <%= username %>
-                    <% console.log(hour); %>
                 <% } %>
             </h1>
         </div>
@@ -26,26 +26,10 @@
 
                 <% let cards = [
                   {
-                    id: "appointmentCard",
-                    title: "Appointment",
-                    content: "May 30, 2054",
-                    path: "M580-240q-42 0-71-29t-29-71q0-42 29-71t71-29q42 0 71 29t29 71q0 42-29 71t-71 29ZM200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Z",
-                    bgImg: null,
-                    icon: null
-                  },
-                  {
                     id: "medicationCard",
                     title: "Amoxicillin",
-                    content: "26 minutes left",
+                    content: "1 minute left",
                     path: "M420-260h120v-100h100v-120H540v-100H420v100H320v120h100v100ZM280-120q-33 0-56.5-23.5T200-200v-440q0-33 23.5-56.5T280-720h400q33 0 56.5 23.5T760-640v440q0 33-23.5 56.5T680-120H280Zm0-80h400v-440H280v440Zm-40-560v-80h480v80H240Zm40 120v440-440Z",
-                    bgImg: null,
-                    icon: null
-                  },
-                  {
-                    id: "bloodPressureCard",
-                    title: "Blood Pressure",
-                    content: "110/70",
-                    path: "M280-80v-200H80v-400h200v-200h400v200h200v400H680v200H280ZM160-520h200q10 0 19 5t14 13l35 52 54-162q4-12 14.5-20t23.5-8q10 0 19 5t14 13l68 102h179v-80H600v-200H360v200H160v80Zm200 360h240v-200h200v-80H600q-10 0-19-5t-15-13l-34-52-54 162q-4 12-15 20t-24 8q-10 0-19-5t-14-13l-68-102H160v80h200v200Zm120-320Z",
                     bgImg: null,
                     icon: null
                   },
@@ -60,16 +44,8 @@
                   {
                     id: "outdoorTemperatureCard",
                     title: "loading...",
-                    content: "Temperature",
+                    content: "loading...",
                     path: "M440-760v-160h80v160h-80Zm266 110-55-55 112-115 56 57-113 113Zm54 210v-80h160v80H760ZM440-40v-160h80v160h-80ZM254-652 140-763l57-56 113 113-56 54Zm508 512L651-255l54-54 114 110-57 59ZM40-440v-80h160v80H40Zm157 300-56-57 112-112 29 27 29 28-114 114Zm283-100q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm0-80q66 0 113-47t47-113q0-66-47-113t-113-47q-66 0-113 47t-47 113q0 66 47 113t113 47Zm0-160Z",
-                    bgImg: null,
-                    icon: null
-                  },
-                  {
-                    id: "oxygenCard",
-                    title: "Oxygen Level",
-                    content: "98%",
-                    path: "M280-80v-200H80v-400h200v-200h400v200h200v400H680v200H280ZM160-520h200q10 0 19 5t14 13l35 52 54-162q4-12 14.5-20t23.5-8q10 0 19 5t14 13l68 102h179v-80H600v-200H360v200H160v80Zm200 360h240v-200h200v-80H600q-10 0-19-5t-15-13l-34-52-54 162q-4 12-15 20t-24 8q-10 0-19-5t-14-13l-68-102H160v80h200v200Zm120-320Z",
                     bgImg: null,
                     icon: null
                   },
@@ -80,26 +56,22 @@
                     path: "M480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Zm0 294q122-112 181-203.5T720-552q0-109-69.5-178.5T480-800q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186Zm0 106Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Zm0-480Z",
                     bgImg: null,
                     icon: null
-                  },
-                  {
-                    id: "mailCard",
-                    title: "New Message",
-                    content: "Dr. Kate needs to talk to you",
-                    path: "M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm320-280L160-640v400h640v-400L480-440Zm0-80 320-200H160l320 200ZM160-640v-80 480-400Z",
-                    bgImg: null,
-                    icon: null
                   }
                 ]; %>
                 
                 <%  cards.forEach(card => { %>
-                  <%- include("templates/index_cards", {id: card.id, title: card.title, content: card.content, path: card.path, bgImg: card.bgImg, icon: card.icon}) %>
+                  <%- include("templates/index_cards", {id: card.id, title: card.title, content: card.content, path: card.path, bgImg: card.bgImg, icon: card.icon, enabled: card.enabled}) %>
                 <% }) %>           
             
             </div>
           </div>
         </section>
   </div>
+
+<%- include("templates/footerTemplate") %> 
     
+
+<script src="js/indexWidgets.js"></script>
 <script>
   function populateAPIWidgets(apiKey) {
     if (navigator.geolocation) {
@@ -107,10 +79,11 @@
 
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
+        const widgetSettings = <%- JSON.stringify(widgetSettings || {}) %>;
 
-        populateLocationWidget(apiKey, lat, lon);
-        populateAirQualityWidget(apiKey, lat, lon);
-        populateTemperatureWidget(apiKey, lat, lon);
+        populateLocationWidget(widgetSettings, apiKey, lat, lon);
+        populateAirQualityWidget(widgetSettings, apiKey, lat, lon);
+        populateTemperatureWidget(widgetSettings, apiKey, lat, lon);
         
         }, error => {
           console.error('Error getting location:', error);
@@ -121,9 +94,14 @@
     }
   }
 
-  function populateLocationWidget(apiKey, lat, lon) {
-    const apiURL = `http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+  function populateLocationWidget(widgetSettings, apiKey, lat, lon) {
+    const apiURL = `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&appid=${apiKey}`;
     const widget = document.getElementById('locationCard');
+
+    if (widgetSettings.location && !widgetSettings.location.enabled) {
+      widget.style.display = "none";
+      return;
+    }
 
     fetch(apiURL)
       .then(response => response.json())
@@ -138,58 +116,246 @@
       });
   }
 
-  function populateAirQualityWidget(apiKey, lat, lon) {
-    const apiURL = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+  function populateAirQualityWidget(widgetSettings, apiKey, lat, lon) {
+    const apiURL = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`;
     const widget = document.getElementById('airQualityCard');
+
+    if (widgetSettings.airQuality && !widgetSettings.airQuality.enabled) {
+      widget.style.display = "none";
+      return;
+    }
 
     fetch(apiURL)
       .then(response => response.json())
       .then(data => {
-        const airQualityIndex = data.list[0].main.aqi;
-        widget.querySelector(".indexCardTitle").textContent = "AQI " + airQualityIndex;
-        widget.querySelector(".indexCardContent").textContent = "Quality: " + getAirQualityDescription(airQualityIndex);
+        const compCO = data.list[0].components.co;
+        const compNO = data.list[0].components.no;
+        const compNO2 = data.list[0].components.no2;
+        const compO3 = data.list[0].components.o3;
+        const compSO2 = data.list[0].components.so2;
+        const compPM2_5 = data.list[0].components.pm2_5;
+        const compPM10 = data.list[0].components.pm10;
+        const compNH3 = data.list[0].components.nh3;
+
+        const components = [
+          { pollutant: 'co', concentration: compCO },
+          { pollutant: 'no', concentration: compNO },
+          { pollutant: 'no2', concentration: compNO2 },
+          { pollutant: 'o3', concentration: compO3 },
+          { pollutant: 'so2', concentration: compSO2 },
+          { pollutant: 'pm2_5', concentration: compPM2_5 },
+          { pollutant: 'pm10', concentration: compPM10 },
+          { pollutant: 'nh3', concentration: compNH3 }
+        ];
+
+        const pollutants = components.map(item => item.pollutant);
+        const concentrations = components.map(item => item.concentration);
+        const airQualityIndex = calculateHighestUKAQI(pollutants, concentrations);
+
+        const airQualityIndexString = "AQI " + airQualityIndex;
+        const airQualityString = "Risk: " + getUKAQIDescription(airQualityIndex);
+
+        widget.querySelector(".indexCardTitle").textContent = airQualityIndexString;
+        widget.querySelector(".indexCardContent").textContent = airQualityString;
       })
       .catch(error => {
         console.error('Error fetching air quality data:', error);
       });
   }
 
-  function getAirQualityDescription(aqi) {
+  function getUKAQIDescription(aqi) {
     switch (aqi) {
-      case 1:
-        return "Good";
-      case 2:
-        return "Fair";
-      case 3:
-        return "Moderate";
-      case 4:
-        return "Poor";
-      case 5:
-        return "Very Poor";
-      default:
-        return "Invalid AQI";
+        case 1:
+        case 2:
+        case 3:
+            return "Low";
+        case 4:
+        case 5:
+        case 6:
+            return "Moderate";
+        case 7:
+        case 8:
+        case 9:
+            return "High";
+        case 10:
+            return "Very High";
+        default:
+            return "Invalid AQI";
     }
   }
 
-  function populateTemperatureWidget(apiKey, lat, lon) {
-    const apiURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+  function calculateUKAQI(pollutant, concentration) {
+    let index;
+
+    switch (pollutant) {
+      case 'so2':
+        index = getAQIIndex(concentration, [
+          { range: [0, 88], index: 1 },
+          { range: [89, 177], index: 2 },
+          { range: [178, 266], index: 3 },
+          { range: [267, 354], index: 4 },
+          { range: [355, 443], index: 5 },
+          { range: [444, 532], index: 6 },
+          { range: [533, 710], index: 7 },
+          { range: [711, 887], index: 8 },
+          { range: [888, 1064], index: 9 },
+          { range: [1065, Infinity], index: 10 }
+        ]);
+        break;
+      case 'no2':
+        index = getAQIIndex(concentration, [
+          { range: [0, 67], index: 1 },
+          { range: [68, 134], index: 2 },
+          { range: [135, 200], index: 3 },
+          { range: [201, 267], index: 4 },
+          { range: [268, 334], index: 5 },
+          { range: [335, 400], index: 6 },
+          { range: [401, 467], index: 7 },
+          { range: [468, 534], index: 8 },
+          { range: [535, 600], index: 9 },
+          { range: [601, Infinity], index: 10 }
+        ]);
+        break;
+      case 'pm2_5':
+        index = getAQIIndex(concentration, [
+          { range: [0, 11], index: 1 },
+          { range: [12, 23], index: 2 },
+          { range: [24, 35], index: 3 },
+          { range: [36, 41], index: 4 },
+          { range: [42, 47], index: 5 },
+          { range: [48, 53], index: 6 },
+          { range: [54, 58], index: 7 },
+          { range: [59, 64], index: 8 },
+          { range: [65, 70], index: 9 },
+          { range: [71, Infinity], index: 10 }
+        ]);
+        break;
+      case 'pm10':
+        index = getAQIIndex(concentration, [
+          { range: [0, 16], index: 1 },
+          { range: [17, 33], index: 2 },
+          { range: [34, 50], index: 3 },
+          { range: [52, 58], index: 4 },
+          { range: [59, 66], index: 5 },
+          { range: [67, 75], index: 6 },
+          { range: [76, 83], index: 7 },
+          { range: [84, 91], index: 8 },
+          { range: [92, 100], index: 9 },
+          { range: [101, Infinity], index: 10 }
+        ]);
+        break;
+      case 'o3':
+        index = getAQIIndex(concentration, [
+          { range: [0, 33], index: 1 },
+          { range: [34, 66], index: 2 },
+          { range: [67, 100], index: 3 },
+          { range: [101, 120], index: 4 },
+          { range: [121, 140], index: 5 },
+          { range: [141, 160], index: 6 },
+          { range: [161, 187], index: 7 },
+          { range: [188, 213], index: 8 },
+          { range: [214, 240], index: 9 },
+          { range: [241, Infinity], index: 10 }
+        ]);
+        break;
+      default:
+        return null;
+    }
+    return index;
+  }
+
+  function getAQIIndex(concentration, ranges) {
+    for (const range of ranges) {
+      if (concentration >= range.range[0] && concentration <= range.range[1]) {
+        return range.index;
+      }
+    }
+    throw new Error(`Concentration ${concentration} is out of range.`);
+  }
+
+  function calculateHighestUKAQI(pollutants, concentrations) {
+    let highestAQI = 0;
+
+    for (let i = 0; i < pollutants.length; i++) {
+      const pollutant = pollutants[i];
+      const concentration = concentrations[i];
+      const aqi = calculateUKAQI(pollutant, concentration);
+      if (aqi > highestAQI) {
+        highestAQI = aqi;
+      }
+    }
+
+    return highestAQI;
+  }
+
+  function populateTemperatureWidget(widgetSettings, apiKey, lat, lon) {
     const widget = document.getElementById('outdoorTemperatureCard');
+
+    let units = 'metric';
+    let unitSign = '°C';
+
+    if (widgetSettings.temperature) {
+      const settings = widgetSettings.temperature.units;
+      units = getUnitsFromSettings(settings);
+      unitSign = getUnitSignFromSettings(settings);
+
+      if (!widgetSettings.temperature.enabled) {
+          widget.style.display = "none";
+          return;
+      }
+    }
+
+    const apiURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`;
 
     fetch(apiURL)
       .then(response => response.json())
       .then(data => {
         const temperature = data.main.temp;
-        widget.querySelector(".indexCardTitle").textContent = temperature + "°C";
+        const temperatureString = temperature + unitSign;
+        const weather = data.weather[0].description;
+        const weatherString = capitalizeSentence(data.weather[0].description);
+
+        widget.querySelector(".indexCardTitle").textContent = temperatureString;
+        widget.querySelector(".indexCardContent").textContent = weatherString;
       })
       .catch(error => {
         console.error('Error fetching temperature data:', error);
       });
   }
 
-  const apiKey = '<%= openWeatherAPIKey %>';
-  
-  populateAPIWidgets(apiKey);
+  function capitalizeSentence(sentence) {
+    if (!sentence) return sentence;
+    return sentence
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+  }
 
+  function getUnitsFromSettings(settings) {
+    switch (settings) {
+      case 'f':
+        return "imperial";
+      case 'k':
+        return "default";
+      default:
+        return "metric";
+    }
+  }
+
+  function getUnitSignFromSettings(settings) {
+    switch (settings) {
+      case 'f':
+        return "°F";
+      case 'k':
+        return "°K";
+      default:
+        return "°C";
+    }
+  }
+
+  const apiKey = '<%= openWeatherAPIKey %>';
+  populateAPIWidgets(apiKey);
 </script>
 
+<script src="js/notifications.js"></script>
 <%- include("templates/footerTemplate") %> 
