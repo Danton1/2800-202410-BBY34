@@ -180,9 +180,7 @@ app.get('/', (req,res) => {
     
 
 // Get for Settings
-app.get('/settings', (req, res) => {
-    res.render('settingsPage');
-});
+
 app.get('/settings/widgets', (req,res) => {
     if(isValidSession(req)){
         res.render('settings/widgetsPage', {widgetSettings: req.session.widgetSettings});
