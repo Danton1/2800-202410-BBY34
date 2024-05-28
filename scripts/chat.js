@@ -85,8 +85,8 @@ $(function () {
                 // Format the chatbot's response
                 const obj = JSON.parse(response.output);
                 let outputString = obj.message;
-                let egg = obj.isEasterEgg;
-                // console.log(egg);
+                let egg = JSON.parse(response.eggNum);
+                // console.log(obj);
 
                 // let formattedOutput = outputString.join("\n");
                 // formattedOutput = formattedOutput.replaceAll("\n", "<br>");
@@ -121,34 +121,34 @@ $(function () {
 
                 gptCounter++;
 
-
+                // console.log(egg);
 
                 switch (egg) {
-                    case "1":
+                    case 1:
                         imgSrc = "egg/who.jpg";
                         imgName = "Dr. Who";
                         break;
-                    case "2":
+                    case 2:
                         imgSrc = "egg/phil.png";
                         imgName = "Dr. Phil";
                         break;
-                    case "3":
+                    case 3:
                         imgSrc = "egg/dre.jpeg";
                         imgName = "Dr. Dre";
                         break;
-                    case "4":
+                    case 4:
                         imgSrc = "egg/pepper.webp";
                         imgName = "Dr. Pepper";
                         break;
-                    case "5":
+                    case 5:
                         imgSrc = "egg/strange.webp";
                         imgName = "Dr. Strange";
                         break;
-                    case "6":
+                    case 6:
                         imgSrc = "egg/house.webp";
                         imgName = "Dr. House";
                         break;
-                    case "7":
+                    case 7:
                         imgSrc = "egg/zoid.jpg";
                         imgName = "Dr. Zoid";
                         break;
