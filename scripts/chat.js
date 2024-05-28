@@ -3,6 +3,7 @@ var imgSrc = "Kate.png";
 var imgName = "Dr.Kate";
 var userCounter = 0;
 var gptCounter = 0;
+var tempEgg;
 
 $(function () {
     $('#chatForm').on("submit", function (event) {
@@ -123,6 +124,19 @@ $(function () {
 
                 // console.log(egg);
 
+                //prevents getting the same doctor in a row? (not tested lol)
+                if(egg != tempEgg && egg != 0){
+                    tempEgg = egg;
+                } else if(egg == tempEgg && egg != 0){
+                    egg = (egg % 7) + 1;
+                }
+
+                if(tempEgg != 0){
+                    //change background here
+                    $( "#chatHistoryWrap" ).addClass("bg-yellow-200");
+                }
+                
+
                 switch (egg) {
                     case 1:
                         imgSrc = "egg/who.jpg";
@@ -159,6 +173,27 @@ $(function () {
             },
             error: function (xhr, status, error) {
                 console.error('Error:', error);
+                $("#loading").remove();
+
+                $('#chatHistoryWrap').append(`
+                <div class="chat chat-start items-end justify-items-end">
+                    <div class="flex flex-col justify-center items-center">
+                        <div class="chat-header mb-2">
+                            ${imgName}
+                        </div>
+                        <div class="chat-image avatar">
+                            <div class="w-[50px] rounded-full">
+                                <img alt="chatbot profile pic" src=${imgSrc} />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full flex items-end gap-2">
+                        <div id="gptOutput${gptCounter}" class="chat-bubble py-4 px-5 bg-gray-700 text-sky-100">
+                        An error occured
+                        </div>
+                        <time class="text-xs opacity-50">${time}</time>
+                    </div>
+                </div>`)
             }
         });
     });

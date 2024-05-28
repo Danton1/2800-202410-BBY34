@@ -313,6 +313,10 @@ app.post('/chatbot', async (req, res) => {
 const runPrompt = async (input) => {
     const prompt = input;
 
+    if(!myThread){ // haven't tested
+        return({"message": "error"});
+    }
+
     const myThreadMessage = await openai.beta.threads.messages.create(
         myThread.id,
         {
