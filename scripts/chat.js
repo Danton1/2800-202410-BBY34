@@ -3,7 +3,7 @@ var imgSrc = "Kate.png";
 var imgName = "Dr.Kate";
 var userCounter = 0;
 var gptCounter = 0;
-var tempEgg;
+var tempEgg = 0;
 
 $(function () {
     $('#chatForm').on("submit", function (event) {
@@ -124,16 +124,9 @@ $(function () {
 
                 // console.log(egg);
 
-                //prevents getting the same doctor in a row? (not tested lol)
-                if(egg != tempEgg && egg != 0){
-                    tempEgg = egg;
-                } else if(egg == tempEgg && egg != 0){
-                    egg = (egg % 7) + 1;
-                }
-
                 if(tempEgg != 0){
                     //change background here
-                    $( "#chatHistoryWrap" ).addClass("bg-yellow-200");
+                    $( "#chatHistoryWrap" ).addClass("bg-black");
                 }
                 
 
