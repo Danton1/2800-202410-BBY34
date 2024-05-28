@@ -27,7 +27,7 @@ var mongoStore = MongoStore.create({
 })
 
 // USES
-router.use(express.urlencoded({ extended: false }));
+router.use(express.urlencoded({ extended: true }));
 router.use(express.static(__dirname + "/public"));
 
 router.post('/sendEmail', async (req, res) => {
@@ -65,14 +65,20 @@ router.post('/sendEmail', async (req, res) => {
         //generate url
         // const resetPasswordBaseUrl = 'https://two800-202410-bby34-sjiu.onrender.com/forgot/resetPassword';
         // const resetPasswordLink = `${resetPasswordBaseUrl}?email=${encodeURIComponent(forgotEmail)}&token=${encodeURIComponent(encodedToken)}`;
-        console.log("asdasd " + req.body.emailContent);
+        console.log("asdasd " + req.body.username);
+
+        var opening = `Hello Dr. Giggles, \n\n`
+        var ending= ` 
+        \nThank you for your help and you can reach them at ${req.body.useremail}\nRegards,\nMediKate\n(AI Health Assistant)`
+
+        var final = opening + req.body.emailContent + ending;
         // console.log("222 " + req.body.testttt);
         // Define email options
         let mailOptions = {
             from: userEmail,
             to: process.env.TEST_EMAIL,
             subject: 'Appointment Request',
-            text: req.body.emailContent
+            text: final
         };
 
         // Send email
