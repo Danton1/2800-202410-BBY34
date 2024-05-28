@@ -132,51 +132,54 @@ app.get('/', (req,res) => {
     res.redirect('/login');
 });
 
-    // Get for login
-    app.get('/login', (req, res) => {
-        res.render("loginPage");
-    });
+// Get for login
+app.get('/login', (req, res) => {
+    res.render("loginPage");
+});
 
-    // Get for profile
-    app.get('/profile', (req, res) => {
-        if (isValidSession(req)) {
-            res.render('profilePage', { user: req.session });
-            return;
-        }
-        res.redirect('/login');
-    });
-    // Get for personal Info 
-    app.get('/profile/personalInfo', async (req, res) => {
-        if (isValidSession(req)) {
-            try {
-                const user = await userCollection.findOne({ email: req.session.email });
-                res.render('personalInfoPage', { user });
-            } catch (err) {
-                console.error("Error fetching user data:", err);
-                res.status(500).send("Internal Server Error");
-            }
-            return;
-        }
-        res.redirect('/login');
-    });
+// Get for profile
+app.get('/profile', (req, res) => {
+    if (isValidSession(req)) {
+        res.render('profilePage', { user: req.session });
+        return;
+    }
+    res.redirect('/login');
+});
 
-    // Get for Contact Info
-    app.get('/profile/contactInfo', (req,res) => {
-        if(isValidSession(req)){
-            res.render('contactInfoPage', {user: req.session});
-            return;
+// Get for personal Info 
+app.get('/profile/personalInfo', async (req, res) => {
+    if (isValidSession(req)) {
+        try {
+            const user = await userCollection.findOne({ email: req.session.email });
+            res.render('personalInfoPage', { user });
+        } catch (err) {
+            console.error("Error fetching user data:", err);
+            res.status(500).send("Internal Server Error");
         }
-        res.redirect('/login');
-    });
-    
-    // Get for medical History
-    app.get('/profile/medHistory', (req,res) => {
-        if(isValidSession(req)){
-            res.render('medicalHistoryPage', {user: req.session});
-            return;
-        }
-        res.redirect('/login');
-    });
+        return;
+    }
+    res.redirect('/login');
+});
+
+// Get for Contact Info
+app.get('/profile/contactInfo', async (req,res) => {
+    if(isValidSession(req)){
+        const user = await userCollection.findOne({ email: req.session.email });
+        res.render('contactInfoPage', {user: user});
+        return;
+    }
+    res.redirect('/login');
+});
+
+// Get for medical History
+app.get('/profile/medHistory', async (req,res) => {
+    if(isValidSession(req)){
+        const user = await userCollection.findOne({ email: req.session.email });
+        res.render('medicalHistoryPage', {user: user});
+        return;
+    }
+    res.redirect('/login');
+});
     
 
 // Get for Settings
@@ -412,6 +415,9 @@ app.post('/submitLogin', async (req, res) => {
             req.session.country = getUser.country;
             req.session.city = getUser.city;
             req.session.widgetSettings = getUser.widgetSettings;
+            req.session.medications = getUser.medications;
+            req.session.illnesses = getUser.illnesses;
+            req.session.allergies = getUser.allergies;
 
             res.redirect('/');
             return;
@@ -467,7 +473,7 @@ app.post('/profile/medHistory/addMedication', async (req, res) => {
     }
 });
 
-    //post for Medical History (illness)
+//post for Medical History (illness)
 app.post('/profile/medHistory/addIllness', async (req, res) => {
     if (isValidSession(req)) {
         try {
@@ -486,7 +492,7 @@ app.post('/profile/medHistory/addIllness', async (req, res) => {
     }
 });
 
-    //post for Medical History (allergy)
+//post for Medical History (allergy)
 app.post('/profile/medHistory/addAllergy', async (req, res) => {
     if (isValidSession(req)) {
         try {
@@ -504,6 +510,7 @@ app.post('/profile/medHistory/addAllergy', async (req, res) => {
         res.redirect('/login');
     }
 });
+
 app.post('/settings/widgets/update', async (req, res) => {
     try {
         const settings = req.body;

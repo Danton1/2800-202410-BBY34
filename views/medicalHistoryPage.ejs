@@ -1,5 +1,5 @@
 <%- include("templates/headerTemplate")%>
-<div class="max-w-[450px] w-full min-h-svh mx-auto px-[35px] py-[50px] pb-[100px] bg-gray-900 flex flex-col items-center space-y-5 text-sky-100 text-md font-medium">
+<div id="medHistoryWrap" class="max-w-[450px] w-full min-h-svh mx-auto px-[35px] py-[50px] pb-[100px] bg-gray-900 flex flex-col items-center space-y-5 text-sky-100 text-md font-medium">
     <!-- Page title -->
     <h1 class="text-sky-300 text-3xl font-bold mb-5">Medical History</h1>
 
@@ -10,13 +10,15 @@
             <i id="medicationTitle" class="fa-solid fa-chevron-down duration-200"></i>
         </h1>
         <ul id="medications" class="w-full h-0 overflow-hidden flex flex-col space-y-3 duration-300">
-            <% user.medications.forEach(function(medication) { %>
-                <li class="w-full bg-gray-800 py-3 px-4 rounded-xl">
-                    <%= medication %>
-                </li>
-            <% }) %>
+            <% if (user.medications !== undefined) { %>
+                <% user.medications.forEach(medication => { %>
+                    <li class="w-full bg-gray-800 py-3 px-4 rounded-xl">
+                        <%= medication %>
+                    </li>
+                <% }) %>
+            <% } %>
             <form action="/profile/medHistory/addMedication" method="POST" class="w-full">
-                <input type="text" name="medication" placeholder="New Medication" class="w-full bg-gray-800 py-3 px-4 rounded-xl text-gray-900 mb-3">
+                <input type="text" name="medication" placeholder="New Medication" class="w-full bg-gray-800 py-3 px-4 rounded-xl placeholder-gray-400 text-sky-100 font-medium focus:outline-none mb-3">
                 <button type="submit" class="w-full bg-sky-400 py-3 rounded-xl text-gray-900 font-extrabold hover:bg-sky-300 duration-200">
                     <i class="fa-solid fa-plus"></i> ADD
                 </button>
@@ -31,13 +33,15 @@
             <i id="illnessTitle" class="fa-solid fa-chevron-down duration-200"></i>
         </h1>
         <ul id="illnesses" class="w-full h-0 overflow-hidden flex flex-col space-y-3 duration-300">
-            <% user.illnesses.forEach(function(illness) { %>
-                <li class="w-full bg-gray-800 py-3 px-4 rounded-xl">
-                    <%= illness %>
-                </li>
-            <% }) %>
+            <% if (user.illnesses != undefined) { %>
+                <% user.illnesses.forEach(illness => { %>
+                    <li class="w-full bg-gray-800 py-3 px-4 rounded-xl">
+                        <%= illness %>
+                    </li>
+                <% }) %>
+            <% } %>
             <form action="/profile/medHistory/addIllness" method="POST" class="w-full">
-                <input type="text" name="illness" placeholder="New Illness" class="w-full bg-gray-800 py-3 px-4 rounded-xl text-gray-900 mb-3">
+                <input type="text" name="illness" placeholder="New Illness" class="w-full bg-gray-800 py-3 px-4 rounded-xl placeholder-gray-400 text-sky-100 font-medium focus:outline-none mb-3">
                 <button type="submit" class="w-full bg-sky-400 py-3 rounded-xl text-gray-900 font-extrabold hover:bg-sky-300 duration-200">
                     <i class="fa-solid fa-plus"></i> ADD
                 </button>
@@ -46,27 +50,27 @@
     </div>
 
     <!-- List of Allergies -->
- <div class="w-full bg-gray-700 shadow-lg py-5 px-5 flex flex-col rounded-2xl">
+    <div class="w-full bg-gray-700 shadow-lg py-5 px-5 flex flex-col rounded-2xl">
         <h1 id="allergy" class="w-full flex justify-between items-center cursor-pointer">
             Allergies 
             <i id="allergyTitle" class="fa-solid fa-chevron-down duration-200"></i>
         </h1>
         <ul id="allergies" class="w-full h-0 overflow-hidden flex flex-col space-y-3 duration-300">
-            <% user.allergies.forEach(function(allergy) { %>
-                <li class="w-full bg-gray-800 py-3 px-4 rounded-xl">
-                    <%= allergy %>
-                </li>
-            <% }) %>
+            <% if (user.allergies != undefined) { %>
+                <% user.allergies.forEach(allergy => { %>
+                    <li class="w-full bg-gray-800 py-3 px-4 rounded-xl">
+                        <%= allergy %>
+                    </li>
+                <% }) %>
+            <% } %>
             <form action="/profile/medHistory/addAllergy" method="POST" class="w-full">
-                <input type="text" name="allergy" placeholder="New Allergy" class="w-full bg-gray-800 py-3 px-4 rounded-xl text-gray-900 mb-3">
+                <input type="text" name="allergy" placeholder="New Allergy" class="w-full bg-gray-800 py-3 px-4 rounded-xl placeholder-gray-400 text-sky-100 font-medium focus:outline-none mb-3">
                 <button type="submit" class="w-full bg-sky-400 py-3 rounded-xl text-gray-900 font-extrabold hover:bg-sky-300 duration-200">
                     <i class="fa-solid fa-plus"></i> ADD
                 </button>
             </form>
         </ul>
     </div>
-
-</div>
 
 </div>
 
@@ -83,7 +87,8 @@
             element.classList.remove("mt-4");
             icon.classList.remove("rotate-180");
         }
-    };
+    }
+
     document.getElementById("illness").onclick = function(){
         var element = document.getElementById("illnesses");
         var icon = document.getElementById("illnessTitle");
