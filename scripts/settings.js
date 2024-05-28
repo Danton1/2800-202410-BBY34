@@ -30,9 +30,9 @@ router.get('/faq', (req,res) => {
     res.render("faq");
 });
 
-router.get('*', (req,res) => {
-    res.status(404);
-	res.render("404Page");
-});
+// router.get('*', (req,res) => {
+//     res.status(404);
+// 	res.render("404Page");
+// });
 
 module.exports = router;
