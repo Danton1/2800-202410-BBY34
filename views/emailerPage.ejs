@@ -7,8 +7,8 @@
         <!-- List of personal information -->
         <form id="sendEmail" action="/emailer/sendEmail" method="POST"
             class="w-full flex flex-col items-center space-y-4 text-md">
-            <span name="username" class="hidden"><%= userName%> </span>
-            <span name="useremail" class="hidden"><%= userEmail%></span>
+            <input name="username" class="hidden" value="<%= userName%>"> </input>
+            <input name="useremail" class="hidden" value = "<%= userEmail%>"></input>
 
             <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl flex">
                 <span class="border-r-2 pr-2 mr-3">Email</span>
@@ -16,16 +16,11 @@
             </div>
             <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl flex">
                 <span class="border-r-2 pr-2 mr-3">Content</span>
-                <div id="emailContent" name="emailContent">
-                    Hello Dr. Giggles,<br>
-                    <%=userName%> is requesting to book an appointment at <%= emailTime%> on <%=emailDate%>. They are looking
-                            for help regarding the following issue:
-                            <%=emailIssue%>
-                                Thank you for your help and you can reach them at <%= userEmail%>.
-                                Regards,
-                                MediKate
-                                (AI Health Assistant)
-                </div>
+                <input id="emailContent" name="emailContent" value="<%=userName%> is requesting to book an appointment at <%= emailTime%> on <%=emailDate%>. They are looking for help regarding the following issue: <%=emailIssue%>">
+                
+                
+               
+            </input>
             </div>
         </form>
 
@@ -37,4 +32,11 @@
             </button>
         </div>
     </div>
+
+    <script>
+        function e(){
+            var content = document.querySelector("#emailContent");
+            console.log(content.textContent);
+        }
+    </script>
     <%- include("templates/footerTemplate")%>
