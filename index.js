@@ -219,6 +219,10 @@ app.post('/chatbot', async (req, res) => {
     const processedData = `${input}`;
     const output = await runPrompt(input);
     const egg = JSON.parse(output).isEasterEgg;
+    const time = JSON.parse(output).emailTime;
+    const date = JSON.parse(output).emailDate;
+    const issue = JSON.parse(output).emailIssue;
+    const isSend = JSON.parse(output).sendEmail;
     // console.log("egg: " + egg);
     var eggNum;
     if(egg === "true"){
@@ -227,7 +231,15 @@ app.post('/chatbot', async (req, res) => {
     } else{
         eggNum = 0;
     }
-    var data = { processedData: processedData, output: output, eggNum: eggNum };
+    var data = { 
+        processedData: processedData, 
+        output: output, 
+        eggNum: eggNum, 
+        sendEmail: isSend,
+        emailTime: time,
+        emailDate: date,
+        emailIssue: issue
+    }
     // Send the processed data back to the client
 
     // console.log(eggNum);
@@ -364,6 +376,13 @@ const runPrompt = async (input) => {
     };
     return await retrieveRun();
 };
+
+app.post('/submitEmail', async(req,res) => {
+    var date = req.body.emailDate;
+    var time = req.body.emailTime;
+    var issue = req.body.emailIssue;
+    res.render('emailerPage', {emailDate: date, emailTime:time, emailIssue: issue});
+});
 
 app.post('/editPass', async (req, res) => {
     res.redirect('/getPassEdit');

@@ -87,11 +87,13 @@ $(function () {
                 const obj = JSON.parse(response.output);
                 let outputString = obj.message;
                 let egg = JSON.parse(response.eggNum);
-                // console.log(obj);
-
-                // let formattedOutput = outputString.join("\n");
-                // formattedOutput = formattedOutput.replaceAll("\n", "<br>");
-
+                
+                if(response.sendEmail=="true"){
+                    $("#emailDate").val(response.emailDate);
+                    $("#emailTime").val(response.emailTime);
+                    $("#emailIssue").val(response.emailIssue);
+                    outputString += "<br><button class='bg-black' type='submit' form='bookAppointment' id='emailSubmit'>Book Appointment</button>";
+                }
 
                 $("#loading").remove();
                 // Display chatbot's response
@@ -123,12 +125,14 @@ $(function () {
                 gptCounter++;
 
                 // console.log(egg);
-
+                if(egg != tempEgg && egg != 0){
+                    tempEgg = egg;
+                }
+                console.log(tempEgg);
                 if(tempEgg != 0){
                     //change background here
-                    $( "#chatHistoryWrap" ).addClass("bg-black");
+                    $( "#bigwrap" ).addClass("bg-black");
                 }
-                
 
                 switch (egg) {
                     case 1:
