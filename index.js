@@ -32,8 +32,8 @@ const forgotRoute = require('./scripts/forgotPage');
 app.use('/forgot', forgotRoute);
 const settingsRoute = require('./scripts/settings');
 app.use('/settings', settingsRoute);
-// const chatRoute = require('./scripts/chat');
-// app.use('/chat', chatRoute);
+const emailerRoute = require('./scripts/emailer');
+app.use('/emailer', emailerRoute);
 /*Imported routes js files end*/
 
 /* secret information section */
@@ -238,7 +238,9 @@ app.post('/chatbot', async (req, res) => {
         sendEmail: isSend,
         emailTime: time,
         emailDate: date,
-        emailIssue: issue
+        emailIssue: issue,
+        // userName: req.session.firstName + " " + req.session.lastName,
+        // userEmail: req.session.email
     }
     // Send the processed data back to the client
 
@@ -381,7 +383,11 @@ app.post('/submitEmail', async(req,res) => {
     var date = req.body.emailDate;
     var time = req.body.emailTime;
     var issue = req.body.emailIssue;
-    res.render('emailerPage', {emailDate: date, emailTime:time, emailIssue: issue});
+    var userName= req.session.firstName + " " + req.session.lastName;
+    var userEmail=  req.session.email
+    // console.log();
+    res.render('emailerPage', {emailDate: date, emailTime:time, emailIssue: issue,
+         userName: userName, userEmail: userEmail });
 });
 
 app.post('/editPass', async (req, res) => {
