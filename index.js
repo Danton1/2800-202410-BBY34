@@ -197,11 +197,11 @@ app.get('/settings/signOut', (req, res) => {
 // Get for chatbot
 let myThread;
 let assistantID;
-let myRun;
-let cancel;
+let counter;
 app.get('/chatbot', async (req, res) => {
     assistantID = process.env.KATE_KEY;
     myThread = await openai.beta.threads.create();
+    counter = 0;
     res.render("chatbotPage");
 });
 
@@ -214,7 +214,15 @@ app.get("*", (req,res) => {
     // POSTS
 
 app.post('/chatbot', async (req, res) => {
-    const input = req.body.userInput;
+    let input;
+    if(counter = 0){
+        const medicalInfo = await userCollection.find({ email: req.session.email }).project({ medications: 1, illnesses: 1, allergies: 1, _id: 1 }).toArray();
+        input = "This includes an array of the users's medications, illnesses and allergies for you to use when providing medical advice." + medicalInfo + req.body.userInput;
+    } else {
+        input = req.body.userInput;
+    }
+    console.log(input);
+    counter++;
     // console.log("in the post function");
     const processedData = `${input}`;
     const output = await runPrompt(input);
