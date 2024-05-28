@@ -459,6 +459,10 @@ app.post('/profile/medHistory/addMedication', async (req, res) => {
     if (isValidSession(req)) {
         try {
             const { medication } = req.body;
+            if (medication.length < 1 || !medication.trim()) {
+                res.render("errorPage", { error: "Couldn't find anything to add." });
+                return;
+            }
             await userCollection.updateOne(
                 { email: req.session.email },
                 { $push: { medications: medication } }
@@ -478,6 +482,10 @@ app.post('/profile/medHistory/addIllness', async (req, res) => {
     if (isValidSession(req)) {
         try {
             const { illness } = req.body;
+            if (illness.length < 1 || !illness.trim()) {
+                res.render("errorPage", { error: "Couldn't find anything to add." });
+                return;
+            }
             await userCollection.updateOne(
                 { email: req.session.email },
                 { $push: { illnesses: illness } }
@@ -497,6 +505,10 @@ app.post('/profile/medHistory/addAllergy', async (req, res) => {
     if (isValidSession(req)) {
         try {
             const { allergy } = req.body;
+            if (allergy.length < 1 || !allergy.trim()) {
+                res.render("errorPage", { error: "Couldn't find anything to add." });
+                return;
+            }
             await userCollection.updateOne(
                 { email: req.session.email },
                 { $push: { allergies: allergy } }
