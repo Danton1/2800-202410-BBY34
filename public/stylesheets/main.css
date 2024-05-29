@@ -10,6 +10,7 @@ body {
   position: relative;
   margin: .5em auto;
   padding: 1em;
+  padding-bottom: 0.5em;
   border-radius: .25em;
   transform: rotate(-4deg) rotateY(15deg);
   background: #629bdd;

@@ -2,9 +2,9 @@
 
 
     <div class="w-full h-full bg-gradient-to-tr from-gray-900 to-gray-800">
-        <div class="py-5"></div>
-        <div class="leading-none pt-1 flex text-3xl md:text-4xl font-sans text-center speech-bubble z-10 w-[75%] sm:w-fit h-36">
-            <h1 class="m-auto font-bold text-center text-cyan-500">
+        <div class="py-10"></div>
+        <div class="w-[80%] leading-none pt-1 flex text-3xl md:text-4xl font-sans text-center speech-bubble z-10 sm:w-[75%] sm:w-fit h-32">
+            <h1 class="m-auto font-bold text-center text-cyan-500 rotate-[1.4deg]">
                 <% const hour = new Date().getHours(); %>
                 <% if (hour >= 12 && hour < 19) { %>
                     Good morning, <%= username %>
@@ -15,11 +15,11 @@
                 <% } %>
             </h1>
         </div>
-        <div class="position absolute -right-0 sm:right-16 -mt-6 md:right-1/4">
-            <img src="cute_robot_doctor.png" alt="Robot doctor" class="w-80"/>
+        <div class="position absolute right-[0%] sm:right-[5%] sm:translate-x-[-50%] -mt-6 md:right-[10%] md:translate-x-[-50%] lg:right-[23%] lg:translate-x-[-50%]">
+            <img src="cute_robot_doctor.png" alt="Robot doctor" class="w-60"/>
         </div>
-        <div class="py-12"></div>
-        <section class="text-gray-700 body-font sm:max-w-[90%] mx-auto">
+        <div class="py-7"></div>
+        <section class="text-gray-700 body-font mx-auto">
             <div class="container px-5 py-24 mx-auto text-cyan-50">
                 <div class="flex flex-wrap -m-4 text-center">
 
@@ -111,7 +111,7 @@
         const stateName = locationData[0].state;
         widget.querySelector(".indexCardTitle").textContent = cityName;
         widget.querySelector(".indexCardContent").textContent = stateName;
-        modal.querySelector(".modalDescription").textContent = cityName + ", " + stateName + ". Latitude: " + lat + " Longitude: " + lon;
+        modal.querySelector(".modalDescription").innerHTML = cityName + ", " + stateName + "<br> Latitude: " + lat + "<br> Longitude: " + lon;
       })
       .catch(error => {
         console.error('Error fetching location data:', error);
@@ -167,7 +167,7 @@
 
         widget.querySelector(".indexCardTitle").textContent = airQualityIndexString;
         widget.querySelector(".indexCardContent").textContent = airQualityString;
-        modal.querySelector(".modalDescription").textContent = "AQI: " + airQualityIndex + ", " + airQualityString + ". " + componentsString + " ";
+        modal.querySelector(".modalDescription").innerHTML = "AQI: " + airQualityIndex + " | " + airQualityString + "<br>" + componentsString + " ";
       })
       .catch(error => {
         console.error('Error fetching air quality data:', error);
@@ -183,42 +183,42 @@
       switch (pollutants[i]) {
       case 'so2':
         if (widgetSettings.airQuality.components.so2) {
-          string += "Sulphur Dioxide: " + concentrations[i] + "μg/m3 ";
+          string += "Sulphur Dioxide: " + concentrations[i] + "μg/m3 " + "<br>";
         }
         break;
       case 'no2':
         if (widgetSettings.airQuality.components.no2) {
-          string += "Nitrogen Dioxide: " + concentrations[i] + "μg/m3 ";
+          string += "Nitrogen Dioxide: " + concentrations[i] + "μg/m3 " + "<br>";
         }
         break;
       case 'pm2_5':
         if (widgetSettings.airQuality.components.pm2_5) {
-          string += "Fine Particulates: " + concentrations[i] + "μg/m3 ";
+          string += "Fine Particulates: " + concentrations[i] + "μg/m3 " + "<br>";
         }
         break;
       case 'pm10':
         if (widgetSettings.airQuality.components.pm10) {
-          string += "Course Particulates: " + concentrations[i] + "μg/m3 ";
+          string += "Course Particulates: " + concentrations[i] + "μg/m3 " + "<br>";
         }
         break;
       case 'o3':
         if (widgetSettings.airQuality.components.o3) {
-          string += "Ozone: " + concentrations[i] + "μg/m3 ";
+          string += "Ozone: " + concentrations[i] + "μg/m3 " + "<br>";
         }
         break;
       case 'co':
         if (widgetSettings.airQuality.components.co) {
-          string += "Carbon Monoxide: " + concentrations[i] + "μg/m3 ";
+          string += "Carbon Monoxide: " + concentrations[i] + "μg/m3 " + "<br>";
         }
         break;
       case 'no':
         if (widgetSettings.airQuality.components.no) {
-          string += "Nitrogen Monoxide: " + concentrations[i] + "μg/m3 ";
+          string += "Nitrogen Monoxide: " + concentrations[i] + "μg/m3 " + "<br>";
         }
         break;
       case 'nh3':
         if (widgetSettings.airQuality.components.nh3) {
-          string += "Ammonia: " + concentrations[i] + "μg/m3";
+          string += "Ammonia: " + concentrations[i] + "μg/m3" + "<br>";
         }
         break;
       default:
@@ -384,10 +384,10 @@
 
         widget.querySelector(".indexCardTitle").textContent = temperatureString;
         widget.querySelector(".indexCardContent").textContent = weatherString;
-        modal.querySelector(".modalDescription").textContent = temperatureString + " "  + weatherString + " " + 
-          "Feels like: " + data.main.feels_like + unitSign + " " + 
-          "Pressure: " + data.main.pressure + "hPa " + 
-          "Humidity: " + data.main.humidity + "%";
+        modal.querySelector(".modalDescription").innerHTML = temperatureString + " | "  + weatherString + " " + 
+          "<br> Feels like: " + data.main.feels_like + unitSign + " " + 
+          "<br> Pressure: " + data.main.pressure + "hPa " + 
+          "<br> Humidity: " + data.main.humidity + "%";
       })
       .catch(error => {
         console.error('Error fetching temperature data:', error);
