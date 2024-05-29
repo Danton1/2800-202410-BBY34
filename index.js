@@ -9,7 +9,7 @@ const webpush = require("web-push");
 // const PushNotifications = require('node-pushnotifications');
 const bodyParser = require('body-parser');
 const { database } = require('./databaseConnection');
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const port = process.env.PORT || 3000;
 
 const app = express();
@@ -63,6 +63,19 @@ var mongoStore = MongoStore.create({
         secret: mongodb_session_secret
     }
 })
+
+// Cloudinary and multer for profile picture upload
+const cloudinary = require('cloudinary').v2;
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    secure: true,
+});
+
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
     // USES
 
@@ -132,51 +145,60 @@ app.get('/', (req,res) => {
     res.redirect('/login');
 });
 
-    // Get for login
-    app.get('/login', (req, res) => {
-        res.render("loginPage");
-    });
+// Get for login
+app.get('/login', (req, res) => {
+    res.render("loginPage");
+});
 
-    // Get for profile
-    app.get('/profile', (req, res) => {
-        if (isValidSession(req)) {
-            res.render('profilePage', { user: req.session });
-            return;
+// Get for profile
+app.get('/profile', async (req, res) => {
+    if (isValidSession(req)) {
+        try {
+            const user = await userCollection.findOne({ email: req.session.email });
+            res.render('profilePage', { user });
+        } catch (err) {
+            console.error("Error fetching user data:", err);
+            res.status(500).send("Internal Server Error");
         }
-        res.redirect('/login');
-    });
-    // Get for personal Info 
-    app.get('/profile/personalInfo', async (req, res) => {
-        if (isValidSession(req)) {
-            try {
-                const user = await userCollection.findOne({ email: req.session.email });
-                res.render('personalInfoPage', { user });
-            } catch (err) {
-                console.error("Error fetching user data:", err);
-                res.status(500).send("Internal Server Error");
-            }
-            return;
-        }
-        res.redirect('/login');
-    });
+        return;
+    }
+    res.redirect('/login');
+});
 
-    // Get for Contact Info
-    app.get('/profile/contactInfo', (req,res) => {
-        if(isValidSession(req)){
-            res.render('contactInfoPage', {user: req.session});
-            return;
+// Get for personal Info 
+app.get('/profile/personalInfo', async (req, res) => {
+    if (isValidSession(req)) {
+        try {
+            const user = await userCollection.findOne({ email: req.session.email });
+            res.render('personalInfoPage', { user });
+        } catch (err) {
+            console.error("Error fetching user data:", err);
+            res.status(500).send("Internal Server Error");
         }
-        res.redirect('/login');
-    });
-    
-    // Get for medical History
-    app.get('/profile/medHistory', (req,res) => {
-        if(isValidSession(req)){
-            res.render('medicalHistoryPage', {user: req.session});
-            return;
-        }
-        res.redirect('/login');
-    });
+        return;
+    }
+    res.redirect('/login');
+});
+
+// Get for Contact Info
+app.get('/profile/contactInfo', async (req,res) => {
+    if(isValidSession(req)){
+        const user = await userCollection.findOne({ email: req.session.email });
+        res.render('contactInfoPage', {user: user});
+        return;
+    }
+    res.redirect('/login');
+});
+
+// Get for medical History
+app.get('/profile/medHistory', async (req,res) => {
+    if(isValidSession(req)){
+        const user = await userCollection.findOne({ email: req.session.email });
+        res.render('medicalHistoryPage', {user: user});
+        return;
+    }
+    res.redirect('/login');
+});
     
 
 // Get for Settings
@@ -412,6 +434,9 @@ app.post('/submitLogin', async (req, res) => {
             req.session.country = getUser.country;
             req.session.city = getUser.city;
             req.session.widgetSettings = getUser.widgetSettings;
+            req.session.medications = getUser.medications;
+            req.session.illnesses = getUser.illnesses;
+            req.session.allergies = getUser.allergies;
 
             res.redirect('/');
             return;
@@ -448,11 +473,44 @@ app.post('/profile/personalInfo/edit', async (req, res) => {
     }
 });
 
+// Post for Profile Picture
+app.post('/uploadProfilePic', upload.single('image'), async (req, res) => {
+    try {
+        const user_id = req.body.user_id;
+        const buf64 = req.file.buffer.toString('base64');
+        const result = await cloudinary.uploader.upload("data:image/png;base64," + buf64, {
+            public_id: `profile_pics/${user_id}`
+        });
+
+        // Update the user's profile with the image URL
+        const success = await userCollection.updateOne(
+            { "_id": new ObjectId(user_id) },
+            { $set: { profile_pic: result.url } }
+        );
+
+        if (!success) {
+            res.render('errorPage', { error: 'Error uploading profile picture. Please try again.' });
+            console.log("Error uploading profile image");
+        } else {
+            req.session.profile_pic = result.url; // Update session
+            res.redirect(`/profile`);
+        }
+    } catch (ex) {
+        res.render('errorPage', { error: 'Error connecting to the database' });
+        console.log("Error connecting to MongoDB");
+        console.log(ex);
+    }
+});
+
 //post for Medical History (meds)
 app.post('/profile/medHistory/addMedication', async (req, res) => {
     if (isValidSession(req)) {
         try {
             const { medication } = req.body;
+            if (medication.length < 1 || !medication.trim()) {
+                res.render("errorPage", { error: "Couldn't find anything to add." });
+                return;
+            }
             await userCollection.updateOne(
                 { email: req.session.email },
                 { $push: { medications: medication } }
@@ -467,11 +525,15 @@ app.post('/profile/medHistory/addMedication', async (req, res) => {
     }
 });
 
-    //post for Medical History (illness)
+//post for Medical History (illness)
 app.post('/profile/medHistory/addIllness', async (req, res) => {
     if (isValidSession(req)) {
         try {
             const { illness } = req.body;
+            if (illness.length < 1 || !illness.trim()) {
+                res.render("errorPage", { error: "Couldn't find anything to add." });
+                return;
+            }
             await userCollection.updateOne(
                 { email: req.session.email },
                 { $push: { illnesses: illness } }
@@ -486,11 +548,15 @@ app.post('/profile/medHistory/addIllness', async (req, res) => {
     }
 });
 
-    //post for Medical History (allergy)
+//post for Medical History (allergy)
 app.post('/profile/medHistory/addAllergy', async (req, res) => {
     if (isValidSession(req)) {
         try {
             const { allergy } = req.body;
+            if (allergy.length < 1 || !allergy.trim()) {
+                res.render("errorPage", { error: "Couldn't find anything to add." });
+                return;
+            }
             await userCollection.updateOne(
                 { email: req.session.email },
                 { $push: { allergies: allergy } }
@@ -504,6 +570,7 @@ app.post('/profile/medHistory/addAllergy', async (req, res) => {
         res.redirect('/login');
     }
 });
+
 app.post('/settings/widgets/update', async (req, res) => {
     try {
         const settings = req.body;
