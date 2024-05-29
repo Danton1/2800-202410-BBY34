@@ -5,10 +5,12 @@ var userCounter = 0;
 var gptCounter = 0;
 let userProfile = document.getElementById('chatJS').getAttribute("profile");
 userProfile = userProfile ? userProfile : "defaultProfilePic.png"
+var tempEgg = 0;
 
 $(function () {
     $('#chatForm').on("submit", function (event) {
         event.preventDefault();
+        $( "#chatButton" ).prop( "disabled", true );
 
         // Getting time
         let date = new Date;
@@ -41,7 +43,26 @@ $(function () {
                     </div>
                 </div>
             </div>
-        </div>`);
+        </div>
+        
+                <div id="loading" class="chat chat-start items-end justify-items-end">
+                    <div class="flex flex-col justify-center items-center">
+                        <div class="chat-header mb-2">
+                            ${imgName}
+                        </div>
+                        <div class="chat-image avatar">
+                            <div class="w-[50px] rounded-full">
+                                <img alt="chatbot profile pic" src=${imgSrc} />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full flex items-end gap-2">
+                        <div class="chat-bubble py-4 px-5 bg-gray-700 text-sky-100">
+                        <div class="animate-bounce"> ... </div>
+                        </div>
+                        
+                    </div>
+                </div>`);
 
         // Reset input textbox
         $('#chatbotTextBox').val("");
@@ -67,13 +88,15 @@ $(function () {
                 const obj = JSON.parse(response.output);
                 let outputString = obj.message;
                 let egg = JSON.parse(response.eggNum);
-                // console.log(obj);
+                
+                if(response.sendEmail=="true"){
+                    $("#emailDate").val(response.emailDate);
+                    $("#emailTime").val(response.emailTime);
+                    $("#emailIssue").val(response.emailIssue);
+                    outputString += "<br><button class='bg-black' type='submit' form='bookAppointment' id='emailSubmit'>Book Appointment</button>";
+                }
 
-                // let formattedOutput = outputString.join("\n");
-                // formattedOutput = formattedOutput.replaceAll("\n", "<br>");
-
-
-
+                $("#loading").remove();
                 // Display chatbot's response
                 $('#chatHistoryWrap').append(`
                 <div class="chat chat-start items-end justify-items-end">
@@ -97,9 +120,20 @@ $(function () {
                 box = $(`#gptOutput${gptCounter}`);
                 // console.log(box[0].id);
                 box[0].scrollIntoView(false);
+
+                $( "#chatButton" ).prop( "disabled", false );
+
                 gptCounter++;
 
                 // console.log(egg);
+                if(egg != tempEgg && egg != 0){
+                    tempEgg = egg;
+                }
+                console.log(tempEgg);
+                if(tempEgg != 0){
+                    //change background here
+                    $( "#bigwrap" ).addClass("bg-black");
+                }
 
                 switch (egg) {
                     case 1:
@@ -137,6 +171,27 @@ $(function () {
             },
             error: function (xhr, status, error) {
                 console.error('Error:', error);
+                $("#loading").remove();
+
+                $('#chatHistoryWrap').append(`
+                <div class="chat chat-start items-end justify-items-end">
+                    <div class="flex flex-col justify-center items-center">
+                        <div class="chat-header mb-2">
+                            ${imgName}
+                        </div>
+                        <div class="chat-image avatar">
+                            <div class="w-[50px] rounded-full">
+                                <img alt="chatbot profile pic" src=${imgSrc} />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full flex items-end gap-2">
+                        <div id="gptOutput${gptCounter}" class="chat-bubble py-4 px-5 bg-gray-700 text-sky-100">
+                        An error occured
+                        </div>
+                        <time class="text-xs opacity-50">${time}</time>
+                    </div>
+                </div>`)
             }
         });
     });
