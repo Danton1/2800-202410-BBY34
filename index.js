@@ -226,7 +226,17 @@ let cancel;
 app.get('/chatbot', async (req, res) => {
     assistantID = process.env.KATE_KEY;
     myThread = await openai.beta.threads.create();
-    res.render("chatbotPage");
+    if (isValidSession(req)) {
+        try {
+            const user = await userCollection.findOne({ email: req.session.email });
+            res.render('chatbotPage', { user });
+        } catch (err) {
+            console.error("Error fetching user data:", err);
+            res.status(500).send("Internal Server Error");
+        }
+        return;
+    }
+    res.redirect('/login');
 });
 
 // Get for 404
