@@ -4,7 +4,7 @@
     <div class="flex flex-col items-center">
         <div class="w-[120px] h-[120px] flex justify-center items-center rounded-full bg-sky-300 drop-shadow-md">
             <% if (user.profile_pic) { %>
-                <img src="<%= user.profile_pic %>" alt="Profile img" class="w-full h-full object-cover text-black">
+                <img src="<%= user.profile_pic %>" alt="Profile img" class="w-full h-full rounded-full border border-sky-500 object-cover drop-shadow-xl text-black">
             <% } else { %>
                 <img src="https://res.cloudinary.com/dpktouqx0/image/upload/v1716974155/avatardefault_fylgvg.png" alt="Profile img" class="w-[110%] h-[110%] object-cover text-black">
             <% } %>
