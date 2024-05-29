@@ -76,3 +76,11 @@ body {
   transition: background-color 5000s ease-in-out 0s;
   -webkit-text-fill-color: #e0f2fe;
 }
+
+#medHistoryWrap input:-webkit-autofill,
+#medHistoryWrap input:-webkit-autofill:hover,
+#medHistoryWrap input:-webkit-autofill:focus,
+#medHistoryWrap input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: #e0f2fe;
+}
