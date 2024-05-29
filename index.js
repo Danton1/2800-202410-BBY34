@@ -243,9 +243,11 @@ app.get("*", (req,res) => {
 app.post('/chatbot', async (req, res) => {
     let input;
     console.log(counter);
+    const user = await userCollection.findOne({ email: req.session.email });
+    req.session.medications = user.medications
+    req.session.illnesses = user.illnesses;
+    req.session.allergies = user.allergies;
     if(counter == 0){
-        // const medicalInfo = await userCollection.find({ email: req.session.email }).project({ medications: 1, illnesses: 1, allergies: 1, _id: 1 }).toArray();
-        console.log("medical info: " + req.session.medications);
         input = "User's medications: " + req.session.medications + ". User's Illnesses: " + req.session.illnesses + ". User's Allergies: " +req.session.allergies+ ". User input: " + req.body.userInput;
     } else {
         input = req.body.userInput;
