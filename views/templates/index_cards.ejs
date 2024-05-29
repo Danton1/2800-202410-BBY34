@@ -1,23 +1,31 @@
-<div class="p-4 lg:w-1/4 sm:w-1/2 w-full group" id="<%= id%>">
-    <% if (bgImg){ %>
-        <% bg = `bg-[url(${bgImg})] bg-opacity-10 bg-cover`; %>
-        <% } else { %>
-        <% bg = "bg-gray-700"; %>
-    <% } %>
-    <div class="border-2 <%=bg%> border-gray-600 px-4 py-6 rounded-lg transform transition duration-500 hover:scale-110 text-cyan-100">
-        <% if (path) { %>
-            <svg xmlns='http://www.w3.org/2000/svg' viewBox="0 -960 960 960" class="fill-cyan-400 group-hover:animate-pulse duration-1000 w-12 h-12 mb-3 inline-block">
-                <path d="<%= path %>" />
-            </svg>
-        <% } %>
-        <% if (icon) { %>
-            <i class="text-cyan-400 group-hover:animate-pulse w-12 h-12 mb-3 inline-block <%= icon %>"></i>
-        <% } %>
-            
-      <h2 class="title-font font-medium text-3xl drop-shadow-xl indexCardTitle" style=<% bgImg ? "text-shadow: #000 2px 2px 10px;" : ""%>><%= title %></h2>
-      <% if (bgImg) { %>
-        <div class="absolute inset-0 rounded-lg bg-opacity-55 -z-20 bg-black"></div>
-        <% } %>
-      <p class="leading-relaxed indexCardContent"><%= content %></p>
-    </div>
+<div class="p-4 lg:w-1/4 sm:w-1/2 w-full group" id="<%= id%>" onclick="openModal('<%= id%>' + 'Modal')">
+  <% if (bgImg){ %>
+      <% bg = `bg-[url(${bgImg})] bg-opacity-10 bg-cover`; %>
+      <% } else { %>
+      <% bg = "bg-gray-700"; %>
+  <% } %>
+  <div class="border-2 <%=bg%> border-gray-600 px-4 py-6 rounded-lg transform transition duration-500 hover:scale-110 text-cyan-100">
+      <% if (path) { %>
+          <svg xmlns='http://www.w3.org/2000/svg' viewBox="0 -960 960 960" class="fill-cyan-400 group-hover:animate-pulse duration-1000 w-12 h-12 mb-3 inline-block">
+              <path d="<%= path %>" />
+          </svg>
+      <% } %>
+      <% if (icon) { %>
+          <i class="text-cyan-400 group-hover:animate-pulse w-12 h-12 mb-3 inline-block <%= icon %>"></i>
+      <% } %>
+          
+    <h2 class="title-font font-medium text-3xl drop-shadow-xl indexCardTitle" style=<% bgImg ? "text-shadow: #000 2px 2px 10px;" : ""%>><%= title %></h2>
+    <% if (bgImg) { %>
+      <div class="absolute inset-0 rounded-lg bg-opacity-55 -z-20 bg-black"></div>
+      <% } %>
+    <p class="leading-relaxed indexCardContent"><%= content %></p>
   </div>
+</div>
+
+<div id='<%= id + "Modal"%>' class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden z-50">
+  <div class="bg-gray-800 border-2 border-gray-600 rounded-lg shadow-lg p-8 max-w-md w-full transform transition duration-500 text-cyan-100">
+      <h2 class="modalTitle text-2xl font-bold mb-4">Modal Title</h2>
+      <p class="modalDescription text-gray-400">Modal Description</p>
+      <button onclick="closeModal('<%= id%>' + 'Modal')" class="mt-4 bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded transition duration-300">Close</button>
+  </div>
+</div>
