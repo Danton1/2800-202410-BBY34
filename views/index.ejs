@@ -1,19 +1,27 @@
 <%- include("templates/headerTemplate") %> 
     <main class="h-100% min-h-[100vh]">
       
-    <header>
-        <!-- <div class="bg-gradient-to-tr from-gray-900 to-gray-800">
-            <div class="container mx-auto px-6 py-3">
-                <div class="flex items-center justify-between">
-                    <div class="hidden w-full text-gray-600 md:flex md:items-center">
-                        <span class="mr-3">Welcome, <%= username %></span>
-                        <a href="/logout" class="text-cyan-500 hover:text-cyan-400">Logout</a>
-                    </div>
-                </div>
+      <header>
+        <div class="bg-gray-900">
+          <div class="container mx-auto px-6 py-3 flex items-center justify-between">
+            <!-- Centered logo and title -->
+            <div class="flex items-center justify-center mx-auto md:mx-0">
+              <img src="favicon.png" alt="logo" class="w-12 h-12 mr-2"/>
+              <h1 class="text-white text-xl font-bold">MediKate</h1>
             </div>
-        </div> -->
+            <div class="hidden md:flex items-center text-gray-600">
+              <% if (profilePic) { %>
+                <img src="<%= profilePic %>" alt="Profile img" class="w-12 h-12 rounded-full border border-sky-500 object-cover drop-shadow-xl text-black">
+            <% } else { %>
+                <img src="https://res.cloudinary.com/dpktouqx0/image/upload/v1716974155/avatardefault_fylgvg.png" alt="Profile img" class="w-12 h-12 object-cover text-black">
+            <% } %>
+              <a href="/logout" class="text-cyan-500 hover:text-cyan-400">Logout</a>
+            </div>
+          </div>
+        </div>
+      </header>
+      
 
-    </header>
       <div class="w-full h-full bg-gradient-to-tr from-gray-900 to-gray-800">
           <div class="py-5"></div>
           <div class="leading-none pt-1 flex text-3xl md:text-4xl font-sans text-center speech-bubble z-10 w-[75%] sm:w-fit h-36">

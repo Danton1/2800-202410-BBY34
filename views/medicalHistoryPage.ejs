@@ -13,16 +13,13 @@
             <% if (user.medications !== undefined) { %>
                 <% user.medications.forEach(medication => { %>
                     <li class="w-full bg-gray-800 py-3 px-4 rounded-xl">
-                        <%= medication %>
+                        <%= medication.name %> - <%= medication.dosage %> | <%= medication.frequency %> <%= medication.period %></span>
                     </li>
                 <% }) %>
-            <% } %>
-            <form action="/profile/medHistory/addMedication" method="POST" class="w-full">
-                <input type="text" name="medication" placeholder="New Medication" class="w-full bg-gray-800 py-3 px-4 rounded-xl placeholder-gray-400 text-sky-100 font-medium focus:outline-none mb-3">
-                <button type="submit" class="w-full bg-sky-400 py-3 rounded-xl text-gray-900 font-extrabold hover:bg-sky-300 duration-200">
+                
+                <button onclick="openModal('MedicationModal')" class="w-full text-lg bg-sky-400 py-3 rounded-xl text-gray-900 font-extrabold hover:bg-sky-300 duration-200">
                     <i class="fa-solid fa-plus"></i> ADD
-                </button>
-            </form>
+            <% } %>
         </ul>
     </div>
 
@@ -74,17 +71,17 @@
 
 </div>
 
-<div id='MedicationModal' class="fixed inset-0 bg-gray-900 bg-opacity-60 flex items-center justify-center z-50">
+<div id='MedicationModal' class="fixed inset-0 bg-gray-900 bg-opacity-60 flex items-center justify-center z-50 hidden">
     <div class="bg-gray-800 border-2 border-gray-600 rounded-lg shadow-lg p-8 flex flex-col min-h-fit max-w-md mx-auto items-center w-full transform transition duration-500 text-cyan-100">
         <h2 class="modalTitle text-2xl font-bold mb-4 text-center">
             <button onclick="closeModal('MedicationModal')" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
             <i class="fa-solid fa-pencil"></i> Medications</h2>
         <ul id="medications" class="w-full flex flex-col space-y-3 duration-300">
             <form action="/profile/medHistory/addMedication" method="POST" class="w-full">
-                <input type="text" name="medication" placeholder="New Medication" class="w-full bg-gray-700 py-3 px-4 rounded-xl placeholder-gray-400 text-sky-100 focus:outline-none mb-3">
+                <input type="text" name="name" placeholder="New Medication" class="w-full bg-gray-700 py-3 px-4 rounded-xl placeholder-gray-400 text-sky-100 focus:outline-none mb-3" required>
                 <input type="text" name="dosage" placeholder="Dosage" class="w-full bg-gray-700 py-3 px-4 rounded-xl placeholder-gray-400 text-sky-100 focus:outline-none mb-3">
                 <div class="flex flex-row">
-                    <select name="frequency" class="select w-full bg-gray-700 px-4 rounded-xl placeholder-gray-400 text-sky-100 text-[1rem] focus:outline-none mb-3">
+                    <select name="frequency" class="select w-full bg-gray-700 px-4 rounded-xl placeholder-gray-400 text-sky-100 text-[1rem] focus:outline-none mb-3" required>
                         <option disabled selected>Frequency</option>
                         <option value="1x">Once</option>
                         <option value="2x">Twice</option>
@@ -94,7 +91,7 @@
                         <option value="12x">12 times</option>
                     </select>
                     <p class="py-3 px-3">every</p>
-                    <select name="period" class="select w-full bg-gray-700 px-4 rounded-xl  text-sky-100 text-[1rem] focus:outline-none mb-3" mandatory>
+                    <select name="period" class="select w-full bg-gray-700 px-4 rounded-xl  text-sky-100 text-[1rem] focus:outline-none mb-3" required>
                         <option disabled selected>Period</option>
                         <option value="daily">Day</option>
                         <option value="weekly">Week</option>

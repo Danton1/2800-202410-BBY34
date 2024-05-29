@@ -139,7 +139,7 @@ function adminAuthorization(req, res, next) {
 
 app.get('/', (req,res) => {
     if(isValidSession(req)){
-        res.render('index', {username: req.session.firstName, openWeatherAPIKey: process.env.OPEN_WEATHER_API_KEY, widgetSettings: req.session.widgetSettings});
+        res.render('index', {username: req.session.firstName, profilePic: req.session.profile_pic, openWeatherAPIKey: process.env.OPEN_WEATHER_API_KEY, widgetSettings: req.session.widgetSettings});
         return;
     }
     res.redirect('/login');
@@ -516,8 +516,13 @@ app.post('/uploadProfilePic', upload.single('image'), async (req, res) => {
 app.post('/profile/medHistory/addMedication', async (req, res) => {
     if (isValidSession(req)) {
         try {
-            const { medication } = req.body;
-            if (medication.length < 1 || !medication.trim()) {
+            const medication = { 
+                name: req.body.name,
+                dosage: req.body.dosage,
+                frequency: req.body.frequency,
+                period: req.body.period
+            };
+            if (!medication.name.trim()) {
                 res.render("errorPage", { error: "Couldn't find anything to add." });
                 return;
             }
