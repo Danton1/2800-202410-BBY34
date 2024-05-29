@@ -5,24 +5,24 @@ router.get('/account', (req,res) => {
     res.redirect('/profile');
 });
 
-router.get('/language', (req,res) => {
-    res.render("language");
+// router.get('/language', (req,res) => {
+//     res.render("language");
+// });
+
+router.get('/aboutUs', (req,res) => {
+    res.render("aboutUsPage");
 });
 
-router.get('/about', (req,res) => {
-    res.render("about");
-});
+// router.get('/terms', (req,res) => {
+//     res.render("terms");
+// });
 
-router.get('/terms', (req,res) => {
-    res.render("terms");
-});
+// router.get('/contact', (req,res) => {
+//     res.render("contact");
+// });
 
-router.get('/contact', (req,res) => {
-    res.render("contact");
-});
-
-router.get('/faq', (req,res) => {
-    res.render("faq");
-});
+// router.get('/faq', (req,res) => {
+//     res.render("faq");
+// });
 
 module.exports = router;
