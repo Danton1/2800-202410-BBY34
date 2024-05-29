@@ -80,7 +80,7 @@ router.post('/submitSignUp', async (req, res) => {
 
     var encodedPassword = await bcrypt.hash(password, saltRounds);
 
-    await userCollection.insertOne({ firstName: firstName, lastName: lastName, birthDate: birthDate, country: country, city: city, email: email, password: encodedPassword, medications: [], illnesses: [], allergies: [] });
+    await userCollection.insertOne({ firstName: firstName, lastName: lastName, birthDate: birthDate, country: country, city: city, email: email, secondaryEmail: secondaryEmail, phoneNumber:phoneNumber, emergencyEmail: emergencyEmail,emergencyPhoneNumber: emergencyPhoneNumber, password: encodedPassword, medications: [], illnesses: [], allergies: [],  });
 
     req.session.authenticated = true;
     req.session.firstName = firstName;
