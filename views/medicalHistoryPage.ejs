@@ -12,8 +12,8 @@
         <ul id="medications" class="w-full h-0 overflow-hidden flex flex-col space-y-3 duration-300">
             <% if (user.medications !== undefined) { %>
                 <% user.medications.forEach(medication => { %>
-                    <li class="w-full bg-gray-800 py-3 px-4 rounded-xl">
-                        <%= medication.name %> - <%= medication.dosage %> | <%= medication.frequency %> <%= medication.period %></span>
+                    <li onclick="openModal('<%= medication.name%>' + 'Modal')" class="cursor-pointer w-full bg-gray-800 py-3 px-4 rounded-xl">
+                        <%= medication.name %>
                     </li>
                 <% }) %>
                 
@@ -106,6 +106,11 @@
         <!-- <button onclick="closeModal('MedicationModal')" class="mt-4 bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded transition duration-300">Save</button> -->
     </div>
   </div>
+
+  <%  user.medications.forEach(medication => { %>
+    <%- include("templates/medicationModal", {medication}) %>
+  <% }) %>  
+  
 <script src="/js/modal.js"></script>
 <script>
     document.getElementById("medication").onclick = function() {
