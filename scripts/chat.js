@@ -37,8 +37,7 @@ $(function () {
                 </div>
                 <div class="chat-image avatar">
                     <div class="w-[50px] rounded-full">
-                        <img alt="User profile"
-                            src="${userProfile}" />
+                        <img alt="User profile" src="${userProfile}" class="w-full h-full rounded-full object-cover" />
                     </div>
                 </div>
             </div>
