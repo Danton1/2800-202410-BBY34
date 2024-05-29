@@ -9,7 +9,7 @@ const webpush = require("web-push");
 // const PushNotifications = require('node-pushnotifications');
 const bodyParser = require('body-parser');
 const { database } = require('./databaseConnection');
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const port = process.env.PORT || 3000;
 
 const app = express();
@@ -63,6 +63,19 @@ var mongoStore = MongoStore.create({
         secret: mongodb_session_secret
     }
 })
+
+// Cloudinary and multer for profile picture upload
+const cloudinary = require('cloudinary').v2;
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    secure: true,
+});
+
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
     // USES
 
@@ -138,9 +151,15 @@ app.get('/login', (req, res) => {
 });
 
 // Get for profile
-app.get('/profile', (req, res) => {
+app.get('/profile', async (req, res) => {
     if (isValidSession(req)) {
-        res.render('profilePage', { user: req.session });
+        try {
+            const user = await userCollection.findOne({ email: req.session.email });
+            res.render('profilePage', { user });
+        } catch (err) {
+            console.error("Error fetching user data:", err);
+            res.status(500).send("Internal Server Error");
+        }
         return;
     }
     res.redirect('/login');
@@ -451,6 +470,35 @@ app.post('/profile/personalInfo/edit', async (req, res) => {
         }
     } else {
         res.redirect('/login');
+    }
+});
+
+// Post for Profile Picture
+app.post('/uploadProfilePic', upload.single('image'), async (req, res) => {
+    try {
+        const user_id = req.body.user_id;
+        const buf64 = req.file.buffer.toString('base64');
+        const result = await cloudinary.uploader.upload("data:image/png;base64," + buf64, {
+            public_id: `profile_pics/${user_id}`
+        });
+
+        // Update the user's profile with the image URL
+        const success = await userCollection.updateOne(
+            { "_id": new ObjectId(user_id) },
+            { $set: { profile_pic: result.url } }
+        );
+
+        if (!success) {
+            res.render('errorPage', { error: 'Error uploading profile picture. Please try again.' });
+            console.log("Error uploading profile image");
+        } else {
+            req.session.profile_pic = result.url; // Update session
+            res.redirect(`/profile`);
+        }
+    } catch (ex) {
+        res.render('errorPage', { error: 'Error connecting to the database' });
+        console.log("Error connecting to MongoDB");
+        console.log(ex);
     }
 });
 
