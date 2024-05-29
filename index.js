@@ -599,6 +599,65 @@ app.post('/profile/medHistory/addMedication', async (req, res) => {
     }
 });
 
+// Post for medication history edit
+app.post('/editMedication', async (req, res) => {
+    if (isValidSession(req)) {
+        try {
+            let oldName = req.body.oldName;
+            const medication = { 
+                name: req.body.newName,
+                dosage: req.body.newDosage,
+                frequency: req.body.newFrequency,
+                period: req.body.newPeriod
+            };
+            
+            if (!medication.name.trim()) {
+                res.render("errorPage", { error: "Couldn't find anything to add." });
+                return;
+            }
+
+            await userCollection.updateOne(
+                { email: req.session.email, "medications.name": oldName },
+                { $set: { "medications.$": medication } }
+            );
+            
+            const user = await userCollection.findOne({ email: req.session.email });
+            req.session.medications = user.medications;
+
+            res.redirect('/profile/medHistory');
+        } catch (err) {
+            console.error("Error updating user data:", err);
+            res.status(500).send("Internal Server Error");
+        }
+    } else {
+        res.redirect('/login');
+    }
+});
+
+// Post for medication history delete
+app.post('/deleteMedication', async (req, res) => {
+    if (isValidSession(req)) {
+        try {
+            let oldName = req.body.oldNameDelete;
+
+            await userCollection.updateOne(
+                { email: req.session.email },
+                { $pull: { medications: { name: oldName } } }
+            );
+
+            const user = await userCollection.findOne({ email: req.session.email });
+            req.session.medications = user.medications;
+            
+            res.redirect('/profile/medHistory');
+        } catch (err) {
+            console.error("Error updating user data:", err);
+            res.status(500).send("Internal Server Error");
+        }
+    } else {
+        res.redirect('/login');
+    }
+});
+
 //post for Medical History (illness)
 app.post('/profile/medHistory/addIllness', async (req, res) => {
     if (isValidSession(req)) {

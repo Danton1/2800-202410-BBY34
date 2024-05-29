@@ -17,8 +17,9 @@
                     </li>
                 <% }) %>
                 
-                <button onclick="openModal('MedicationModal')" class="w-full text-lg bg-sky-400 py-3 rounded-xl text-gray-900 font-extrabold hover:bg-sky-300 duration-200">
-                    <i class="fa-solid fa-plus"></i> ADD
+                <button onclick="openModal('MedicationModal')" class="w-full text-lg bg-sky-400 py-2 rounded-xl text-gray-900 font-extrabold hover:bg-sky-300 duration-200">
+                    <i class="fa-solid fa-plus"></i> ADD 
+                </button>
             <% } %>
         </ul>
     </div>
@@ -39,7 +40,7 @@
             <% } %>
             <form action="/profile/medHistory/addIllness" method="POST" class="w-full">
                 <input type="text" name="illness" placeholder="New Illness" class="w-full bg-gray-800 py-3 px-4 rounded-xl placeholder-gray-400 text-sky-100 font-medium focus:outline-none mb-3">
-                <button type="submit" class="w-full bg-sky-400 py-3 rounded-xl text-gray-900 font-extrabold hover:bg-sky-300 duration-200">
+                <button type="submit" class="w-full text-lg bg-sky-400 py-2 rounded-xl text-gray-900 font-extrabold hover:bg-sky-300 duration-200">
                     <i class="fa-solid fa-plus"></i> ADD
                 </button>
             </form>
@@ -62,7 +63,7 @@
             <% } %>
             <form action="/profile/medHistory/addAllergy" method="POST" class="w-full">
                 <input type="text" name="allergy" placeholder="New Allergy" class="w-full bg-gray-800 py-3 px-4 rounded-xl placeholder-gray-400 text-sky-100 font-medium focus:outline-none mb-3">
-                <button type="submit" class="w-full bg-sky-400 py-3 rounded-xl text-gray-900 font-extrabold hover:bg-sky-300 duration-200">
+                <button type="submit" class="w-full text-lg bg-sky-400 py-2 rounded-xl text-gray-900 font-extrabold hover:bg-sky-300 duration-200">
                     <i class="fa-solid fa-plus"></i> ADD
                 </button>
             </form>
@@ -72,7 +73,7 @@
 </div>
 
 <div id='MedicationModal' class="fixed inset-0 bg-gray-900 bg-opacity-60 flex items-center justify-center z-50 hidden">
-    <div class="bg-gray-800 border-2 border-gray-600 rounded-lg shadow-lg p-8 flex flex-col min-h-fit max-w-md mx-auto items-center w-full transform transition duration-500 text-cyan-100">
+    <div class="max-w-[450px] w-[80%] bg-gray-800 border-2 border-gray-600 rounded-lg shadow-lg p-5 flex flex-col min-h-fit mx-auto items-center transform transition duration-500 text-cyan-100">
         <h2 class="modalTitle text-2xl font-bold mb-4 text-center">
             <button onclick="closeModal('MedicationModal')" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
             <i class="fa-solid fa-pencil"></i> Medications</h2>
@@ -98,18 +99,17 @@
                         <option value="monthly">Month</option>
                     </select>
                 </div>
-                <button type="submit" class="w-full text-lg bg-green-400 py-3 rounded-xl text-gray-900 font-extrabold hover:bg-green-300 duration-200">
+                <button type="submit" class="w-full text-lg bg-green-400 py-2 rounded-xl text-gray-900 font-extrabold hover:bg-green-300 duration-200">
                     <i class="fa-solid fa-plus"></i> ADD
                 </button>
             </form>
         </ul>
-        <!-- <button onclick="closeModal('MedicationModal')" class="mt-4 bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded transition duration-300">Save</button> -->
     </div>
-  </div>
+</div>
 
-  <%  user.medications.forEach(medication => { %>
+<%  user.medications.forEach(medication => { %>
     <%- include("templates/medicationModal", {medication}) %>
-  <% }) %>  
+<% }) %>  
   
 <script src="/js/modal.js"></script>
 <script>
