@@ -530,6 +530,31 @@ app.post('/profile/medHistory/addMedication', async (req, res) => {
                 { email: req.session.email },
                 { $push: { medications: medication } }
             );
+            // Defaulting period to daily
+            let periodSeconds = 86400;
+            if (medication.period == "weekly") {
+                periodSeconds = 604800;
+            } else if (medication.period == "monthly") {
+                periodSeconds = 2628000;
+            }
+            let freqSeconds = parseInt(medication.frequency.charAt(0));
+            let reminderSeconds = periodSeconds / freqSeconds;
+            
+            // Retrieve the user's subscription from the database
+            const user = await userCollection.findOne({ email: req.session.email });
+            const subscription = user.subscription;
+
+            if (subscription) {
+                setInterval(() => {
+                    const payload = JSON.stringify({
+                        title: `MediKate - ${medication.name} Reminder`,
+                        message: `${medication.name}\n${medication.dosage}`
+                    });
+                    webpush.sendNotification(subscription, payload)
+                        .catch(error => console.error(error));
+                }, reminderSeconds * 1000); // Converting seconds to milliseconds
+            }
+
             res.redirect('/profile/medHistory');
         } catch (err) {
             console.error("Error adding medication:", err);
@@ -605,17 +630,27 @@ app.post('/settings/widgets/update', async (req, res) => {
 });
 
 // Push notification subscription route
-app.post('/subscribe', (req, res) => {
-    // Get push subscription object
-    const subscription = req.body;
-    // Send 201 - resource created
-    res.status(201).json({});
-    // Create payload
-    const payload = JSON.stringify({ title: 'MediKate - Medication Reminder', message: 'Amoxicillin\n300mg' });
-    // Pass object into sendNotification
-    setTimeout( () => {
-        webpush.sendNotification(subscription, payload).catch(error => console.error(error));
-    }, 10000);
+app.post('/subscribe', async (req, res) => {
+    if (isValidSession(req)) {
+        try {
+            // Get push subscription object
+            const subscription = req.body;
+            const userEmail = req.session.email;
+            // Update the user's document in the database
+            await userCollection.updateOne(
+                { email: userEmail },
+                { $set: { subscription: subscription } },
+                { upsert: true }
+            );
+            // Send 201 - resource created
+            res.status(201).json({});
+        }catch (err) {
+            console.error("Error storing subscription:", err);
+            res.status(500).send("Internal Server Error");
+        }
+    } else {
+        res.redirect('/login');
+    }
 });
 
     // LISTENS
