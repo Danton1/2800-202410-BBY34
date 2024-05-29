@@ -32,8 +32,8 @@ const forgotRoute = require('./scripts/forgotPage');
 app.use('/forgot', forgotRoute);
 const settingsRoute = require('./scripts/settings');
 app.use('/settings', settingsRoute);
-// const chatRoute = require('./scripts/chat');
-// app.use('/chat', chatRoute);
+const emailerRoute = require('./scripts/emailer');
+app.use('/emailer', emailerRoute);
 /*Imported routes js files end*/
 
 /* secret information section */
@@ -202,9 +202,7 @@ app.get('/profile/medHistory', async (req,res) => {
     
 
 // Get for Settings
-app.get('/settings', (req, res) => {
-    res.render('settingsPage');
-});
+
 app.get('/settings/widgets', (req,res) => {
     if(isValidSession(req)){
         res.render('settings/widgetsPage', {widgetSettings: req.session.widgetSettings});
@@ -221,19 +219,14 @@ app.get('/settings/signOut', (req, res) => {
 // Get for chatbot
 let myThread;
 let assistantID;
-let myRun;
-let cancel;
+let counter = 0;;
 app.get('/chatbot', async (req, res) => {
-    assistantID = process.env.KATE_KEY;
-    myThread = await openai.beta.threads.create();
-    if (isValidSession(req)) {
-        try {
-            const user = await userCollection.findOne({ email: req.session.email });
-            res.render('chatbotPage', { user });
-        } catch (err) {
-            console.error("Error fetching user data:", err);
-            res.status(500).send("Internal Server Error");
-        }
+    if(isValidSession(req)){
+        assistantID = process.env.KATE_KEY;
+        counter = 0;
+        myThread = await openai.beta.threads.create();
+        const user = await userCollection.findOne({ email: req.session.email });
+        res.render("chatbotPage", {user: user});
         return;
     }
     res.redirect('/login');
@@ -248,11 +241,27 @@ app.get("*", (req,res) => {
     // POSTS
 
 app.post('/chatbot', async (req, res) => {
-    const input = req.body.userInput;
+    let input;
+    console.log(counter);
+    const user = await userCollection.findOne({ email: req.session.email });
+    req.session.medications = user.medications
+    req.session.illnesses = user.illnesses;
+    req.session.allergies = user.allergies;
+    if(counter == 0){
+        input = "User's medications: " + req.session.medications + ". User's Illnesses: " + req.session.illnesses + ". User's Allergies: " +req.session.allergies+ ". User input: " + req.body.userInput;
+    } else {
+        input = req.body.userInput;
+    }
+    console.log(input);
+    counter++;
     // console.log("in the post function");
     const processedData = `${input}`;
     const output = await runPrompt(input);
     const egg = JSON.parse(output).isEasterEgg;
+    const time = JSON.parse(output).emailTime;
+    const date = JSON.parse(output).emailDate;
+    const issue = JSON.parse(output).emailIssue;
+    const isSend = JSON.parse(output).sendEmail;
     // console.log("egg: " + egg);
     var eggNum;
     if(egg === "true"){
@@ -261,7 +270,17 @@ app.post('/chatbot', async (req, res) => {
     } else{
         eggNum = 0;
     }
-    var data = { processedData: processedData, output: output, eggNum: eggNum };
+    var data = { 
+        processedData: processedData, 
+        output: output, 
+        eggNum: eggNum, 
+        sendEmail: isSend,
+        emailTime: time,
+        emailDate: date,
+        emailIssue: issue,
+        // userName: req.session.firstName + " " + req.session.lastName,
+        // userEmail: req.session.email
+    }
     // Send the processed data back to the client
 
     // console.log(eggNum);
@@ -347,6 +366,10 @@ app.post('/chatbot', async (req, res) => {
 const runPrompt = async (input) => {
     const prompt = input;
 
+    if(!myThread){ // haven't tested
+        return({"message": "error"});
+    }
+
     const myThreadMessage = await openai.beta.threads.messages.create(
         myThread.id,
         {
@@ -394,6 +417,17 @@ const runPrompt = async (input) => {
     };
     return await retrieveRun();
 };
+
+app.post('/submitEmail', async(req,res) => {
+    var date = req.body.emailDate;
+    var time = req.body.emailTime;
+    var issue = req.body.emailIssue;
+    var userName= req.session.firstName + " " + req.session.lastName;
+    var userEmail=  req.session.email
+    // console.log();
+    res.render('emailerPage', {emailDate: date, emailTime:time, emailIssue: issue,
+         userName: userName, userEmail: userEmail });
+});
 
 app.post('/editPass', async (req, res) => {
     res.redirect('/getPassEdit');

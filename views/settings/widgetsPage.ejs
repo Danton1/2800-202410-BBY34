@@ -69,13 +69,10 @@
                 Location
             </button>
             <div id="location" class="w-full hidden py-4 px-5 items-center bg-gray-600 border-b border-gray-800">
-                <%- include("../templates/widgetSettingsInputTemplate", {id: "locationEnabled"}) %>
-            </div>
-            <button class="w-full h-full py-4 px-5 items-center border-b border-gray-800 hover:bg-gray-800 duration-150" onclick="toggleAccordion('medications')">
-                Medications
-            </button>
-            <div id="medications" class="w-full hidden py-4 px-5 items-center bg-gray-600 border-b border-gray-800">
-                <%- include("../templates/widgetSettingsInputTemplate", {id: "medicationsEnabled"}) %>
+                <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
+                    <span>Enabled</span>
+                    <%- include("../templates/widgetSettingsInputTemplate", {id: "locationEnabled"}) %>
+                </div>
             </div>
         </div>
     </div>
@@ -158,10 +155,6 @@
         if (widgetSettings.location) {
             document.getElementById('locationEnabled').checked = widgetSettings.location.enabled || false;
         }
-
-        if (widgetSettings.medications) {
-            document.getElementById('medicationsEnabled').checked = widgetSettings.medications.enabled || false;
-        }
     }
 
     function toggleAccordion(id) {
@@ -190,9 +183,6 @@
             },
             location: {
                 enabled: document.getElementById('locationEnabled').checked
-            },
-            medications: {
-                enabled: document.getElementById('medicationsEnabled').checked
             }
         };
         return settings;

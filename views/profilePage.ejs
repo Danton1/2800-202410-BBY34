@@ -6,28 +6,27 @@
             <% if (user.profile_pic) { %>
                 <img src="<%= user.profile_pic %>" alt="Profile img" class="w-full h-full rounded-full border border-sky-500 object-cover drop-shadow-xl text-black">
             <% } else { %>
-                <img src="https://res.cloudinary.com/dpktouqx0/image/upload/v1716974155/avatardefault_fylgvg.png" alt="Profile img" class="w-[110%] h-[110%] object-cover text-black">
+                <img src="defaultProfilePic.png" alt="Profile img" class="w-full h-full object-cover text-black">
             <% } %>
         </div>
         <h1 class="text-2xl text-sky-300"><%= user.firstName %> <%= user.lastName %></h1>
     </div>
     
-    <form action="/uploadProfilePic" method="post" enctype="multipart/form-data">
+    <!-- Profile picture form -->
+    <form action="/uploadProfilePic" method="post" enctype="multipart/form-data" class="my-[5px!important]">
         <input type="hidden" name="user_id" value="<%= user._id %>">
         <div class="field is-horizontal">
-            <div id="picture-upload" class="file">
+            <div id="picture-upload" class="file flex flex-col justify-center space-y-1">
                 <span class="file-cta">
                     <span class="file-icon">
                         <i class="fas fa-image"></i>
                     </span>
                     <span class="file-label">Choose a new profile picture...</span>
                 </span>
-                    <input id="newProfilePic" class="file-input file-input-bordered file-input-info w-full" accept="image/png, image/jpeg" type="file" name="image"/>
-               
+                <input id="newProfilePic" class="file-input file-input-sm file-input-bordered file-input-info w-full focus:outline-none" accept="image/png, image/jpeg" type="file" name="image"/>
             </div>
-            &nbsp;
             <div class="field w-full flex">
-                <button class="btn btn-info mx-auto text-xl hidden">
+                <button class="btn btn-info mx-auto text-base h-[auto] min-h-[unset] py-1 px-10 rounded-xl text-gray-900 font-extrabold mt-5 hover:bg-sky-300 duration-200 hidden">
                     <i class="fas fa-upload"></i>
                     <span>Update picture</span>
                 </button>
