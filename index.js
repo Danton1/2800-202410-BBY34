@@ -244,9 +244,9 @@ app.post('/chatbot', async (req, res) => {
     let input;
     console.log(counter);
     if(counter == 0){
-        const medicalInfo = await userCollection.find({ email: req.session.email }).project({ medications: 1, illnesses: 1, allergies: 1, _id: 1 }).toArray();
-        console.log("medical info: " + );
-        // input = "This includes an array of the users's medications, illnesses and allergies for you to use when providing medical advice." + medicalInfo + req.body.userInput;
+        // const medicalInfo = await userCollection.find({ email: req.session.email }).project({ medications: 1, illnesses: 1, allergies: 1, _id: 1 }).toArray();
+        console.log("medical info: " + req.session.medications);
+        input = "User's medications: " + req.session.medications + ". User's Illnesses: " + req.session.illnesses + ". User's Allergies: " +req.session.allergies+ ". User input: " + req.body.userInput;
     } else {
         input = req.body.userInput;
     }
