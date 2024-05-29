@@ -491,6 +491,7 @@ app.post('/submitLogin', async (req, res) => {
         }
     }
 });
+
 //post for Personal Info
 app.post('/profile/personalInfo/edit', async (req, res) => {
     if (isValidSession(req)) {
@@ -674,6 +675,35 @@ app.post('/profile/medHistory/addIllness', async (req, res) => {
             res.redirect('/profile/medHistory');
         } catch (err) {
             console.error("Error adding illness:", err);
+            res.status(500).send("Internal Server Error");
+        }
+    } else {
+        res.redirect('/login');
+    }
+});
+
+//post for illness info edit
+app.post('/profile/medHistory/editIllness', async (req, res) => {
+    if (isValidSession(req)) {
+        try {
+            const editLength = req.body.illnessEditLength;
+            let newIllness = [];
+            for (let i = 0; i < editLength; i++) {
+                let newIllnessToAdd = i + "illnessEdit";
+                newIllness.push(req.body[newIllnessToAdd])
+            }
+
+            await userCollection.updateOne(
+                { email: req.session.email },
+                { $set: { illnesses: newIllness } }
+            );
+            
+            const user = await userCollection.findOne({ email: req.session.email });
+            req.session.illnesses = user.illnesses;
+            
+            res.redirect('/profile/medHistory');
+        } catch (err) {
+            console.error("Error updating user data:", err);
             res.status(500).send("Internal Server Error");
         }
     } else {
