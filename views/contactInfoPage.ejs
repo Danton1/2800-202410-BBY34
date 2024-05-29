@@ -4,27 +4,89 @@
     <h1 class="text-sky-300 text-3xl font-bold mb-2">Contact Information</h1>
 
     <!-- My contact info -->
-    <div class="w-full bg-gray-700 shadow-lg py-5 px-5 flex flex-col space-y-3 rounded-2xl">
-        <h1>My Contact Information</h1>
-        <div class="w-full bg-gray-800 py-3 px-4 rounded-xl"><%= user.email %></div>
-        <div class="w-full bg-gray-800 py-3 px-4 rounded-xl">Secondary email</div>
-        <div class="w-full bg-gray-800 py-3 px-4 rounded-xl">Phone number</div>
-    </div>    
+    <form id="contactInfoForm" action="/profile/contactInfo" method="POST" class="w-full flex flex-col items-center space-y-4 text-md">
+        <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl flex">
+            <span class="border-r-2 pr-2 mr-3">Email</span>
+            <span id="emailDisplay"><%= user.email %></span>
+            <input type="email" name="email" id="emailInput" class="hidden bg-gray-800 text-sky-100 w-full rounded focus:outline-none" value="<%= user.email %>">
+        </div>
+        <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl flex">
+            <span class="border-r-2 pr-2 mr-3">Secondary Email</span>
+            <span id="secondaryEmailDisplay"><%= user.secondaryEmail %></span>
+            <input type="email" name="secondaryEmail" id="secondaryEmailInput" class="hidden bg-gray-800 text-sky-100 w-full rounded focus:outline-none" value="<%= user.secondaryEmail %>">
+        </div>
+        <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl flex">
+            <span class="border-r-2 pr-2 mr-3">Phone Number</span>
+            <span id="phoneNumberDisplay"><%= user.phoneNumber %></span>
+            <input type="text" name="phoneNumber" id="phoneNumberInput" class="hidden bg-gray-800 text-sky-100 w-full rounded focus:outline-none" value="<%= user.phoneNumber %>" pattern="\d{10}" title="Please enter a 10-digit phone number">
+        </div>
 
     <!-- Emergency contact info -->
-    <div class="w-full bg-gray-700 shadow-lg py-5 px-5 flex flex-col space-y-3 rounded-2xl">
-        <h1>Emergency Contact</h1>
-        <div class="w-full bg-gray-800 py-3 px-4 rounded-xl">Email</div>
-        <div class="w-full bg-gray-800 py-3 px-4 rounded-xl">Phone number</div>
-    </div>    
+    <h1 class="text-sky-300 text-3xl font-bold mt-5">Emergency Contact</h1>
+    <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl flex">
+        <span class="border-r-2 pr-2 mr-3">Emergency Email</span>
+        <span id="emergencyEmailDisplay"><%= user.emergencyEmail %></span>
+        <input type="email" name="emergencyEmail" id="emergencyEmailInput" class="hidden bg-gray-800 text-sky-100 w-full rounded focus:outline-none" value="<%= user.emergencyEmail %>">
+    </div>
+    <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl flex">
+        <span class="border-r-2 pr-2 mr-3">Emergency Phone Number</span>
+        <span id="emergencyPhoneNumberDisplay"><%= user.emergencyPhoneNumber %></span>
+        <input type="text" name="emergencyPhoneNumber" id="emergencyPhoneNumberInput" class="hidden bg-gray-800 text-sky-100 w-full rounded focus:outline-none" value="<%= user.emergencyPhoneNumber %>" pattern="\d{10}" title="Please enter a 10-digit phone number">
+    </div>
+</form>   
 
     <!-- Edit & save button -->
-    <div class="w-full flex flex-col items-center space-y-4 text-gray-900 text-lg font-extrabold">
-        <button class="w-full bg-sky-400 py-3 rounded-2xl hover:bg-sky-300 duration-200">
+    <div class="w-full flex flex-col items-center space-y-4 text-gray-900 text-lg font-bold">
+        <button id="editButton" class="w-full bg-sky-400 py-4 rounded-2xl hover:bg-sky-300 hover:text-gray-800 duration-200">
             EDIT
             <i class="fa-solid fa-pen"></i>
         </button>
-        <button class="w-full bg-sky-400 py-3 rounded-2xl hover:bg-sky-300 duration-200">SAVE</button>
+        <button id="saveButton" class="hidden w-full bg-sky-400 py-4 rounded-2xl hover:bg-sky-300 hover:text-gray-800 duration-200" form="contactInfoForm">
+            SAVE
+        </button>
     </div>
 </div>
+
 <%- include("templates/footerTemplate")%>
+
+<script>
+    document.getElementById('editButton').addEventListener('click', function() {
+        document.getElementById('editButton').classList.add('hidden');
+        document.getElementById('saveButton').classList.remove('hidden');
+        
+        document.getElementById('emailDisplay').classList.add('hidden');
+        document.getElementById('emailInput').classList.remove('hidden');
+        
+        document.getElementById('secondaryEmailDisplay').classList.add('hidden');
+        document.getElementById('secondaryEmailInput').classList.remove('hidden');
+        
+        document.getElementById('phoneNumberDisplay').classList.add('hidden');
+        document.getElementById('phoneNumberInput').classList.remove('hidden');
+        
+        document.getElementById('emergencyEmailDisplay').classList.add('hidden');
+        document.getElementById('emergencyEmailInput').classList.remove('hidden');
+        
+        document.getElementById('emergencyPhoneNumberDisplay').classList.add('hidden');
+        document.getElementById('emergencyPhoneNumberInput').classList.remove('hidden');
+    });
+
+    function validateForm() {
+        const phoneNumber = document.getElementById('phoneNumberInput').value;
+        const emergencyPhoneNumber = document.getElementById('emergencyPhoneNumberInput').value;
+
+        const phonePattern = /^\d{10}$/;
+
+        if (!phonePattern.test(phoneNumber)) {
+            alert("Please enter a valid 10-digit phone number.");
+            return false;
+        }
+
+        if (!phonePattern.test(emergencyPhoneNumber)) {
+            alert("Please enter a valid 10-digit emergency phone number.");
+            return false;
+        }
+
+        return true;
+    }
+
+</script>
