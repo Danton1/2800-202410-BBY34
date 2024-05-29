@@ -46,7 +46,6 @@
                             </div>
                             <div class="w-full bg-gray-800 text-sky-100 rounded-xl pr-4 flex">
                                 <input type="text" name='<%= user.illnesses.indexOf(illness) +"illnessEdit" %>' id='<%= user.illnesses.indexOf(illness) +"illnessEdit" %>' class="hidden w-[-webkit-fill-available] bg-gray-800 text-sky-100 py-3 px-4 rounded-xl focus:outline-none" value="<%= illness %>">
-                                <!-- <button type="submit" form='illnessDeleteForm' id='<%= user.illnesses.indexOf(illness) +"illnessDelete" %>' class="hidden"><i class="fa-solid fa-trash"></i></button> -->
                                 <a onclick="illnessDeleteFunction(<%= user.illnesses.indexOf(illness) %>)" id='<%= user.illnesses.indexOf(illness) +"illnessDelete" %>' class="hidden flex justify-center items-center"><i class="fa-solid fa-trash"></i></a>
                             </div>
                         </div>
@@ -76,21 +75,43 @@
             Allergies 
             <i id="allergyTitle" class="fa-solid fa-chevron-down duration-200"></i>
         </h1>
-        <ul id="allergies" class="w-full h-0 overflow-hidden flex flex-col space-y-3 duration-300">
-            <% if (user.allergies != undefined) { %>
-                <% user.allergies.forEach(allergy => { %>
-                    <li class="w-full bg-gray-800 py-3 px-4 rounded-xl">
-                        <%= allergy %>
-                    </li>
-                <% }) %>
+        <div id="allergies" class="w-full h-0 overflow-hidden duration-300">
+            <% if (user.allergies.length !== 0) { %>
+                <form method="POST" id="allergyDeleteForm" hidden>
+                    <% user.allergies.forEach(allergy => { %>
+                        <input type="text" name='<%= user.allergies.indexOf(allergy) +"allergyToDelete" %>' id='<%= user.allergies.indexOf(allergy) +"allergyToDelete" %>' class="hidden w-[-webkit-fill-available] bg-gray-800 text-sky-100 py-3 px-4 rounded-xl focus:outline-none" value="<%= allergy %>">
+                    <% }) %>
+                </form>
+                <form id="allergyEditForm" action="/profile/medHistory/editAllergy" method="POST" class="flex flex-col space-y-3 mb-3">
+                    <input type="text" name='allergyEditLength' id='allergyEditLength' value="<%= user.allergies.length %>" hidden>
+                    <% user.allergies.forEach(allergy => { %>
+                        <div class="">
+                            <div id='<%= user.allergies.indexOf(allergy) +"allergyOriginal" %>' class="w-full bg-gray-800 py-3 px-4 rounded-xl">
+                                <%= allergy %>
+                            </div>
+                            <div class="w-full bg-gray-800 text-sky-100 rounded-xl pr-4 flex">
+                                <input type="text" name='<%= user.allergies.indexOf(allergy) +"allergyEdit" %>' id='<%= user.allergies.indexOf(allergy) +"allergyEdit" %>' class="hidden w-[-webkit-fill-available] bg-gray-800 text-sky-100 py-3 px-4 rounded-xl focus:outline-none" value="<%= allergy %>">
+                                <a onclick="allergyDeleteFunction(<%= user.allergies.indexOf(allergy) %>)" id='<%= user.allergies.indexOf(allergy) +"allergyDelete" %>' class="hidden flex justify-center items-center"><i class="fa-solid fa-trash"></i></a>
+                            </div>
+                        </div>
+                    <% }) %>
+                    <div class="w-full">
+                        <button id="allergyEdit" type="button" class="w-full text-lg bg-sky-400 py-2 rounded-xl text-gray-900 font-extrabold hover:bg-sky-300 duration-200">
+                            <i class="fa-solid fa-pen"></i> EDIT
+                        </button>
+                        <button id="allergySave" type="submit" class="hidden w-full text-lg bg-emerald-400 py-2 rounded-xl text-gray-900 font-extrabold hover:bg-emerald-300 duration-200">
+                            Save
+                        </button>
+                    </div>
+                </form>
             <% } %>
-            <form action="/profile/medHistory/addAllergy" method="POST" class="w-full">
+            <form id="allergyAddForm" action="/profile/medHistory/addAllergy" method="POST" class="w-full">
                 <input type="text" name="allergy" placeholder="New Allergy" class="w-full bg-gray-800 py-3 px-4 rounded-xl placeholder-gray-400 text-sky-100 font-medium focus:outline-none mb-3">
-                <button type="submit" class="w-full text-lg bg-sky-400 py-2 rounded-xl text-gray-900 font-extrabold hover:bg-sky-300 duration-200">
+                <button id="allergyAdd" type="submit" class="w-full text-lg bg-sky-400 py-2 rounded-xl text-gray-900 font-extrabold hover:bg-sky-300 duration-200">
                     <i class="fa-solid fa-plus"></i> ADD
                 </button>
             </form>
-        </ul>
+        </div>
     </div>
 
 </div>
@@ -182,7 +203,6 @@
     <% user.illnesses.forEach(illness => { %>
         illnesses.push(`${illness}`);
     <% }) %>
-    // let illnesses = { "<%= user.illnesses[1] %>" };
     document.getElementById("illnessEdit").onclick = function() {
         document.getElementById("illnessEdit").classList.add("hidden");
         document.getElementById("illnessAddForm").classList.add("hidden");
@@ -193,9 +213,6 @@
             document.getElementById(`${i}illnessOriginal`).classList.add("hidden");
             document.getElementById(`${i}illnessEdit`).classList.remove("hidden");
             document.getElementById(`${i}illnessDelete`).classList.remove("hidden");
-            // document.getElementById(`${i}illnessDelete`).onclick = function() {
-            //     document.getElementById(`${i}illnessDeleteForm`).action = "/profile/medHistory/deleteIllness";
-            // }
         }
     }
 
@@ -203,6 +220,29 @@
         document.getElementById("illnessDeleteForm").action = `/profile/medHistory/deleteIllness?id=${id}`;
 
         document.getElementById("illnessDeleteForm").submit();
+    }
+
+    let allergies = [];
+    <% user.allergies.forEach(allergy => { %>
+        allergies.push(`${allergy}`);
+    <% }) %>
+    document.getElementById("allergyEdit").onclick = function() {
+        document.getElementById("allergyEdit").classList.add("hidden");
+        document.getElementById("allergyAddForm").classList.add("hidden");
+        document.getElementById("allergyEditForm").classList.remove("mb-3");
+        document.getElementById("allergySave").classList.remove("hidden");
+        
+        for (let i = 0; i < allergies.length; i++) {
+            document.getElementById(`${i}allergyOriginal`).classList.add("hidden");
+            document.getElementById(`${i}allergyEdit`).classList.remove("hidden");
+            document.getElementById(`${i}allergyDelete`).classList.remove("hidden");
+        }
+    }
+
+    function allergyDeleteFunction(id) {
+        document.getElementById("allergyDeleteForm").action = `/profile/medHistory/deleteallergy?id=${id}`;
+
+        document.getElementById("allergyDeleteForm").submit();
     }
 
 </script>

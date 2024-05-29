@@ -711,7 +711,7 @@ app.post('/profile/medHistory/editIllness', async (req, res) => {
     }
 });
 
-// Post for medication history delete
+// Post for illness info delete
 app.post('/profile/medHistory/deleteIllness', async (req, res) => {
     if (isValidSession(req)) {
         try {
@@ -725,7 +725,7 @@ app.post('/profile/medHistory/deleteIllness', async (req, res) => {
             );
 
             user = await userCollection.findOne({ email: req.session.email });
-            req.session.medications = user.medications;
+            req.session.illnesses = user.illnesses;
             
             res.redirect('/profile/medHistory');
         } catch (err) {
@@ -753,6 +753,61 @@ app.post('/profile/medHistory/addAllergy', async (req, res) => {
             res.redirect('/profile/medHistory');
         } catch (err) {
             console.error("Error adding allergy:", err);
+            res.status(500).send("Internal Server Error");
+        }
+    } else {
+        res.redirect('/login');
+    }
+});
+
+//post for allergy info edit
+app.post('/profile/medHistory/editAllergy', async (req, res) => {
+    if (isValidSession(req)) {
+        try {
+            const editLength = req.body.allergyEditLength;
+            let newAllergy = [];
+            for (let i = 0; i < editLength; i++) {
+                let newAllergyToAdd = i + "allergyEdit";
+                newAllergy.push(req.body[newAllergyToAdd])
+            }
+
+            await userCollection.updateOne(
+                { email: req.session.email },
+                { $set: { allergies: newAllergy } }
+            );
+            
+            const user = await userCollection.findOne({ email: req.session.email });
+            req.session.allergies = user.allergies;
+            
+            res.redirect('/profile/medHistory');
+        } catch (err) {
+            console.error("Error updating user data:", err);
+            res.status(500).send("Internal Server Error");
+        }
+    } else {
+        res.redirect('/login');
+    }
+});
+
+// Post for allergy info delete
+app.post('/profile/medHistory/deleteAllergy', async (req, res) => {
+    if (isValidSession(req)) {
+        try {
+            let user = await userCollection.findOne({ email: req.session.email });
+
+            user.allergies.splice(req.query.id, 1);
+
+            await userCollection.updateOne(
+                { email: req.session.email },
+                { $set: { allergies: user.allergies } }
+            );
+
+            user = await userCollection.findOne({ email: req.session.email });
+            req.session.allergies = user.allergies;
+            
+            res.redirect('/profile/medHistory');
+        } catch (err) {
+            console.error("Failed to delete info:", err);
             res.status(500).send("Internal Server Error");
         }
     } else {
