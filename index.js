@@ -711,6 +711,32 @@ app.post('/profile/medHistory/editIllness', async (req, res) => {
     }
 });
 
+// Post for medication history delete
+app.post('/profile/medHistory/deleteIllness', async (req, res) => {
+    if (isValidSession(req)) {
+        try {
+            let user = await userCollection.findOne({ email: req.session.email });
+
+            user.illnesses.splice(req.query.id, 1);
+
+            await userCollection.updateOne(
+                { email: req.session.email },
+                { $set: { illnesses: user.illnesses } }
+            );
+
+            user = await userCollection.findOne({ email: req.session.email });
+            req.session.medications = user.medications;
+            
+            res.redirect('/profile/medHistory');
+        } catch (err) {
+            console.error("Failed to delete info:", err);
+            res.status(500).send("Internal Server Error");
+        }
+    } else {
+        res.redirect('/login');
+    }
+});
+
 //post for Medical History (allergy)
 app.post('/profile/medHistory/addAllergy', async (req, res) => {
     if (isValidSession(req)) {

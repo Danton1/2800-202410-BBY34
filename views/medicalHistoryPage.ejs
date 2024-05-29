@@ -32,6 +32,11 @@
         </h1>
         <div id="illnesses" class="w-full h-0 overflow-hidden duration-300">
             <% if (user.illnesses.length !== 0) { %>
+                <form method="POST" id="illnessDeleteForm" hidden>
+                    <% user.illnesses.forEach(illness => { %>
+                        <input type="text" name='<%= user.illnesses.indexOf(illness) +"illnessToDelete" %>' id='<%= user.illnesses.indexOf(illness) +"illnessToDelete" %>' class="hidden w-[-webkit-fill-available] bg-gray-800 text-sky-100 py-3 px-4 rounded-xl focus:outline-none" value="<%= illness %>">
+                    <% }) %>
+                </form>
                 <form id="illnessEditForm" action="/profile/medHistory/editIllness" method="POST" class="flex flex-col space-y-3 mb-3">
                     <input type="text" name='illnessEditLength' id='illnessEditLength' value="<%= user.illnesses.length %>" hidden>
                     <% user.illnesses.forEach(illness => { %>
@@ -39,7 +44,11 @@
                             <div id='<%= user.illnesses.indexOf(illness) +"illnessOriginal" %>' class="w-full bg-gray-800 py-3 px-4 rounded-xl">
                                 <%= illness %>
                             </div>
-                            <input type="text" name='<%= user.illnesses.indexOf(illness) +"illnessEdit" %>' id='<%= user.illnesses.indexOf(illness) +"illnessEdit" %>' class="hidden w-[-webkit-fill-available] bg-gray-800 text-sky-100 py-3 px-4 rounded-xl focus:outline-none" value="<%= illness %>">
+                            <div class="w-full bg-gray-800 text-sky-100 rounded-xl pr-4 flex">
+                                <input type="text" name='<%= user.illnesses.indexOf(illness) +"illnessEdit" %>' id='<%= user.illnesses.indexOf(illness) +"illnessEdit" %>' class="hidden w-[-webkit-fill-available] bg-gray-800 text-sky-100 py-3 px-4 rounded-xl focus:outline-none" value="<%= illness %>">
+                                <!-- <button type="submit" form='illnessDeleteForm' id='<%= user.illnesses.indexOf(illness) +"illnessDelete" %>' class="hidden"><i class="fa-solid fa-trash"></i></button> -->
+                                <a onclick="illnessDeleteFunction(<%= user.illnesses.indexOf(illness) %>)" id='<%= user.illnesses.indexOf(illness) +"illnessDelete" %>' class="hidden flex justify-center items-center"><i class="fa-solid fa-trash"></i></a>
+                            </div>
                         </div>
                     <% }) %>
                     <div class="w-full">
@@ -183,7 +192,18 @@
         for (let i = 0; i < illnesses.length; i++) {
             document.getElementById(`${i}illnessOriginal`).classList.add("hidden");
             document.getElementById(`${i}illnessEdit`).classList.remove("hidden");
+            document.getElementById(`${i}illnessDelete`).classList.remove("hidden");
+            // document.getElementById(`${i}illnessDelete`).onclick = function() {
+            //     document.getElementById(`${i}illnessDeleteForm`).action = "/profile/medHistory/deleteIllness";
+            // }
         }
     }
+
+    function illnessDeleteFunction(id) {
+        document.getElementById("illnessDeleteForm").action = `/profile/medHistory/deleteIllness?id=${id}`;
+
+        document.getElementById("illnessDeleteForm").submit();
+    }
+
 </script>
 <%- include("templates/footerTemplate")%>
