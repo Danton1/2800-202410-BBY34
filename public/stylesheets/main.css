@@ -60,3 +60,27 @@ body {
   transition: background-color 5000s ease-in-out 0s;
   -webkit-text-fill-color: #e0f2fe;
 }
+
+.chatbotTextBoxWrap input:-webkit-autofill,
+.chatbotTextBoxWrap input:-webkit-autofill:hover,
+.chatbotTextBoxWrap input:-webkit-autofill:focus,
+.chatbotTextBoxWrap input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: #e0f2fe;
+}
+
+#personalInfoForm input:-webkit-autofill,
+#personalInfoForm input:-webkit-autofill:hover,
+#personalInfoForm input:-webkit-autofill:focus,
+#personalInfoForm input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: #e0f2fe;
+}
+
+#medHistoryWrap input:-webkit-autofill,
+#medHistoryWrap input:-webkit-autofill:hover,
+#medHistoryWrap input:-webkit-autofill:focus,
+#medHistoryWrap input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: #e0f2fe;
+}

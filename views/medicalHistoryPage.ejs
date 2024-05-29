@@ -1,5 +1,5 @@
 <%- include("templates/headerTemplate")%>
-<div class="max-w-[450px] w-full min-h-svh mx-auto px-[35px] py-[50px] pb-[100px] bg-gray-900 flex flex-col items-center space-y-5 text-sky-100 text-md font-medium">
+<div id="medHistoryWrap" class="max-w-[450px] w-full min-h-svh mx-auto px-[35px] py-[50px] pb-[100px] bg-gray-900 flex flex-col items-center space-y-5 text-sky-100 text-md font-medium">
     <!-- Page title -->
     <h1 class="text-sky-300 text-3xl font-bold mb-5">Medical History</h1>
 
@@ -10,23 +10,19 @@
             <i id="medicationTitle" class="fa-solid fa-chevron-down duration-200"></i>
         </h1>
         <ul id="medications" class="w-full h-0 overflow-hidden flex flex-col space-y-3 duration-300">
-            <li class="w-full bg-gray-800 py-3 px-4 rounded-xl">
-                medicine 1
-            </li>
-            <li class="w-full bg-gray-800 py-3 px-4 rounded-xl">
-                medicine 2
-            </li>
-            <li class="w-full bg-gray-800 py-3 px-4 rounded-xl">
-                medicine 3
-            </li>
-            <button class="w-full bg-sky-400 py-3 rounded-xl text-gray-900 font-extrabold hover:bg-sky-300 duration-200">
-                EDIT
-                <i class="fa-solid fa-pen"></i>
-            </button>
-            <button class="w-full bg-sky-400 py-3 rounded-xl text-gray-900 font-extrabold hover:bg-sky-300 duration-200">
-                <i class="fa-solid fa-plus"></i>
-                ADD
-            </button>
+            <% if (user.medications !== undefined) { %>
+                <% user.medications.forEach(medication => { %>
+                    <li class="w-full bg-gray-800 py-3 px-4 rounded-xl">
+                        <%= medication %>
+                    </li>
+                <% }) %>
+            <% } %>
+            <form action="/profile/medHistory/addMedication" method="POST" class="w-full">
+                <input type="text" name="medication" placeholder="New Medication" class="w-full bg-gray-800 py-3 px-4 rounded-xl placeholder-gray-400 text-sky-100 font-medium focus:outline-none mb-3">
+                <button type="submit" class="w-full bg-sky-400 py-3 rounded-xl text-gray-900 font-extrabold hover:bg-sky-300 duration-200">
+                    <i class="fa-solid fa-plus"></i> ADD
+                </button>
+            </form>
         </ul>
     </div>
 
@@ -37,20 +33,19 @@
             <i id="illnessTitle" class="fa-solid fa-chevron-down duration-200"></i>
         </h1>
         <ul id="illnesses" class="w-full h-0 overflow-hidden flex flex-col space-y-3 duration-300">
-            <li class="w-full bg-gray-800 py-3 px-4 rounded-xl">
-                illness 1
-            </li>
-            <li class="w-full bg-gray-800 py-3 px-4 rounded-xl">
-                illness 2
-            </li>
-            <button class="w-full bg-sky-400 py-3 rounded-xl text-gray-900 font-extrabold hover:bg-sky-300 duration-200">
-                EDIT
-                <i class="fa-solid fa-pen"></i>
-            </button>
-            <button class="w-full bg-sky-400 py-3 rounded-xl text-gray-900 font-extrabold hover:bg-sky-300 duration-200">
-                <i class="fa-solid fa-plus"></i>
-                ADD
-            </button>
+            <% if (user.illnesses != undefined) { %>
+                <% user.illnesses.forEach(illness => { %>
+                    <li class="w-full bg-gray-800 py-3 px-4 rounded-xl">
+                        <%= illness %>
+                    </li>
+                <% }) %>
+            <% } %>
+            <form action="/profile/medHistory/addIllness" method="POST" class="w-full">
+                <input type="text" name="illness" placeholder="New Illness" class="w-full bg-gray-800 py-3 px-4 rounded-xl placeholder-gray-400 text-sky-100 font-medium focus:outline-none mb-3">
+                <button type="submit" class="w-full bg-sky-400 py-3 rounded-xl text-gray-900 font-extrabold hover:bg-sky-300 duration-200">
+                    <i class="fa-solid fa-plus"></i> ADD
+                </button>
+            </form>
         </ul>
     </div>
 
@@ -61,55 +56,64 @@
             <i id="allergyTitle" class="fa-solid fa-chevron-down duration-200"></i>
         </h1>
         <ul id="allergies" class="w-full h-0 overflow-hidden flex flex-col space-y-3 duration-300">
-            <li class="w-full bg-gray-800 py-3 px-4 rounded-xl">
-                allergy 1
-            </li>
-            <button class="w-full bg-sky-400 py-3 rounded-xl text-gray-900 font-extrabold hover:bg-sky-300 duration-200">
-                EDIT
-                <i class="fa-solid fa-pen"></i>
-            </button>
-            <button class="w-full bg-sky-400 py-3 rounded-xl text-gray-900 font-extrabold hover:bg-sky-300 duration-200">
-                <i class="fa-solid fa-plus"></i>
-                ADD
-            </button>
+            <% if (user.allergies != undefined) { %>
+                <% user.allergies.forEach(allergy => { %>
+                    <li class="w-full bg-gray-800 py-3 px-4 rounded-xl">
+                        <%= allergy %>
+                    </li>
+                <% }) %>
+            <% } %>
+            <form action="/profile/medHistory/addAllergy" method="POST" class="w-full">
+                <input type="text" name="allergy" placeholder="New Allergy" class="w-full bg-gray-800 py-3 px-4 rounded-xl placeholder-gray-400 text-sky-100 font-medium focus:outline-none mb-3">
+                <button type="submit" class="w-full bg-sky-400 py-3 rounded-xl text-gray-900 font-extrabold hover:bg-sky-300 duration-200">
+                    <i class="fa-solid fa-plus"></i> ADD
+                </button>
+            </form>
         </ul>
     </div>
 
 </div>
 
 <script>
-    $(document).ready();
-    document.getElementById("medication").onclick = function(){
-        if (document.getElementById("medications").classList.contains("h-0")) {
-            document.getElementById("medications").classList.remove("h-0");
-            document.getElementById("medications").classList.add("mt-4");
-            document.getElementById("medicationTitle").classList.add("rotate-180");
+    document.getElementById("medication").onclick = function() {
+        var element = document.getElementById("medications");
+        var icon = document.getElementById("medicationTitle");
+        if (element.classList.contains("h-0")) {
+            element.classList.remove("h-0");
+            element.classList.add("mt-4");
+            icon.classList.add("rotate-180");
         } else {
-            document.getElementById("medications").classList.add("h-0");
-            document.getElementById("medications").classList.remove("mt-4");
-            document.getElementById("medicationTitle").classList.remove("rotate-180");
+            element.classList.add("h-0");
+            element.classList.remove("mt-4");
+            icon.classList.remove("rotate-180");
         }
     }
+
     document.getElementById("illness").onclick = function(){
-        if (document.getElementById("illnesses").classList.contains("h-0")) {
-            document.getElementById("illnesses").classList.remove("h-0");
-            document.getElementById("illnesses").classList.add("mt-4");
-            document.getElementById("illnessTitle").classList.add("rotate-180");
+        var element = document.getElementById("illnesses");
+        var icon = document.getElementById("illnessTitle");
+        if (element.classList.contains("h-0")) {
+            element.classList.remove("h-0");
+            element.classList.add("mt-4");
+            icon.classList.add("rotate-180");
         } else {
-            document.getElementById("illnesses").classList.add("h-0");
-            document.getElementById("illnesses").classList.remove("mt-4");
-            document.getElementById("illnessTitle").classList.remove("rotate-180");
+            element.classList.add("h-0");
+            element.classList.remove("mt-4");
+            icon.classList.remove("rotate-180");
         }
     }
+
     document.getElementById("allergy").onclick = function(){
-        if (document.getElementById("allergies").classList.contains("h-0")) {
-            document.getElementById("allergies").classList.remove("h-0");
-            document.getElementById("allergies").classList.add("mt-4");
-            document.getElementById("allergyTitle").classList.add("rotate-180");
+        var element = document.getElementById("allergies");
+        var icon = document.getElementById("allergyTitle");
+        if (element.classList.contains("h-0")) {
+            element.classList.remove("h-0");
+            element.classList.add("mt-4");
+            icon.classList.add("rotate-180");
         } else {
-            document.getElementById("allergies").classList.add("h-0");
-            document.getElementById("allergies").classList.remove("mt-4");
-            document.getElementById("allergyTitle").classList.remove("rotate-180");
+            element.classList.add("h-0");
+            element.classList.remove("mt-4");
+            icon.classList.remove("rotate-180");
         }
     }
 </script>
