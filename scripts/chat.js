@@ -3,6 +3,8 @@ var imgSrc = "Kate.png";
 var imgName = "Dr.Kate";
 var userCounter = 0;
 var gptCounter = 0;
+let userProfile = document.getElementById('chatJS').getAttribute("profile");
+userProfile = userProfile ? userProfile : "defaultProfilePic.png"
 
 $(function () {
     $('#chatForm').on("submit", function (event) {
@@ -36,7 +38,7 @@ $(function () {
                 <div class="chat-image avatar">
                     <div class="w-[50px] rounded-full">
                         <img alt="User profile"
-                            src="https://play-lh.googleusercontent.com/yvoeLsYXfwqgH3H4mgljOio6wMomgfgwguEl4yegpkgjtDoCWz71qSLVHI6UAyCxfA" />
+                            src="${userProfile}" />
                     </div>
                 </div>
             </div>

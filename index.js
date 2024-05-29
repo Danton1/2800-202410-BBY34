@@ -224,9 +224,14 @@ let assistantID;
 let myRun;
 let cancel;
 app.get('/chatbot', async (req, res) => {
-    assistantID = process.env.KATE_KEY;
-    myThread = await openai.beta.threads.create();
-    res.render("chatbotPage");
+    if(isValidSession(req)){
+        assistantID = process.env.KATE_KEY;
+        myThread = await openai.beta.threads.create();
+        const user = await userCollection.findOne({ email: req.session.email });
+        res.render("chatbotPage", {user: user});
+        return;
+    }
+    res.redirect('/login');
 });
 
 // Get for 404
