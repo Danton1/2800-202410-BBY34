@@ -70,8 +70,16 @@
 <%- include("templates/footerTemplate") %> 
     
 
-<script src="js/indexWidgets.js"></script>
+<script src="js/indexPage.js"></script>
 <script>
+  function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+  }
+
+  function closeModal(id) {
+    document.getElementById(id).classList.add('hidden');
+  }
+
   function populateAPIWidgets(apiKey) {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
@@ -96,6 +104,8 @@
   function populateLocationWidget(widgetSettings, apiKey, lat, lon) {
     const apiURL = `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&appid=${apiKey}`;
     const widget = document.getElementById('locationCard');
+    const modal = document.getElementById('locationCardModal');
+    modal.querySelector(".modalTitle").textContent = "Location";
 
     if (widgetSettings.location && !widgetSettings.location.enabled) {
       widget.style.display = "none";
@@ -109,6 +119,7 @@
         const stateName = locationData[0].state;
         widget.querySelector(".indexCardTitle").textContent = cityName;
         widget.querySelector(".indexCardContent").textContent = stateName;
+        modal.querySelector(".modalDescription").textContent = cityName + ", " + stateName + ". Latitude: " + lat + " Longitude: " + lon;
       })
       .catch(error => {
         console.error('Error fetching location data:', error);
@@ -118,6 +129,8 @@
   function populateAirQualityWidget(widgetSettings, apiKey, lat, lon) {
     const apiURL = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`;
     const widget = document.getElementById('airQualityCard');
+    const modal = document.getElementById('airQualityCardModal');
+    modal.querySelector(".modalTitle").textContent = "Air Quality";
 
     if (widgetSettings.airQuality && !widgetSettings.airQuality.enabled) {
       widget.style.display = "none";
@@ -147,6 +160,12 @@
           { pollutant: 'nh3', concentration: compNH3 }
         ];
 
+        let componentsString = "";
+
+        if (widgetSettings.airQuality) {
+          componentsString += generateComponentsStringFromSettings(widgetSettings, components);
+        }
+
         const pollutants = components.map(item => item.pollutant);
         const concentrations = components.map(item => item.concentration);
         const airQualityIndex = calculateHighestUKAQI(pollutants, concentrations);
@@ -156,10 +175,65 @@
 
         widget.querySelector(".indexCardTitle").textContent = airQualityIndexString;
         widget.querySelector(".indexCardContent").textContent = airQualityString;
+        modal.querySelector(".modalDescription").textContent = "AQI: " + airQualityIndex + ", " + airQualityString + ". " + componentsString + " ";
       })
       .catch(error => {
         console.error('Error fetching air quality data:', error);
       });
+  }
+  
+  function generateComponentsStringFromSettings(widgetSettings, components) {
+    let string = "";
+    const pollutants = components.map(item => item.pollutant);
+    const concentrations = components.map(item => item.concentration);
+
+    for (i = 0; i < components.length; i++) {
+      switch (pollutants[i]) {
+      case 'so2':
+        if (widgetSettings.airQuality.components.so2) {
+          string += "Sulphur Dioxide: " + concentrations[i] + "μg/m3 ";
+        }
+        break;
+      case 'no2':
+        if (widgetSettings.airQuality.components.no2) {
+          string += "Nitrogen Dioxide: " + concentrations[i] + "μg/m3 ";
+        }
+        break;
+      case 'pm2_5':
+        if (widgetSettings.airQuality.components.pm2_5) {
+          string += "Fine Particulates: " + concentrations[i] + "μg/m3 ";
+        }
+        break;
+      case 'pm10':
+        if (widgetSettings.airQuality.components.pm10) {
+          string += "Course Particulates: " + concentrations[i] + "μg/m3 ";
+        }
+        break;
+      case 'o3':
+        if (widgetSettings.airQuality.components.o3) {
+          string += "Ozone: " + concentrations[i] + "μg/m3 ";
+        }
+        break;
+      case 'co':
+        if (widgetSettings.airQuality.components.co) {
+          string += "Carbon Monoxide: " + concentrations[i] + "μg/m3 ";
+        }
+        break;
+      case 'no':
+        if (widgetSettings.airQuality.components.no) {
+          string += "Nitrogen Monoxide: " + concentrations[i] + "μg/m3 ";
+        }
+        break;
+      case 'nh3':
+        if (widgetSettings.airQuality.components.nh3) {
+          string += "Ammonia: " + concentrations[i] + "μg/m3";
+        }
+        break;
+      default:
+        return null;
+      }
+    }
+    return string;
   }
 
   function getUKAQIDescription(aqi) {
@@ -289,6 +363,8 @@
 
   function populateTemperatureWidget(widgetSettings, apiKey, lat, lon) {
     const widget = document.getElementById('outdoorTemperatureCard');
+    const modal = document.getElementById('outdoorTemperatureCardModal');
+    modal.querySelector(".modalTitle").textContent = "Temperature";
 
     let units = 'metric';
     let unitSign = '°C';
@@ -316,6 +392,10 @@
 
         widget.querySelector(".indexCardTitle").textContent = temperatureString;
         widget.querySelector(".indexCardContent").textContent = weatherString;
+        modal.querySelector(".modalDescription").textContent = temperatureString + " "  + weatherString + " " + 
+          "Feels like: " + data.main.feels_like + unitSign + " " + 
+          "Pressure: " + data.main.pressure + "hPa " + 
+          "Humidity: " + data.main.humidity + "%";
       })
       .catch(error => {
         console.error('Error fetching temperature data:', error);
