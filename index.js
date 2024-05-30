@@ -887,17 +887,27 @@ app.post('/settings/widgets/update', async (req, res) => {
 });
 
 // Push notification subscription route
-app.post('/subscribe', (req, res) => {
-    // Get push subscription object
-    const subscription = req.body;
-    // Send 201 - resource created
-    res.status(201).json({});
-    // Create payload
-    const payload = JSON.stringify({ title: 'MediKate - Medication Reminder', message: 'Amoxicillin\n300mg' });
-    // Pass object into sendNotification
-    setTimeout( () => {
-        webpush.sendNotification(subscription, payload).catch(error => console.error(error));
-    }, 10000);
+app.post('/subscribe', async (req, res) => {
+    if (isValidSession(req)) {
+        try {
+            // Get push subscription object
+            const subscription = req.body;
+            const userEmail = req.session.email;
+            // Update the user's document in the database
+            await userCollection.updateOne(
+                { email: userEmail },
+                { $set: { subscription: subscription } },
+                { upsert: true }
+            );
+            // Send 201 - resource created
+            res.status(201).json({});
+        }catch (err) {
+            console.error("Error storing subscription:", err);
+            res.status(500).send("Internal Server Error");
+        }
+    } else {
+        res.redirect('/login');
+    }
 });
 
     // LISTENS
