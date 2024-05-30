@@ -65,7 +65,7 @@ router.post('/submitSignUp', async (req, res) => {
         birthDate: Joi.date().required(),
         country: Joi.string().max(20).required(),
         city: Joi.string().max(20).required(),
-        email: Joi.string().email().max(20).required(),
+        email: Joi.string().email().max(40).required(),
         password: Joi.string().max(20).required()
     });
     const validationResult = schema.validate({ firstName, lastName, birthDate, country, city, email, password });

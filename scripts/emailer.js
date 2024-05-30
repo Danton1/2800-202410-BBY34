@@ -33,8 +33,8 @@ router.use(express.static(__dirname + "/public"));
 router.post('/sendEmail', async (req, res) => {
     //Checks email validity
     var userEmail = req.body.useremail;
-    console.log(req.body.username);
-    console.log(req.body.useremail);
+    // console.log(req.body.username);
+    // console.log(req.body.useremail);
 
 
     //email not valid
@@ -66,12 +66,12 @@ router.post('/sendEmail', async (req, res) => {
         // console.log("asdasd " + req.body.username);
 
         // var final = opening + req.body.emailContent + ending;
-        console.log(req.body.tempContent);
+        // console.log(req.body.tempContent);
         // Define email options
         var str = req.body.tempContent;
         str = str.replace(/(?:\r\n|\r|\n)/g, '<br>');
 
-        console.log(str);
+        // console.log(str);
         let mailOptions = {
             from: userEmail,
             to: userEmail,
