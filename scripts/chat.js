@@ -93,7 +93,7 @@ $(function () {
                     $("#emailDate").val(response.emailDate);
                     $("#emailTime").val(response.emailTime);
                     $("#emailIssue").val(response.emailIssue);
-                    outputString += "<br><button class='w-full py-2 mt-3 rounded-xl bg-emerald-600 flex justify-center items-center hover:bg-emerald-500 duration-200' type='submit' form='bookAppointment' id='emailSubmit'>Book Appointment&ensp;<i class='ml-2 fa-solid fa-angle-right'></i></button>";
+                    outputString += "<br><button class='w-full py-2 mt-3 rounded-xl bg-emerald-600 flex justify-center items-center hover:bg-emerald-500 duration-200' type='submit' form='bookAppointment' id='emailSubmit'>Book Appointment <i class='ml-2 fa-solid fa-angle-right'></i></button>";
                 }
 
                 $("#loading").remove();
