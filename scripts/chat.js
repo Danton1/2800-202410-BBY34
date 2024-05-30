@@ -27,42 +27,42 @@ $(function () {
         // Display user input
         $('#chatHistoryWrap').append(`
             <div class="max-w-full chat chat-end">
-            <div class="flex items-end gap-2">
-                <time class="text-xs opacity-50">${time}</time>
-                <div id="testing${userCounter}" class="chat-bubble py-4 px-5 bg-gray-700 text-sky-100">
-                    ${userInput}
+                <div class="flex items-end gap-2">
+                    <time class="text-xs opacity-50">${time}</time>
+                    <div id="testing${userCounter}" class="chat-bubble py-4 px-5 bg-gray-700 text-sky-100">
+                        ${userInput}
+                    </div>
                 </div>
-            </div>
-            <div class="flex flex-col justify-center items-center">
-                <div class="chat-header mb-2">
-                    You
-                </div>
-                <div class="chat-image avatar">
-                    <div class="w-[50px] rounded-full">
-                        <img alt="User profile" src="${userProfile}" class="w-full h-full rounded-full object-cover" />
+                <div class="flex flex-col justify-center items-center">
+                    <div class="chat-header mb-2">
+                        You
+                    </div>
+                    <div class="chat-image avatar">
+                        <div class="w-[50px] rounded-full">
+                            <img alt="User profile" src="${userProfile}" class="w-full h-full rounded-full object-cover" />
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         
-                <div id="loading" class="chat chat-start items-end justify-items-end">
-                    <div class="flex flex-col justify-center items-center">
-                        <div class="chat-header mb-2">
-                            ${imgName}
-                        </div>
-                        <div class="chat-image avatar">
-                            <div class="w-[50px] rounded-full">
-                                <img alt="chatbot profile pic" src=${imgSrc} />
-                            </div>
+            <div id="loading" class="chat chat-start items-end justify-items-end">
+                <div class="flex flex-col justify-center items-center">
+                    <div class="chat-header mb-2">
+                        ${imgName}
+                    </div>
+                    <div class="chat-image avatar">
+                        <div class="w-[50px] rounded-full">
+                            <img alt="chatbot profile pic" src=${imgSrc} />
                         </div>
                     </div>
-                    <div class="w-full flex items-end gap-2">
-                        <div class="chat-bubble py-4 px-5 bg-gray-700 text-sky-100">
-                        <div class="animate-bounce"> ... </div>
-                        </div>
-                        
+                </div>
+                <div class="w-full flex items-end gap-2">
+                    <div class="chat-bubble py-4 px-5 bg-gray-700 text-sky-100">
+                    <div class="animate-bounce"> ... </div>
                     </div>
-                </div>`);
+                    
+                </div>
+            </div>`);
 
         // Reset input textbox
         $('#chatbotTextBox').val("");
@@ -93,7 +93,7 @@ $(function () {
                     $("#emailDate").val(response.emailDate);
                     $("#emailTime").val(response.emailTime);
                     $("#emailIssue").val(response.emailIssue);
-                    outputString += "<br><button class='bg-black' type='submit' form='bookAppointment' id='emailSubmit'>Book Appointment</button>";
+                    outputString += "<br><button class='w-full py-2 mt-3 rounded-xl bg-emerald-600 flex justify-center items-center hover:bg-emerald-500 duration-200' type='submit' form='bookAppointment' id='emailSubmit'>Book Appointment <i class='ml-2 fa-solid fa-angle-right'></i></button>";
                 }
 
                 $("#loading").remove();
