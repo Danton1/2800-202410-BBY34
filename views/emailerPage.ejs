@@ -13,16 +13,20 @@
                 <span class="border-r-2 pr-2 mr-3">Email</span>
                 drgiggles@medicenter.net
             </div>
-            <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl flex">
+            <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl flex" style="height: 50vh">
                 <span class="border-r-2 pr-2 mr-3">Content</span>
                 <input id="emailContent" name="emailContent" value=""
                 class="hidden"></input>
-                <span id="tempContent" class="text-clip" contenteditable="true">
-<%=userName%> is requesting to book an appointment at <%= emailTime%> on <%=emailDate%>. They are looking for help regarding the following issue: <%=emailIssue%></span>
-                
-                
-               
-                </span>
+                <textarea name="tempContent" id="tempContent" class="w-full text-clip  bg-gray-700" contenteditable="true">
+Hello Dr. Giggles,
+
+<%=userName%> is requesting to book an appointment at <%= emailTime%> on <%=emailDate%>. They are looking for help regarding the following issue: <%=emailIssue%>
+
+Thank you for your help and you can reach them at <%=userEmail%>
+Regards,
+MediKate
+(AI Health Assistant)
+                </textarea>
             </div>
         </form>
 
@@ -38,8 +42,8 @@
     <script>
         function e(){
             var content = document.querySelector("#tempContent");
-            document.querySelector("#emailContent").value = content.textContent;
-            console.log(content.textContent);
+            document.querySelector("#emailContent").value = content.value;
+            console.log(content.value);
             document.querySelector("#sendEmail").submit();
         }
     </script>

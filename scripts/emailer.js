@@ -63,20 +63,28 @@ router.post('/sendEmail', async (req, res) => {
         //generate url
         // const resetPasswordBaseUrl = 'https://two800-202410-bby34-sjiu.onrender.com/forgot/resetPassword';
         // const resetPasswordLink = `${resetPasswordBaseUrl}?email=${encodeURIComponent(forgotEmail)}&token=${encodeURIComponent(encodedToken)}`;
-        console.log("asdasd " + req.body.username);
+        // console.log("asdasd " + req.body.username);
 
-        var opening = `Hello Dr. Giggles, \n\n`
-        var ending= ` 
-        \nThank you for your help and you can reach them at ${req.body.useremail}\nRegards,\nMediKate\n(AI Health Assistant)`
-
-        var final = opening + req.body.emailContent + ending;
-        // console.log("222 " + req.body.testttt);
+        // var final = opening + req.body.emailContent + ending;
+        console.log(req.body.tempContent);
         // Define email options
+        var str = req.body.tempContent;
+        str = str.replace(/(?:\r\n|\r|\n)/g, '<br>');
+
+        console.log(str);
         let mailOptions = {
             from: userEmail,
             to: userEmail,
             subject: 'Appointment Request',
-            text: final
+            html: `<!DOCTYPE html>
+            <html lang="en">
+            <head>
+            <meta charset="UTF-8">
+            </head>
+            <body>
+                <p> ${str} </p>
+            </body>
+            </html>`
         };
 
         // Send email
@@ -87,7 +95,7 @@ router.post('/sendEmail', async (req, res) => {
             } else {
                 res.render("emailSuccess"); 
 
-                console.log("e");
+                // console.log("e");
                 return;
             }
         });
