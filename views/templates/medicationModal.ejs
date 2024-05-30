@@ -1,4 +1,4 @@
-<div id='<%= medication.name + "Modal"%>' class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden z-50">
+<div id='<%= medication.name + "Modal"%>' class="medicationModals fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden z-50">
     <div id='<%= medication.name + "info"%>' class="max-w-[450px] w-[80%] bg-gray-800 border-2 border-gray-600 rounded-lg shadow-lg p-5 transform transition duration-500 text-cyan-100 flex flex-col justify-center items-center">
         <button onclick="closeModal('<%= medication.name%>' + 'Modal')" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
         <h2 class="modalTitle text-2xl font-bold mb-4"><%= medication.name%></h2>

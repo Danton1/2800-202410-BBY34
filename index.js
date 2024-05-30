@@ -183,34 +183,16 @@ app.get('/profile/personalInfo', async (req, res) => {
 // Get for Contact Info
 app.get('/profile/contactInfo', async (req,res) => {
     if (isValidSession(req)) {
-        const schema = Joi.object({
-            email: Joi.string().email().required(),
-            secondaryEmail: Joi.string().email().required(),
-            phoneNumber: Joi.string().pattern(/^\d{10}$/).required(),
-            emergencyEmail: Joi.string().email().required(),
-            emergencyPhoneNumber: Joi.string().pattern(/^\d{10}$/).required(),
-        });
-
-        const validation = schema.validate(req.body);
-        if (validation.error) {
-            res.status(400).send(validation.error.details[0].message);
-            return;
-        }
-
         try {
-            const { email, secondaryEmail, phoneNumber, emergencyEmail, emergencyPhoneNumber } = req.body;
-            await userCollection.updateOne(
-                { email: req.session.email },
-                { $set: { email, secondaryEmail, phoneNumber, emergencyEmail, emergencyPhoneNumber } }
-            );
-            res.redirect('/profile/contactInfo');
+            const user = await userCollection.findOne({ email: req.session.email });
+            res.render('contactInfoPage', { user });
         } catch (err) {
-            console.error("Error updating contact information:", err);
+            console.error("Error fetching user data:", err);
             res.status(500).send("Internal Server Error");
         }
-    } else {
-        res.redirect('/login');
+        return;
     }
+    res.redirect('/login');
 });
 
 // Get for medical History
@@ -504,6 +486,7 @@ app.post('/submitLogin', async (req, res) => {
             req.session.medications = getUser.medications;
             req.session.illnesses = getUser.illnesses;
             req.session.allergies = getUser.allergies;
+            req.session.profile_pic = getUser.profile_pic;
 
             res.redirect('/');
             return;
@@ -841,6 +824,22 @@ app.post('/profile/medHistory/deleteAllergy', async (req, res) => {
 // Post to update contact information
 app.post('/profile/contactInfo', async (req, res) => {
     if (isValidSession(req)) {
+        var email = req.body.email;
+
+        const schema = Joi.object({
+            email: Joi.string().email().required(),
+            secondaryEmail: Joi.string().email(),
+            phoneNumber: Joi.string().pattern(/^\d{10}$/),
+            emergencyEmail: Joi.string().email(),
+            emergencyPhoneNumber: Joi.string().pattern(/^\d{10}$/)
+        });
+
+        const validation = schema.validate({ email });
+        if (validation.error) {
+            res.render("errorPage", { error: validation.error.details[0].message });
+            return;
+        }
+
         try {
             const { email, secondaryEmail, phoneNumber, emergencyEmail, emergencyPhoneNumber } = req.body;
             await userCollection.updateOne(

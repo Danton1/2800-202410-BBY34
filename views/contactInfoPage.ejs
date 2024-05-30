@@ -1,39 +1,43 @@
 <%- include("templates/headerTemplate")%>
 <div class="max-w-[450px] w-full min-h-svh mx-auto px-[35px] bg-gray-900 flex flex-col py-[55px] pb-[90px] items-center justify-center space-y-5 text-sky-100 text-md font-medium">
     <!-- Page title -->
-    <h1 class="text-sky-300 text-3xl font-bold mb-2">Contact Information</h1>
+    
+    <form id="contactInfoForm" action="/profile/contactInfo" method="POST" class="w-full flex flex-col items-center space-y-10 text-md">
+        <!-- My contact info -->
+        <div class="w-full flex flex-col items-center space-y-4">
+            <h1 class="text-sky-300 text-3xl font-bold mb-2">Contact Information</h1>
+            <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl flex">
+                <span class="border-r-2 pr-2 mr-3 flex items-center justify-center whitespace-nowrap">Email</span>
+                <span id="emailDisplay"><%= user.email %></span>
+                <input type="email" name="email" id="emailInput" class="hidden w-[-webkit-fill-available] bg-gray-800 text-sky-100 py-2 px-3 rounded-xl focus:outline-none" value="<%= user.email %>">
+            </div>
+            <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl flex">
+                <span class="border-r-2 pr-2 mr-3 flex items-center justify-center whitespace-nowrap">Secondary Email</span>
+                <span id="secondaryEmailDisplay"><%= user.secondaryEmail %></span>
+                <input type="email" name="secondaryEmail" id="secondaryEmailInput" class="hidden w-[-webkit-fill-available] bg-gray-800 text-sky-100 py-2 px-3 rounded-xl focus:outline-none" value="<%= user.secondaryEmail %>">
+            </div>
+            <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl flex">
+                <span class="border-r-2 pr-2 mr-3 flex items-center justify-center whitespace-nowrap">Phone Number</span>
+                <span id="phoneNumberDisplay"><%= user.phoneNumber %></span>
+                <input type="text" name="phoneNumber" id="phoneNumberInput" class="hidden w-[-webkit-fill-available] bg-gray-800 text-sky-100 py-2 px-3 rounded-xl focus:outline-none" value="<%= user.phoneNumber %>" pattern="\d{10}" title="Please enter a 10-digit phone number">
+            </div>
+        </div>
 
-    <!-- My contact info -->
-    <form id="contactInfoForm" action="/profile/contactInfo" method="POST" class="w-full flex flex-col items-center space-y-4 text-md">
-        <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl flex">
-            <span class="border-r-2 pr-2 mr-3">Email</span>
-            <span id="emailDisplay"><%= user.email %></span>
-            <input type="email" name="email" id="emailInput" class="hidden bg-gray-800 text-sky-100 w-full rounded focus:outline-none" value="<%= user.email %>">
+        <!-- Emergency contact info -->
+        <div class="w-full flex flex-col items-center space-y-4">
+            <h1 class="text-sky-300 text-3xl font-bold mb-2">Emergency Contact</h1>
+            <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl flex">
+                <span class="border-r-2 pr-2 mr-3 flex items-center justify-center whitespace-nowrap">Email</span>
+                <span id="emergencyEmailDisplay"><%= user.emergencyEmail %></span>
+                <input type="email" name="emergencyEmail" id="emergencyEmailInput" class="hidden w-[-webkit-fill-available] bg-gray-800 text-sky-100 py-2 px-3 rounded-xl focus:outline-none" value="<%= user.emergencyEmail %>">
+            </div>
+            <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl flex">
+                <span class="border-r-2 pr-2 mr-3 flex items-center justify-center whitespace-nowrap">Phone Number</span>
+                <span id="emergencyPhoneNumberDisplay"><%= user.emergencyPhoneNumber %></span>
+                <input type="text" name="emergencyPhoneNumber" id="emergencyPhoneNumberInput" class="hidden w-[-webkit-fill-available] bg-gray-800 text-sky-100 py-2 px-3 rounded-xl focus:outline-none" value="<%= user.emergencyPhoneNumber %>" pattern="\d{10}" title="Please enter a 10-digit phone number">
+            </div>
         </div>
-        <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl flex">
-            <span class="border-r-2 pr-2 mr-3">Secondary Email</span>
-            <span id="secondaryEmailDisplay"><%= user.secondaryEmail %></span>
-            <input type="email" name="secondaryEmail" id="secondaryEmailInput" class="hidden bg-gray-800 text-sky-100 w-full rounded focus:outline-none" value="<%= user.secondaryEmail %>">
-        </div>
-        <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl flex">
-            <span class="border-r-2 pr-2 mr-3">Phone Number</span>
-            <span id="phoneNumberDisplay"><%= user.phoneNumber %></span>
-            <input type="text" name="phoneNumber" id="phoneNumberInput" class="hidden bg-gray-800 text-sky-100 w-full rounded focus:outline-none" value="<%= user.phoneNumber %>" pattern="\d{10}" title="Please enter a 10-digit phone number">
-        </div>
-
-    <!-- Emergency contact info -->
-    <h1 class="text-sky-300 text-3xl font-bold mt-5">Emergency Contact</h1>
-    <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl flex">
-        <span class="border-r-2 pr-2 mr-3">Emergency Email</span>
-        <span id="emergencyEmailDisplay"><%= user.emergencyEmail %></span>
-        <input type="email" name="emergencyEmail" id="emergencyEmailInput" class="hidden bg-gray-800 text-sky-100 w-full rounded focus:outline-none" value="<%= user.emergencyEmail %>">
-    </div>
-    <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl flex">
-        <span class="border-r-2 pr-2 mr-3">Emergency Phone Number</span>
-        <span id="emergencyPhoneNumberDisplay"><%= user.emergencyPhoneNumber %></span>
-        <input type="text" name="emergencyPhoneNumber" id="emergencyPhoneNumberInput" class="hidden bg-gray-800 text-sky-100 w-full rounded focus:outline-none" value="<%= user.emergencyPhoneNumber %>" pattern="\d{10}" title="Please enter a 10-digit phone number">
-    </div>
-</form>   
+    </form>
 
     <!-- Edit & save button -->
     <div class="w-full flex flex-col items-center space-y-4 text-gray-900 text-lg font-bold">
