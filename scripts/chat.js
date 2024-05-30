@@ -132,7 +132,11 @@ $(function () {
                 console.log(tempEgg);
                 if(tempEgg != 0){
                     //change background here
-                    $( "#bigwrap" ).addClass("bg-black");
+                    // $( "#bigwrap" ).addClass("bg-opacity-10");
+                    $('#bigwrap').css('background-image', 'url(/egg/office.jpg)');
+                    // $('img').css('opacity', 0.5);
+                    $('#bigwrap').css('background-size', 'cover');
+
                 }
 
                 switch (egg) {
