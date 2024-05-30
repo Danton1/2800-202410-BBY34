@@ -182,12 +182,35 @@ app.get('/profile/personalInfo', async (req, res) => {
 
 // Get for Contact Info
 app.get('/profile/contactInfo', async (req,res) => {
-    if(isValidSession(req)){
-        const user = await userCollection.findOne({ email: req.session.email });
-        res.render('contactInfoPage', {user: user});
-        return;
+    if (isValidSession(req)) {
+        const schema = Joi.object({
+            email: Joi.string().email().required(),
+            secondaryEmail: Joi.string().email().required(),
+            phoneNumber: Joi.string().pattern(/^\d{10}$/).required(),
+            emergencyEmail: Joi.string().email().required(),
+            emergencyPhoneNumber: Joi.string().pattern(/^\d{10}$/).required(),
+        });
+
+        const validation = schema.validate(req.body);
+        if (validation.error) {
+            res.status(400).send(validation.error.details[0].message);
+            return;
+        }
+
+        try {
+            const { email, secondaryEmail, phoneNumber, emergencyEmail, emergencyPhoneNumber } = req.body;
+            await userCollection.updateOne(
+                { email: req.session.email },
+                { $set: { email, secondaryEmail, phoneNumber, emergencyEmail, emergencyPhoneNumber } }
+            );
+            res.redirect('/profile/contactInfo');
+        } catch (err) {
+            console.error("Error updating contact information:", err);
+            res.status(500).send("Internal Server Error");
+        }
+    } else {
+        res.redirect('/login');
     }
-    res.redirect('/login');
 });
 
 // Get for medical History
@@ -815,6 +838,25 @@ app.post('/profile/medHistory/deleteAllergy', async (req, res) => {
     }
 });
 
+// Post to update contact information
+app.post('/profile/contactInfo', async (req, res) => {
+    if (isValidSession(req)) {
+        try {
+            const { email, secondaryEmail, phoneNumber, emergencyEmail, emergencyPhoneNumber } = req.body;
+            await userCollection.updateOne(
+                { email: req.session.email },
+                { $set: { email, secondaryEmail, phoneNumber, emergencyEmail, emergencyPhoneNumber } }
+            );
+            res.redirect('/profile/contactInfo');
+        } catch (err) {
+            console.error("Error updating contact information:", err);
+            res.status(500).send("Internal Server Error");
+        }
+    } else {
+        res.redirect('/login');
+    }
+});
+
 app.post('/settings/widgets/update', async (req, res) => {
     try {
         const settings = req.body;
@@ -834,27 +876,17 @@ app.post('/settings/widgets/update', async (req, res) => {
 });
 
 // Push notification subscription route
-app.post('/subscribe', async (req, res) => {
-    if (isValidSession(req)) {
-        try {
-            // Get push subscription object
-            const subscription = req.body;
-            const userEmail = req.session.email;
-            // Update the user's document in the database
-            await userCollection.updateOne(
-                { email: userEmail },
-                { $set: { subscription: subscription } },
-                { upsert: true }
-            );
-            // Send 201 - resource created
-            res.status(201).json({});
-        }catch (err) {
-            console.error("Error storing subscription:", err);
-            res.status(500).send("Internal Server Error");
-        }
-    } else {
-        res.redirect('/login');
-    }
+app.post('/subscribe', (req, res) => {
+    // Get push subscription object
+    const subscription = req.body;
+    // Send 201 - resource created
+    res.status(201).json({});
+    // Create payload
+    const payload = JSON.stringify({ title: 'MediKate - Medication Reminder', message: 'Amoxicillin\n300mg' });
+    // Pass object into sendNotification
+    setTimeout( () => {
+        webpush.sendNotification(subscription, payload).catch(error => console.error(error));
+    }, 10000);
 });
 
     // LISTENS

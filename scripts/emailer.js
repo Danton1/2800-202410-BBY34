@@ -87,7 +87,9 @@ router.post('/sendEmail', async (req, res) => {
                 res.render("errorPage", {error: "Email failed to send, please try again!"});
                 return;
             } else {
-                res.render("errorPage", {error: "Email was sent successfully"}); //temporary, should make an ejs file later
+                res.render("emailSuccess"); 
+
+                console.log("e");
                 return;
             }
         });
