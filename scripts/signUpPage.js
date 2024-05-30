@@ -88,13 +88,13 @@ router.post('/submitSignUp', async (req, res) => {
             country: country, 
             city: city, 
             email: email, 
-            secondaryEmail: secondaryEmail, 
-            phoneNumber: phoneNumber, 
-            emergencyEmail: emergencyEmail,
-            emergencyPhoneNumber: emergencyPhoneNumber, 
+            secondaryEmail: null, 
+            phoneNumber: null, 
+            emergencyEmail: null,
+            emergencyPhoneNumber: null, 
             password: encodedPassword, 
             medications: [], illnesses: [], allergies: [],  
-            profile_pic: profile_pic
+            profile_pic: null
         }
     );
 
