@@ -8,22 +8,13 @@
               <img src="favicon.png" alt="logo" class="w-12 h-12 mr-2"/>
               <h1 class="text-white text-xl md:text-2xl font-bold">MediKate</h1>
             </div>
-            <div class="hidden md:flex items-center text-gray-600">
-              <a href="/profile" class="mx-3">
-                <% if (profilePic) { %>
-                  <img src="<%= profilePic %>" alt="Profile img" class="w-12 h-12 rounded-full border border-sky-500 object-cover drop-shadow-xl text-black">
-                <% } else { %>
-                  <img src="https://res.cloudinary.com/dpktouqx0/image/upload/v1716974155/avatardefault_fylgvg.png" alt="Profile img" class="w-12 h-12 object-cover text-black">
-                <% } %>
-              </a>
-            </div>
           </div>
         </div>
       </header>
       
 
     <div class="w-full h-full bg-gradient-to-tr from-gray-900 to-gray-800">
-        <div class="py-10"></div>
+        <div class="py-5"></div>
         <div class="w-[80%] leading-none pt-1 flex text-3xl md:text-4xl font-sans text-center speech-bubble z-10 sm:w-[75%] sm:w-fit h-32">
             <h1 class="m-auto font-bold text-center text-cyan-500 rotate-[1.4deg]">
                 <% const hour = new Date().getHours(); %>
