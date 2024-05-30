@@ -253,13 +253,18 @@ app.get("*", (req,res) => {
 app.post('/chatbot', async (req, res) => {
     let input;
     console.log(counter);
-    const user = await userCollection.findOne({ email: req.session.email });
-    req.session.medications = user.medications
-    req.session.illnesses = user.illnesses;
-    req.session.allergies = user.allergies;
+    
+    
     if(counter == 0){
-        console.log(new Date(Date.now()).toDateString());
-        input = "User's medications: " + req.session.medications + ". User's Illnesses: " + req.session.illnesses + ". User's Allergies: " +req.session.allergies+ ". Today's date: " + new Date(Date.now()).toDateString()+ " User input: " + req.body.userInput;
+        const user = await userCollection.findOne({ email: req.session.email });
+        req.session.medications = user.medications;
+        req.session.illnesses = user.illnesses;
+        req.session.allergies = user.allergies;
+        input = "User's medications: "
+        for(let i = 0; i < req.session.medications.length; i++){
+            input += req.session.medications[i].name + " ";
+        }
+        input += ". User's Illnesses: " + req.session.illnesses + ". User's Allergies: " +req.session.allergies+ ". User input: " + req.body.userInput;
     } else {
         input = req.body.userInput;
     }
