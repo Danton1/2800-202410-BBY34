@@ -253,7 +253,8 @@ app.post('/chatbot', async (req, res) => {
     req.session.illnesses = user.illnesses;
     req.session.allergies = user.allergies;
     if(counter == 0){
-        input = "User's medications: " + req.session.medications + ". User's Illnesses: " + req.session.illnesses + ". User's Allergies: " +req.session.allergies+ ". User input: " + req.body.userInput;
+        console.log(new Date(Date.now()).toDateString());
+        input = "User's medications: " + req.session.medications + ". User's Illnesses: " + req.session.illnesses + ". User's Allergies: " +req.session.allergies+ ". Today's date: " + new Date(Date.now()).toDateString()+ " User input: " + req.body.userInput;
     } else {
         input = req.body.userInput;
     }
