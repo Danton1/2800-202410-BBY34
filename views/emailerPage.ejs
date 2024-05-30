@@ -1,12 +1,11 @@
 <%- include("templates/headerTemplate")%>
-    <div
-        class="max-w-[450px] w-full min-h-svh mx-auto bg-gray-900 flex flex-col px-[35px] py-[50px] pb-[100px] items-center justify-center space-y-5 text-sky-100 text-md font-medium">
+    <div class="max-w-[450px] w-100 min-h-svh mx-auto px-[30px] py-[50px] bg-gray-900 flex flex-col pb-[90px] items-center justify-center space-y-5 text-sky-100 text-md font-medium">
         <!-- Page title -->
         <h1 class="text-sky-300 text-3xl font-bold mb-5">Emailer</h1>
 
         <!-- List of personal information -->
         <form id="sendEmail" action="/emailer/sendEmail" method="POST"
-            class="w-full flex flex-col items-center space-y-4 text-md">
+            class="w-full h-5/6 flex flex-col items-center space-y-4 text-md">
             <input name="username" class="hidden" value="<%= userName%>"> </input>
             <input name="useremail" class="hidden" value = "<%= userEmail%>"></input>
 
@@ -16,17 +15,20 @@
             </div>
             <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl flex">
                 <span class="border-r-2 pr-2 mr-3">Content</span>
-                <input id="emailContent" name="emailContent" value="<%=userName%> is requesting to book an appointment at <%= emailTime%> on <%=emailDate%>. They are looking for help regarding the following issue: <%=emailIssue%>">
+                <input id="emailContent" name="emailContent" value=""
+                class="hidden"></input>
+                <span id="tempContent" class="text-clip" contenteditable="true">
+<%=userName%> is requesting to book an appointment at <%= emailTime%> on <%=emailDate%>. They are looking for help regarding the following issue: <%=emailIssue%></span>
                 
                 
                
-            </input>
+                </span>
             </div>
         </form>
 
         <!-- Send button -->
         <div class="w-full flex flex-col items-center space-y-4 text-gray-900 text-lg font-bold">
-            <button form="sendEmail" id="editButton"
+            <button onclick="e()"  
                 class="w-full bg-sky-400 py-4 rounded-2xl hover:bg-sky-300 hover:text-gray-800 duration-200">
                 Send
             </button>
@@ -35,8 +37,10 @@
 
     <script>
         function e(){
-            var content = document.querySelector("#emailContent");
+            var content = document.querySelector("#tempContent");
+            document.querySelector("#emailContent").value = content.textContent;
             console.log(content.textContent);
+            document.querySelector("#sendEmail").submit();
         }
     </script>
     <%- include("templates/footerTemplate")%>
