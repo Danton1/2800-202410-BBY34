@@ -1,5 +1,11 @@
 <%- include("templates/headerTemplate")%>
-<div id="medHistoryWrap" class="max-w-[450px] w-full min-h-svh mx-auto px-[35px] py-[50px] pb-[100px] bg-gray-900 flex flex-col items-center space-y-5 text-sky-100 text-md font-medium">
+<div id="medHistoryWrap" class="max-w-[450px] w-full min-h-svh mx-auto px-[35px] bg-gray-900 flex flex-col pt-5 pb-[90px] items-center space-y-5 text-sky-100 text-md font-medium">
+    <!-- Go back button -->
+    <div class="max-w-[450px] w-full mx-auto text-sky-100 pb-5">
+        <a onclick="history.back()" class="hover:text-sky-400 duration-150 cursor-pointer">
+            <i class="ml-2 fa-solid fa-angle-left"></i> Go back
+        </a>
+    </div>
     <!-- Page title -->
     <h1 class="text-sky-300 text-3xl font-bold mb-5">Medical History</h1>
 
