@@ -257,6 +257,7 @@ app.post('/chatbot', async (req, res) => {
     
     if(counter == 0){
         const user = await userCollection.findOne({ email: req.session.email });
+        const date = new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
         req.session.medications = user.medications;
         req.session.illnesses = user.illnesses;
         req.session.allergies = user.allergies;
@@ -264,7 +265,7 @@ app.post('/chatbot', async (req, res) => {
         for(let i = 0; i < req.session.medications.length; i++){
             input += req.session.medications[i].name + " ";
         }
-        input += ". User's Illnesses: " + req.session.illnesses + ". User's Allergies: " +req.session.allergies+ ". User input: " + req.body.userInput;
+        input += ". User's Illnesses: " + req.session.illnesses + ". User's Allergies: " +req.session.allergies+ ". Current time: " + date + ". User input: " + req.body.userInput;
     } else {
         input = req.body.userInput;
     }
