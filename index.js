@@ -165,6 +165,11 @@ app.get('/profile', async (req, res) => {
     res.redirect('/login');
 });
 
+// Get for change password from the profile page
+app.get('/profile/changePw', (req, res) => {
+    res.render("changePassword");
+});
+
 // Get for personal Info 
 app.get('/profile/personalInfo', async (req, res) => {
     if (isValidSession(req)) {
