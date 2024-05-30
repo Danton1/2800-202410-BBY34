@@ -32,11 +32,9 @@ router.use(express.static(__dirname + "/public"));
 
 router.post('/sendEmail', async (req, res) => {
     //Checks email validity
-    // var userEmail = req.session.email;
+    var userEmail = req.body.useremail;
     console.log(req.body.username);
     console.log(req.body.useremail);
-
-    var userEmail = "tyson95577@gmail.com";
 
 
     //email not valid
@@ -76,7 +74,7 @@ router.post('/sendEmail', async (req, res) => {
         // Define email options
         let mailOptions = {
             from: userEmail,
-            to: process.env.TEST_EMAIL,
+            to: userEmail,
             subject: 'Appointment Request',
             text: final
         };

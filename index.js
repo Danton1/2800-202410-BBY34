@@ -440,7 +440,7 @@ app.post('/submitEmail', async(req,res) => {
     var time = req.body.emailTime;
     var issue = req.body.emailIssue;
     var userName= req.session.firstName + " " + req.session.lastName;
-    var userEmail=  req.session.email
+    var userEmail=  req.session.email;
     // console.log();
     res.render('emailerPage', {emailDate: date, emailTime:time, emailIssue: issue,
          userName: userName, userEmail: userEmail });
