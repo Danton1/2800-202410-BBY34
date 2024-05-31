@@ -83,21 +83,20 @@ We have developed a medical application with climate change related health infor
 │   │   ├── who.jpg
 │   │   └── zoid.jpg
 │   ├── favicon.ico
-│   ├── favicon.png
-│   ├── js
-│   │   ├── indexPage.js
-│   │   ├── notifications.js
-│   │   └── serviceWorker.js
-│   └── stylesheets
-│       ├── main.css
-│       ├── style.css
-│       └── tailwind.css
+│   └── favicon.png
 ├── scripts
 │   ├── chat.js
 │   ├── emailer.js
 │   ├── forgotPage.js
+│   ├── indexPage.js
+│   ├── modal.js
+│   ├── notifications.js
 │   ├── settings.js
 │   └── signUpPage.js
+├── stylesheets
+│   ├── main.css
+│   ├── style.css
+│   └── tailwind.css
 ├── tailwind.config.js
 ├── utils.js
 └── views
