@@ -6,11 +6,12 @@ const MongoStore = require('connect-mongo');
 const bcrypt = require('bcrypt');
 const saltRounds = 12;
 const webpush = require("web-push");
-// const PushNotifications = require('node-pushnotifications');
 const bodyParser = require('body-parser');
 const { database } = require('./databaseConnection');
 const { MongoClient, ObjectId } = require('mongodb');
 const port = process.env.PORT || 3000;
+
+const schedule = require('node-schedule');
 
 const app = express();
 
@@ -566,49 +567,42 @@ app.post('/uploadProfilePic', upload.single('image'), async (req, res) => {
     }
 });
 
-//post for Medical History (meds)
+// Post for Medical History (meds)
 app.post('/profile/medHistory/addMedication', async (req, res) => {
     if (isValidSession(req)) {
         try {
+            // Get medication details from request body
             const medication = { 
                 name: req.body.name,
                 dosage: req.body.dosage,
                 frequency: req.body.frequency,
                 period: req.body.period
             };
+            
+            // Validate medication name
             if (!medication.name.trim()) {
-                res.render("errorPage", { error: "Couldn't find anything to add." });
-                return;
+                return res.render("errorPage", { error: "Medication name cannot be empty." });
             }
+    
+            // Update user's medication list in the database
             await userCollection.updateOne(
                 { email: req.session.email },
                 { $push: { medications: medication } }
             );
-            // Defaulting period to daily
-            let periodSeconds = 86400;
-            if (medication.period == "weekly") {
-                periodSeconds = 604800;
-            } else if (medication.period == "monthly") {
-                periodSeconds = 2628000;
-            }
-            let freqSeconds = parseInt(medication.frequency.charAt(0));
-            let reminderSeconds = periodSeconds / freqSeconds;
-            
-            // Retrieve the user's subscription from the database
-            const user = await userCollection.findOne({ email: req.session.email });
-            const subscription = user.subscription;
+    
+            // Schedule notification using Node-schedule based on medication frequency and period
+            const cronSchedule = getCronSchedule(medication.frequency, medication.period);
+            const cronJob = schedule.scheduleJob(medication.name, cronSchedule, () => {
+                sendMedicationNotification(req.session.email, medication);
+            });
 
-            if (subscription) {
-                setInterval(() => {
-                    const payload = JSON.stringify({
-                        title: `MediKate - ${medication.name} Reminder`,
-                        message: `${medication.name}\n${medication.dosage}`
-                    });
-                    webpush.sendNotification(subscription, payload)
-                        .catch(error => console.error(error));
-                }, reminderSeconds * 1000); // Converting seconds to milliseconds
-            }
-
+            // Store the job name and medication details in the user's document
+            await userCollection.updateOne(
+                { email: req.session.email },
+                { $push: { scheduledTasks: { taskName: medication.name, schedule: cronSchedule } } }
+            );
+    
+            // Redirect to medication history page
             res.redirect('/profile/medHistory');
         } catch (err) {
             console.error("Error adding medication:", err);
@@ -623,27 +617,49 @@ app.post('/profile/medHistory/addMedication', async (req, res) => {
 app.post('/editMedication', async (req, res) => {
     if (isValidSession(req)) {
         try {
-            let oldName = req.body.oldName;
-            const medication = { 
-                name: req.body.newName,
-                dosage: req.body.newDosage,
-                frequency: req.body.newFrequency,
-                period: req.body.newPeriod
-            };
+            const oldName = req.body.oldName;
+            const newName = req.body.newName;
+            const newFrequency = req.body.newFrequency;
+            const newPeriod = req.body.newPeriod;
             
-            if (!medication.name.trim()) {
-                res.render("errorPage", { error: "Couldn't find anything to add." });
+            if (!newName.trim()) {
+                res.render("errorPage", { error: "New medication name cannot be empty." });
                 return;
             }
 
+            // Retrieve the user document containing the scheduled tasks
+            const user = await userCollection.findOne({ email: req.session.email });
+            
+            // Cancel the existing job
+            schedule.cancelJob(oldName);
+
+            // Get medication details from request body
+            const updatedMedication = { 
+                name: newName,
+                dosage: req.body.newDosage,
+                frequency: newFrequency,
+                period: newPeriod
+            };
+
+            // Update medication details in the user's medication list
             await userCollection.updateOne(
                 { email: req.session.email, "medications.name": oldName },
-                { $set: { "medications.$": medication } }
+                { $set: { "medications.$": updatedMedication } }
             );
             
-            const user = await userCollection.findOne({ email: req.session.email });
-            req.session.medications = user.medications;
+            // Schedule a new job with the updated medication details
+            const newCronSchedule = getCronSchedule(newFrequency, newPeriod);
+            const newJob = schedule.scheduleJob(newName, newCronSchedule, () => {
+                sendMedicationNotification(req.session.email, updatedMedication);
+            });
 
+            // Store the new job name in the user's document
+            await userCollection.updateOne(
+                { email: req.session.email },
+                { $push: { scheduledTasks: { taskName: newName, schedule: newCronSchedule } } }
+            );
+
+            // Redirect to medication history page
             res.redirect('/profile/medHistory');
         } catch (err) {
             console.error("Error updating user data:", err);
@@ -653,30 +669,113 @@ app.post('/editMedication', async (req, res) => {
         res.redirect('/login');
     }
 });
+
 
 // Post for medication history delete
 app.post('/deleteMedication', async (req, res) => {
     if (isValidSession(req)) {
         try {
-            let oldName = req.body.oldNameDelete;
-
-            await userCollection.updateOne(
-                { email: req.session.email },
-                { $pull: { medications: { name: oldName } } }
-            );
-
+            const oldName = req.body.oldNameDelete;
+    
+            // Retrieve the user document containing the scheduled tasks
             const user = await userCollection.findOne({ email: req.session.email });
-            req.session.medications = user.medications;
             
+            // Retrieve the existing cron job instance associated with the deleted medication
+            const task = user.scheduledTasks.find(task => task.taskName == oldName);
+            // Cancel the job (if it exists)
+            if (task) {
+                // Stop the job using the stored task name
+                schedule.cancelJob(task.taskName);
+                
+                // Remove the scheduled task from the user's document in the database
+                await userCollection.updateOne(
+                    { email: req.session.email },
+                    { $pull: { medications: { name: oldName }, scheduledTasks: { taskName: oldName } } }
+                );
+            }
+
+            // Redirect to medication history page
             res.redirect('/profile/medHistory');
         } catch (err) {
-            console.error("Error updating user data:", err);
-            res.status(500).send("Internal Server Error");
+            console.error("Error deleting medication:", err);
+            res.status(500);
+            res.render("errorPage", { error: "Error deleting medication" });
         }
     } else {
         res.redirect('/login');
     }
 });
+
+
+
+/** Function to send medication notification
+ * @param {string} email - The user's email address
+ * @param {object} medication - The medication object containing name, dosage, frequency, and period
+ */
+async function sendMedicationNotification(email, medication) {
+    try {
+        // Retrieve the user's subscription from the database
+        const user = await userCollection.findOne({ email });
+        const subscription = user.subscription;
+
+        if (subscription) {
+            const payload = JSON.stringify({
+                title: `MediKate - ${medication.name} Reminder`,
+                message: `${medication.name}\n${medication.dosage}`
+            });
+            webpush.sendNotification(subscription, payload)
+                .catch(error => console.error(error));
+        }
+    } catch (error) {
+        console.error('Error sending medication notification:', error);
+    }
+}
+
+/** Function to get the cron schedule based on the medication frequency and period
+ * @param {string} frequency - The frequency of the medication
+ * @param {string} period - The period of the medication
+ */
+function getCronSchedule(frequency, period) {
+    const frequenciesPerDay = {
+        "1x": "0 8 * * *", // Once daily at 8 AM
+        "2x": "0 8,20 * * *", // Twice daily at 8 AM and 8 PM
+        "3x": "0 8,14,20 * * *", // Three times daily at 8 AM, 2 PM, and 8 PM
+        "4x": "0 6,12,18,22 * * *", // Four times daily at 6 AM, 12 PM, 6 PM, and 10 PM
+        "8x": "0 */3 * * *", // Eight times daily (every 3 hours)
+        "12x": "0 */2 * * *" // Twelve times daily (every 2 hours)
+    };
+
+    const frequenciesPerWeek = {
+        "1x": "0 8 * * 1", // Once weekly on Monday at 8 AM
+        "2x": "0 8 * * 1,4", // Twice weekly on Monday and Thursday at 8 AM
+        "3x": "0 8 * * 1,3,5", // Three times weekly on Monday, Wednesday, and Friday at 8 AM
+        "4x": "0 8 * * 1,2,4,5", // Four times weekly on Monday, Tuesday, Thursday, and Friday at 8 AM
+        "8x": "0 8 * * 1,2,3,4,5,6,7", // Eight times weekly (every day) at 8 AM
+        "12x": "0 */3 * * 1,2,3,4,5,6,7" // Twelve times weekly (every 8 hours) every day at 8 AM
+    };
+
+    const frequenciesPerMonth = {
+        "1x": "0 8 1 * *", // Once monthly on the 1st day at 8 AM
+        "2x": "0 8 1,15 * *", // Twice monthly on the 1st and 15th days at 8 AM
+        "3x": "0 8 1,10,20 * *", // Three times monthly on the 1st, 10th, and 20th days at 8 AM
+        "4x": "0 8 1,8,15,22 * *", // Four times monthly on the 1st, 8th, 15th, and 22nd days at 8 AM
+        "8x": "0 8 1,4,8,11,15,18,22,25 * *", // Eight times monthly (every 3 days) at 8 AM
+        "12x": "0 */2 1,5,9,13,17,21,25,29 * *" // Twelve times monthly (every 2 days) on specific days at 8 AM
+    };
+
+    // Choose the appropriate schedule based on the period
+    let cronSchedule;
+    if (period === 'daily') {
+        cronSchedule = frequenciesPerDay[frequency];
+    } else if (period === 'weekly') {
+        cronSchedule = frequenciesPerWeek[frequency];
+    } else if (period === 'monthly') {
+        cronSchedule = frequenciesPerMonth[frequency];
+    }
+
+    return cronSchedule;
+}
+
 
 //post for Medical History (illness)
 app.post('/profile/medHistory/addIllness', async (req, res) => {
