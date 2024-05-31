@@ -145,7 +145,7 @@ Before you begin, ensure you have the following installed on your computer:
 4. **Other Software:**
    - Git (for version control)
 
-### Installation Steps
+## Installation Steps
 
 ### 1. Install Node.js
 Download and install Node.js.
@@ -188,7 +188,7 @@ Make sure you have the following API keys:
 
 You can get these keys by making an account on each platform.
 
-### Configuration Instructions
+## Configuration Instructions
 
 ### MongoDB Atlas
 
@@ -207,7 +207,7 @@ You can get these keys by making an account on each platform.
 
 1. Set up VAPID keys for push notifications.
 
-### Running the Application
+## Running the Application
 
 After setting up the environment variables and installing dependencies, run the application using:
 
