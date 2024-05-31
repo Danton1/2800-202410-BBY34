@@ -73,10 +73,13 @@
 
 <%- include("templates/footerTemplate") %> 
 
-<script src="js/indexPage.js"></script>
-<script src="js/modal.js"></script>
+<script src="/js/indexPage.js"></script>
+<script src="/js/modal.js"></script>
 <script>
-
+  /**
+   * Populates the API widgets with data from the OpenWeatherMap API.
+   * @param {string} apiKey - The OpenWeatherMap API key.
+  */
   function populateAPIWidgets(apiKey) {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
@@ -98,6 +101,13 @@
     }
   }
 
+  /**
+   * Populates the location widget with data from the OpenWeatherMap API.
+   * @param {Object} widgetSettings - The settings for the location widget.
+   * @param {string} apiKey - The OpenWeatherMap API key.
+   * @param {number} lat - The latitude of the user's location.
+   * @param {number} lon - The longitude of the user's location.
+  */
   function populateLocationWidget(widgetSettings, apiKey, lat, lon) {
     const apiURL = `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&appid=${apiKey}`;
     const widget = document.getElementById('locationCard');
@@ -123,6 +133,11 @@
       });
   }
 
+  /**
+   * Populates the air quality widget with data from the OpenWeatherMap API.
+   * @param {Object} widgetSettings - The settings for the air quality widget.
+   * @param {string} apiKey - The OpenWeatherMap API key.
+  */
   function populateAirQualityWidget(widgetSettings, apiKey, lat, lon) {
     const apiURL = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`;
     const widget = document.getElementById('airQualityCard');
@@ -179,6 +194,12 @@
       });
   }
   
+  /**
+   * Generates a string of air quality components based on the user's settings.
+   * @param {Object} widgetSettings - The settings for the air quality widget.
+   * @param {Array} components - An array of air quality components.
+   * @returns {string} - The string of air quality components.
+  */
   function generateComponentsStringFromSettings(widgetSettings, components) {
     let string = "";
     const pollutants = components.map(item => item.pollutant);
@@ -233,6 +254,11 @@
     return string;
   }
 
+  /**
+   * Returns the UK standard AQI description based on the AQI value.
+   * @param {number} aqi - The AQI value.
+   * @returns {string} - The UK AQI description.
+  */
   function getUKAQIDescription(aqi) {
     switch (aqi) {
         case 1:
@@ -254,6 +280,12 @@
     }
   }
 
+  /**
+   * Calculates the UK standard AQI for a given pollutant and concentration.
+   * @param {string} pollutant - The pollutant name.
+   * @param {number} concentration - The pollutant concentration.
+   * @returns {number} - The UK AQI value.
+  */
   function calculateUKAQI(pollutant, concentration) {
     let index;
 
@@ -334,6 +366,12 @@
     return index;
   }
 
+  /**
+   * Returns the AQI index for a given concentration based on the UK standard ranges.
+   * @param {number} concentration - The pollutant concentration.
+   * @param {Array} ranges - The UK AQI ranges for the pollutant.
+   * @returns {number} - The UK AQI index.
+  */
   function getAQIIndex(concentration, ranges) {
     for (const range of ranges) {
       if (concentration >= range.range[0] && concentration <= range.range[1]) {
@@ -358,6 +396,13 @@
     return highestAQI;
   }
 
+  /**
+   * Populates the temperature widget with data from the OpenWeatherMap API.
+   * @param {Object} widgetSettings - The settings for the temperature widget.
+   * @param {string} apiKey - The OpenWeatherMap API key.
+   * @param {number} lat - The latitude of the user's location.
+   * @param {number} lon - The longitude of the user's location.
+  */
   function populateTemperatureWidget(widgetSettings, apiKey, lat, lon) {
     const widget = document.getElementById('outdoorTemperatureCard');
     const modal = document.getElementById('outdoorTemperatureCardModal');
@@ -399,6 +444,11 @@
       });
   }
 
+  /**
+   * Capitalizes the first letter of each word in a sentence.
+   * @param {string} sentence - The sentence to capitalize.
+   * @returns {string} - The capitalized sentence.
+  */
   function capitalizeSentence(sentence) {
     if (!sentence) return sentence;
     return sentence

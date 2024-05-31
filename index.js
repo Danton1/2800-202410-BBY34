@@ -1,17 +1,17 @@
 require("./utils.js");
-require('dotenv').config(); 
-const express = require('express');
-const session = require('express-session');
-const MongoStore = require('connect-mongo');
-const bcrypt = require('bcrypt');
+require("dotenv").config(); 
+const express = require("express");
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
+const bcrypt = require("bcrypt");
 const saltRounds = 12;
 const webpush = require("web-push");
-const bodyParser = require('body-parser');
-const { database } = require('./databaseConnection');
-const { MongoClient, ObjectId } = require('mongodb');
+const bodyParser = require("body-parser");
+const { database } = require("./databaseConnection");
+const { MongoClient, ObjectId } = require("mongodb");
 const port = process.env.PORT || 3000;
 
-const schedule = require('node-schedule');
+const schedule = require("node-schedule");
 
 const app = express();
 
@@ -27,14 +27,14 @@ const { Configuration, OpenAI } = require("openai");
 const openai = new OpenAI({ apiKey: process.env.GPT_KEY });
 
 /*Imported routes js files*/
-const signUpRoute = require('./scripts/signUpPage');
-app.use('/signUp', signUpRoute);
-const forgotRoute = require('./scripts/forgotPage');
-app.use('/forgot', forgotRoute);
-const settingsRoute = require('./scripts/settings');
-app.use('/settings', settingsRoute);
-const emailerRoute = require('./scripts/emailer');
-app.use('/emailer', emailerRoute);
+const signUpRoute = require("./scripts/signUpPage");
+app.use("/signUp", signUpRoute);
+const forgotRoute = require("./scripts/forgotPage");
+app.use("/forgot", forgotRoute);
+const settingsRoute = require("./scripts/settings");
+app.use("/settings", settingsRoute);
+const emailerRoute = require("./scripts/emailer");
+app.use("/emailer", emailerRoute);
 /*Imported routes js files end*/
 
 /* secret information section */
@@ -51,10 +51,10 @@ const vapidEmail = process.env.VAPID_EMAIL;
 /* END secret section */
 
 // Push notification setup
-webpush.setVapidDetails('mailto:'+vapidEmail, vapidPublicKey, vapidPrivateKey);
+webpush.setVapidDetails("mailto:"+vapidEmail, vapidPublicKey, vapidPrivateKey);
 
-const userCollection = database.db(mongodb_database).collection('users');
-const tokenCollection = database.db(mongodb_database).collection('forgotToken');
+const userCollection = database.db(mongodb_database).collection("users");
+const tokenCollection = database.db(mongodb_database).collection("forgotToken");
 
 
 var mongoStore = MongoStore.create({
@@ -64,10 +64,10 @@ var mongoStore = MongoStore.create({
     }
 });
 
-app.set('view engine', 'ejs');
+app.set("view engine", "ejs");
 
 // Cloudinary and multer for profile picture upload
-const cloudinary = require('cloudinary').v2;
+const cloudinary = require("cloudinary").v2;
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
@@ -75,17 +75,17 @@ cloudinary.config({
     secure: true
 });
 
-const multer = require('multer');
+const multer = require("multer");
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-    // USES
+/* USES */
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 app.use(express.static(__dirname + "/public"));
 
-app.get('/chat.js', function (req, res) {
-    res.sendFile(__dirname + '/scripts/chat.js');
+app.get("/chat.js", function (req, res) {
+    res.sendFile(__dirname + "/scripts/chat.js");
 });
 
 app.use(bodyParser.json());
@@ -98,15 +98,26 @@ app.use(session({
 }
 ));
 
-    // FUNCTIONS
+/* Authorization and authentication functions */
 
-    function isValidSession(req) {
-        if (req.session.authenticated) {
-            return true;
-        }
-        return false;
+/**
+ * Checks if the user session is valid
+ * @param {object} req - The request object
+ * @returns {boolean} - True if the session is valid, false otherwise
+ */
+function isValidSession(req) {
+    if (req.session.authenticated) {
+        return true;
     }
+    return false;
+}
 
+/**
+ * Checks if user is logged in, if not, redirects to login page
+ * @param {object} req - The request object
+ * @param {object} res - The response object
+ * @param {function} next - The next middleware function
+ */
 function sessionValidation(req, res, next) {
     if (isValidSession(req)) {
         next();
@@ -116,13 +127,25 @@ function sessionValidation(req, res, next) {
     }
 }
 
-    function isAdmin(req) {
-        if (req.session.user_type == 'admin') {
-            return true;
-        }
-        return false;
+/**
+ * Checks if the user is an admin
+ * @param {object} req - The request object
+ * @returns {boolean} - True if the user is an admin, false otherwise
+ */
+function isAdmin(req) {
+    if (req.session.user_type == 'admin') {
+        return true;
     }
+    return false;
+}
 
+/**
+ * Middleware to check if user is authorized as an admin
+ * Redirects to 403 page if not authorized
+ * @param {object} req - The request object
+ * @param {object} res - The response object
+ * @param {function} next - The next middleware function
+ */
 function adminAuthorization(req, res, next) {
     console.log(req.session.user_type);
     if (!isAdmin(req)) {
@@ -135,8 +158,9 @@ function adminAuthorization(req, res, next) {
     }
 }
 
-    // GETS
+/* GETS */
 
+// Get for home page
 app.get('/', (req,res) => {
     if(isValidSession(req)){
         checkActiveJobs(req.session.email);
@@ -214,10 +238,9 @@ app.get('/profile/medHistory', async (req,res) => {
     
 
 // Get for Settings
-
 app.get('/settings/widgets', (req,res) => {
     if(isValidSession(req)){
-        res.render('settings/widgetsPage', {widgetSettings: req.session.widgetSettings});
+        res.render('widgetsPage', {widgetSettings: req.session.widgetSettings});
         return;
     }
     res.redirect('/login');
@@ -250,7 +273,7 @@ app.get("*", (req,res) => {
 	res.render("404Page");
 });
 
-    // POSTS
+/* POSTS */
 
 app.post('/chatbot', async (req, res) => {
     let input;
@@ -292,8 +315,8 @@ app.post('/chatbot', async (req, res) => {
         emailDate: date,
         emailIssue: issue,
     }
-    // Send the processed data back to the client
 
+    // Send the processed data back to the client
     switch (eggNum) {
         case 1:
             assistantID = process.env.WHO_KEY;
@@ -365,6 +388,11 @@ app.post('/chatbot', async (req, res) => {
     res.send(data);
 });
 
+/**
+ * Function to run the prompt using OpenAI API
+ * @param {*} input - The input prompt
+ * @returns The response from OpenAI API
+ */
 const runPrompt = async (input) => {
     const prompt = input;
 
@@ -414,6 +442,7 @@ const runPrompt = async (input) => {
     return await retrieveRun();
 };
 
+// Post to send email
 app.post('/submitEmail', async(req,res) => {
     var date = req.body.emailDate;
     var time = req.body.emailTime;
@@ -424,10 +453,12 @@ app.post('/submitEmail', async(req,res) => {
          userName: userName, userEmail: userEmail });
 });
 
+// Post for change password
 app.post('/editPass', async (req, res) => {
     res.redirect('/getPassEdit');
 });
 
+// Post to login
 app.post('/submitLogin', async (req, res) => {
     var email = req.body.loginPageEmailInput;
     var password = req.body.loginPagePasswordInput;
@@ -711,7 +742,6 @@ app.post('/deleteMedication', async (req, res) => {
 });
 
 
-
 /** Function to send medication notification
  * @param {string} email - The user's email address
  * @param {object} medication - The medication object containing name, dosage, frequency, and period
@@ -738,6 +768,7 @@ async function sendMedicationNotification(email, medication) {
 /** Function to get the cron schedule based on the medication frequency and period
  * @param {string} frequency - The frequency of the medication
  * @param {string} period - The period of the medication
+ * @returns {string} The cron schedule for the medication notifications
  */
 function getCronSchedule(frequency, period) {
     const frequenciesPerDay = {
@@ -792,12 +823,12 @@ async function checkActiveJobs(email) {
         // Iterate over scheduled tasks
         for (const task of scheduledTasks) {
             const jobName = task.taskName;
-            const schedule = task.schedule;
+            const cronSchedule = task.schedule;
 
             // Check if the job is active
-            if (!schedule.scheduledJobs[jobName]) {
+            if (!schedule.scheduledJobs || !schedule.scheduledJobs[jobName]) {
                 // If not active, schedule a new job
-                schedule.scheduleJob(jobName, schedule, () => {
+                const job = schedule.scheduleJob(jobName, schedule, () => {
                     // Schedule notification using Node-schedule based on mongoDB data
                     const medication = user.medication.find(med => med.name === task.taskName);
                     sendMedicationNotification(email, medication);
@@ -809,7 +840,7 @@ async function checkActiveJobs(email) {
     }
 }
 
-//post for Medical History (illness)
+//Post for Medical History (illness)
 app.post('/profile/medHistory/addIllness', async (req, res) => {
     if (isValidSession(req)) {
         try {
@@ -832,7 +863,7 @@ app.post('/profile/medHistory/addIllness', async (req, res) => {
     }
 });
 
-//post for illness info edit
+//Post for illness info edit
 app.post('/profile/medHistory/editIllness', async (req, res) => {
     if (isValidSession(req)) {
         try {
@@ -887,7 +918,7 @@ app.post('/profile/medHistory/deleteIllness', async (req, res) => {
     }
 });
 
-//post for Medical History (allergy)
+//Post for Medical History (allergy)
 app.post('/profile/medHistory/addAllergy', async (req, res) => {
     if (isValidSession(req)) {
         try {
@@ -910,7 +941,7 @@ app.post('/profile/medHistory/addAllergy', async (req, res) => {
     }
 });
 
-//post for allergy info edit
+//Post for allergy info edit
 app.post('/profile/medHistory/editAllergy', async (req, res) => {
     if (isValidSession(req)) {
         try {
@@ -1000,6 +1031,7 @@ app.post('/profile/contactInfo', async (req, res) => {
     }
 });
 
+// Post to update widget settings
 app.post('/settings/widgets/update', async (req, res) => {
     try {
         const settings = req.body;
@@ -1042,7 +1074,7 @@ app.post('/subscribe', async (req, res) => {
     }
 });
 
-    // LISTENS
+/* LISTENS */
 
 app.listen(port, () => {
     console.log("Node application listening on port " + port);

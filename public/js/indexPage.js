@@ -1,3 +1,4 @@
+// Gets the weather data through API
 function populateAPIWidgets(apiKey) {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(position => {
@@ -18,6 +19,7 @@ function populateAPIWidgets(apiKey) {
     }
 }
 
+// Gets locationdata through API
 function populateLocationWidget(apiKey, lat, lon) {
     const apiURL = `http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&appid=${apiKey}`;
     const widget = document.getElementById('locationCard');
@@ -35,6 +37,7 @@ function populateLocationWidget(apiKey, lat, lon) {
         });
 }
 
+// Gets Air Quality data through API
 function populateAirQualityWidget(apiKey, lat, lon) {
     const apiURL = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`;
     const widget = document.getElementById('airQualityCard');
@@ -51,6 +54,7 @@ function populateAirQualityWidget(apiKey, lat, lon) {
         });
 }
 
+// Pushes string to reflect air quality data
 function getAirQualityDescription(aqi) {
     switch (aqi) {
         case 1:
@@ -68,6 +72,7 @@ function getAirQualityDescription(aqi) {
     }
 }
 
+// Gets temperature data
 function populateTemperatureWidget(apiKey, lat, lon) {
     const apiURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
     const widget = document.getElementById('outdoorTemperatureCard');
