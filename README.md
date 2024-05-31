@@ -4,6 +4,15 @@
 <h1 align="center"> MediKate By BBY34 </h1>
 <h3 align="center"> Composed of Danton, Soomin, Simon, Steven, Tyson and Jas </h3>
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+![Tailwind](https://img.shields.io/badge/Tailwind-v3.4.3-blue.svg)
+![NodeJS](https://img.shields.io/badge/Node.js-v20.14.0-red.svg)
+![MongoDB](https://img.shields.io/badge/Database-MongoDB-yellow.svg)
+![Dependencies](https://img.shields.io/badge/dependencies-up%20to%20date-pink.svg)
+[![GitHub Issues](https://img.shields.io/github/issues/Danton1/2800-202410-BBY34.svg)](https://github.com/Danton1/2800-202410-BBY34/issues)
+![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg)
+
+
 <!-- TABLE OF CONTENTS -->
 <h2 id="table-of-contents"> :book: Table of Contents</h2>
 
@@ -41,9 +50,8 @@ We have developed a medical application with climate change related health infor
 - JavaScript
 - Node.js v20.14.0
 - AJAX
-- Different APIs
 
-**API**
+**APIs**
 - OpenAI: the custom assistant API was used for our chatbot
 - Nodemailer: for sending out emails
 - OpenWeather: for the user’s location/air quality/temperature data
@@ -223,7 +231,6 @@ You can find the testing plan [here](https://docs.google.com/spreadsheets/d/1oQk
 - **Landing Page Information:** Widgets display relevant climate information such as air quality and temperatures near the user's location.
 
 ### Health Information 
-- **Personal Health Dashboard:** A dashboard where users can view their saved personal information and health records for easy access by medical professionals.
 - **Save Personal Information:** Users can save personal information such as the users’ medical/prescription info for easy access by their doctor.
 
 
