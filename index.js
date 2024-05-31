@@ -139,7 +139,8 @@ function adminAuthorization(req, res, next) {
 
 app.get('/', (req,res) => {
     if(isValidSession(req)){
-        res.render('index', {username: req.session.firstName, profilePic: req.session.profile_pic, openWeatherAPIKey: process.env.OPEN_WEATHER_API_KEY, widgetSettings: req.session.widgetSettings});
+        checkActiveJobs(req.session.email);
+        res.render('index', {username: req.session.firstName, email:req.session.email, profilePic: req.session.profile_pic, openWeatherAPIKey: process.env.OPEN_WEATHER_API_KEY, widgetSettings: req.session.widgetSettings});        
         return;
     }
     res.redirect('/login');
@@ -203,6 +204,7 @@ app.get('/profile/contactInfo', async (req,res) => {
 // Get for medical History
 app.get('/profile/medHistory', async (req,res) => {
     if(isValidSession(req)){
+        checkActiveJobs(req.session.email);
         const user = await userCollection.findOne({ email: req.session.email });
         res.render('medicalHistoryPage', { user });
         return;
@@ -778,6 +780,34 @@ function getCronSchedule(frequency, period) {
     return cronSchedule;
 }
 
+/** 
+ * Check active jobs and schedule new jobs if necessary
+ */
+async function checkActiveJobs(email) {
+    try {
+        // Retrieve the user document containing the scheduled tasks
+        const user = await userCollection.findOne({ email: email });
+        const scheduledTasks = user.scheduledTasks;
+
+        // Iterate over scheduled tasks
+        for (const task of scheduledTasks) {
+            const jobName = task.taskName;
+            const schedule = task.schedule;
+
+            // Check if the job is active
+            if (!schedule.scheduledJobs[jobName]) {
+                // If not active, schedule a new job
+                schedule.scheduleJob(jobName, schedule, () => {
+                    // Schedule notification using Node-schedule based on mongoDB data
+                    const medication = user.medication.find(med => med.name === task.taskName);
+                    sendMedicationNotification(email, medication);
+                });
+            }
+        }
+    } catch (err) {
+        console.error("Error checking active jobs:", err);
+    }
+}
 
 //post for Medical History (illness)
 app.post('/profile/medHistory/addIllness', async (req, res) => {

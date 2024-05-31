@@ -163,45 +163,54 @@
   
 <script src="/js/modal.js"></script>
 <script>
-    document.getElementById("medication").onclick = function() {
-        var element = document.getElementById("medications");
-        var icon = document.getElementById("medicationTitle");
-        if (element.classList.contains("h-0")) {
-            element.classList.remove("h-0");
-            element.classList.add("mt-4");
-            icon.classList.add("rotate-180");
-        } else {
-            element.classList.add("h-0");
-            element.classList.remove("mt-4");
-            icon.classList.remove("rotate-180");
+    let medication = document.getElementById("medication");
+    if(medication) {
+        medication.onclick = function() {
+            var element = document.getElementById("medications");
+            var icon = document.getElementById("medicationTitle");
+            if (element.classList.contains("h-0")) {
+                element.classList.remove("h-0");
+                element.classList.add("mt-4");
+                icon.classList.add("rotate-180");
+            } else {
+                element.classList.add("h-0");
+                element.classList.remove("mt-4");
+                icon.classList.remove("rotate-180");
+            }
         }
     }
 
-    document.getElementById("illness").onclick = function() {
-        var element = document.getElementById("illnesses");
-        var icon = document.getElementById("illnessTitle");
-        if (element.classList.contains("h-0")) {
-            element.classList.remove("h-0");
-            element.classList.add("mt-4");
-            icon.classList.add("rotate-180");
-        } else {
-            element.classList.add("h-0");
-            element.classList.remove("mt-4");
-            icon.classList.remove("rotate-180");
+    let illness = document.getElementById("illness");
+    if(illness) {
+        illness.onclick = function() {
+            var element = document.getElementById("illnesses");
+            var icon = document.getElementById("illnessTitle");
+            if (element.classList.contains("h-0")) {
+                element.classList.remove("h-0");
+                element.classList.add("mt-4");
+                icon.classList.add("rotate-180");
+            } else {
+                element.classList.add("h-0");
+                element.classList.remove("mt-4");
+                icon.classList.remove("rotate-180");
+            }
         }
     }
 
-    document.getElementById("allergy").onclick = function() {
-        var element = document.getElementById("allergies");
-        var icon = document.getElementById("allergyTitle");
-        if (element.classList.contains("h-0")) {
-            element.classList.remove("h-0");
-            element.classList.add("mt-4");
-            icon.classList.add("rotate-180");
-        } else {
-            element.classList.add("h-0");
-            element.classList.remove("mt-4");
-            icon.classList.remove("rotate-180");
+    let allergy = document.getElementById("allergy");
+    if(allergy) {
+        allergy.onclick = function() {
+            var element = document.getElementById("allergies");
+            var icon = document.getElementById("allergyTitle");
+            if (element.classList.contains("h-0")) {
+                element.classList.remove("h-0");
+                element.classList.add("mt-4");
+                icon.classList.add("rotate-180");
+            } else {
+                element.classList.add("h-0");
+                element.classList.remove("mt-4");
+                icon.classList.remove("rotate-180");
+            }
         }
     }
 
@@ -209,16 +218,19 @@
     <% user.illnesses.forEach(illness => { %>
         illnesses.push(`${illness}`);
     <% }) %>
-    document.getElementById("illnessEdit").onclick = function() {
-        document.getElementById("illnessEdit").classList.add("hidden");
-        document.getElementById("illnessAddForm").classList.add("hidden");
-        document.getElementById("illnessEditForm").classList.remove("mb-3");
-        document.getElementById("illnessSave").classList.remove("hidden");
-        
-        for (let i = 0; i < illnesses.length; i++) {
-            document.getElementById(`${i}illnessOriginal`).classList.add("hidden");
-            document.getElementById(`${i}illnessEdit`).classList.remove("hidden");
-            document.getElementById(`${i}illnessDelete`).classList.remove("hidden");
+    let illnessEdit = document.getElementById("illnessEdit");
+    if (illnessEdit) {
+        illnessEdit.onclick = function() {
+            document.getElementById("illnessEdit").classList.add("hidden");
+            document.getElementById("illnessAddForm").classList.add("hidden");
+            document.getElementById("illnessEditForm").classList.remove("mb-3");
+            document.getElementById("illnessSave").classList.remove("hidden");
+            
+            for (let i = 0; i < illnesses.length; i++) {
+                document.getElementById(`${i}illnessOriginal`).classList.add("hidden");
+                document.getElementById(`${i}illnessEdit`).classList.remove("hidden");
+                document.getElementById(`${i}illnessDelete`).classList.remove("hidden");
+            }
         }
     }
 
@@ -231,17 +243,20 @@
     let allergies = [];
     <% user.allergies.forEach(allergy => { %>
         allergies.push(`${allergy}`);
-    <% }) %>
-    document.getElementById("allergyEdit").onclick = function() {
-        document.getElementById("allergyEdit").classList.add("hidden");
-        document.getElementById("allergyAddForm").classList.add("hidden");
-        document.getElementById("allergyEditForm").classList.remove("mb-3");
-        document.getElementById("allergySave").classList.remove("hidden");
-        
-        for (let i = 0; i < allergies.length; i++) {
-            document.getElementById(`${i}allergyOriginal`).classList.add("hidden");
-            document.getElementById(`${i}allergyEdit`).classList.remove("hidden");
-            document.getElementById(`${i}allergyDelete`).classList.remove("hidden");
+    <% }); %>
+    let allergyEdit = document.getElementById("allergyEdit");
+    if (allergyEdit) {
+        allergyEdit.onclick = function() {
+            document.getElementById("allergyEdit").classList.add("hidden");
+            document.getElementById("allergyAddForm").classList.add("hidden");
+            document.getElementById("allergyEditForm").classList.remove("mb-3");
+            document.getElementById("allergySave").classList.remove("hidden");
+            
+            for (let i = 0; i < allergies.length; i++) {
+                document.getElementById(`${i}allergyOriginal`).classList.add("hidden");
+                document.getElementById(`${i}allergyEdit`).classList.remove("hidden");
+                document.getElementById(`${i}allergyDelete`).classList.remove("hidden");
+            }
         }
     }
 
