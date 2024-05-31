@@ -44,7 +44,6 @@ router.get('/', (req, res) => {
 
 
 router.post('/submitSignUp', async (req, res) => {
-    console.log(req.body.firstName);
     var firstName = req.body.firstName;
     var lastName = req.body.lastName;
     var birthDate = req.body.birthDate;
@@ -58,53 +57,72 @@ router.post('/submitSignUp', async (req, res) => {
         res.render("errorPage", { error: "Passwords do not match." });
         return;
     }
+    const result = await userCollection.find({ email: email }).project({ email: 1, _id: 1 }).toArray();
 
-    const schema = Joi.object({
-        firstName: Joi.string().max(20).required(),
-        lastName: Joi.string().max(20).required(),
-        birthDate: Joi.date().required(),
-        country: Joi.string().max(20).required(),
-        city: Joi.string().max(20).required(),
-        email: Joi.string().email().max(40).required(),
-        password: Joi.string().max(20).required()
-    });
-    const validationResult = schema.validate({ firstName, lastName, birthDate, country, city, email, password });
-    if (validationResult.error != null) {
-        // console.log(validationResult.error.details[0]);
-        var err = validationResult.error.details[0];
-        if (err.type.localeCompare('string.empty') == 0) {
-            res.render("errorPage", { error: `${err.path[0]} is empty.` });
+    // Getting the userName info from the email
+    let getUser = userCollection.findOne({ email: email });
+
+    if (result.length != 0) {
+        res.render("errorPage", { error: "Email already used" });
+        return;
+    } else {
+
+        const schema = Joi.object({
+            startTime: Joi.date().required(),
+            endTime: Joi.date().required(),
+            firstName: Joi.string().max(20).required(),
+            lastName: Joi.string().max(20).required(),
+            birthDate: Joi.date().required().min(Joi.ref('startTime')).max(Joi.ref('endTime')),
+            country: Joi.string().max(20).required(),
+            city: Joi.string().max(20).required(),
+            email: Joi.string().email().max(40).required(),
+            password: Joi.string().max(20).required()
+        });
+        const validationResult = schema.validate({ startTime: '1900-01-01T00:00:00.000', endTime: '2054-01-01T00:00:00.000', firstName, lastName, birthDate, country, city, email, password, });
+        if (validationResult.error != null) {
+            var err = validationResult.error.details[0];
+            if (err.type.localeCompare('string.empty') == 0) {
+                res.render("errorPage", { error: `${err.path[0]} is empty.` });
+                return;
+            } else if (err.type.localeCompare('date.max') == 0) {
+                res.render("errorPage", { error: `Date is too large.` });
+                return;
+            } else if (err.type.localeCompare('date.min') == 0) {
+                res.render("errorPage", { error: `Date is too small.` });
+                return;
+            }
+            res.render("errorPage", { error: `${err.message}` });
             return;
         }
+
+        var encodedPassword = await bcrypt.hash(password, saltRounds);
+
+        await userCollection.insertOne(
+            {
+                firstName: firstName,
+                lastName: lastName,
+                birthDate: birthDate,
+                country: country,
+                city: city,
+                email: email,
+                secondaryEmail: null,
+                phoneNumber: null,
+                emergencyEmail: null,
+                emergencyPhoneNumber: null,
+                password: encodedPassword,
+                medications: [], illnesses: [], allergies: [],
+                profile_pic: null
+            }
+        );
+
+        req.session.authenticated = true;
+        req.session.firstName = firstName;
+        req.session.lastName = lastName;
+        req.session.email = email;
+        req.session.cookie.maxAge = expireTime;
+
+        res.redirect('/');
     }
-
-    var encodedPassword = await bcrypt.hash(password, saltRounds);
-
-    await userCollection.insertOne(
-        { 
-            firstName: firstName, 
-            lastName: lastName, 
-            birthDate: birthDate, 
-            country: country, 
-            city: city, 
-            email: email, 
-            secondaryEmail: null, 
-            phoneNumber: null, 
-            emergencyEmail: null,
-            emergencyPhoneNumber: null, 
-            password: encodedPassword, 
-            medications: [], illnesses: [], allergies: [],  
-            profile_pic: null
-        }
-    );
-
-    req.session.authenticated = true;
-    req.session.firstName = firstName;
-    req.session.lastName = lastName;
-    req.session.email = email;
-    req.session.cookie.maxAge = expireTime;
-
-    res.redirect('/');
 });
 
 
