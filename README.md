@@ -112,10 +112,10 @@ We have developed a medical application with climate change related health infor
     ├── profilePage.ejs
     ├── resetPage.ejs
     ├── settings
-    │   └── widgetsPage.ejs
     ├── settingsPage.ejs
     ├── signUpPage.ejs
     ├── templatePage.ejs
+    ├── widgetsPage.ejs
     └── templates
         ├── footerTemplate.ejs
         ├── headerTemplate.ejs
