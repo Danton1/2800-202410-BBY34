@@ -1,25 +1,23 @@
+// Imports 
 const express = require("express");
 const nodemailer = require('nodemailer');
 const router = express.Router();
-
-const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const bcrypt = require('bcrypt');
 const saltRounds = 12;
-
 const Joi = require("joi");
 
+// ENV variables
 const mongodb_host = process.env.MONGODB_HOST;
 const mongodb_user = process.env.MONGODB_USER;
 const mongodb_password = process.env.MONGODB_PASSWORD;
 const mongodb_database = process.env.MONGODB_DATABASE;
 const mongodb_session_secret = process.env.MONGODB_SESSION_SECRET;
-// const node_session_secret = process.env.NODE_SESSION_SECRET;
 
+// database connection
 var { database } = include('databaseConnection');
 const userCollection = database.db(mongodb_database).collection('users');
 const tokenCollection = database.db(mongodb_database).collection('forgotToken');
-
 var mongoStore = MongoStore.create({
     mongoUrl: `mongodb+srv://${mongodb_user}:${mongodb_password}@${mongodb_host}/sessions`,
     crypto: {
@@ -31,6 +29,7 @@ var mongoStore = MongoStore.create({
 router.use(express.urlencoded({ extended: false }));
 router.use(express.static(__dirname + "/public"));
 
+// Renders page
 router.get('/', (req, res) => {
     res.render("forgotPage");
 });
@@ -48,6 +47,7 @@ router.post('/submitForgot', async (req, res) => {
         res.render("errorPage", { error: validationResult.error });
         return;
     }
+
     //find email in users collection
     const result = await userCollection.find({ email: forgotEmail }).project({ email: 1, _id: 1 }).toArray();
 
@@ -70,8 +70,7 @@ router.post('/submitForgot', async (req, res) => {
         const expiryTime = new Date(Date.now() + (30 * 60 * 1000));
         await tokenCollection.insertOne({ email: forgotEmail, token: encodedToken, expiry: expiryTime });
 
-        //send email
-        //WE MUST MAKE AN EMAIL TO SEND PASSWORD RESET EMAILS FROM
+        // send email
         let transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
@@ -79,7 +78,8 @@ router.post('/submitForgot', async (req, res) => {
                 pass: process.env.TEST_PASSWORD
             }
         });
-        //generate url
+
+        // generate url
         const resetPasswordBaseUrl = 'https://two800-202410-bby34-sjiu.onrender.com/forgot/resetPassword';
         const resetPasswordLink = `${resetPasswordBaseUrl}?email=${encodeURIComponent(forgotEmail)}&token=${encodeURIComponent(encodedToken)}`;
 
@@ -94,10 +94,10 @@ router.post('/submitForgot', async (req, res) => {
         // Send email
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
-                res.render("errorPage", {error: "Email failed to send, please try again!"});
+                res.render("errorPage", { error: "Email failed to send, please try again!" });
                 return;
             } else {
-                res.render("emailSuccess"); 
+                res.render("emailSuccess");
                 return;
             }
         });
@@ -105,52 +105,55 @@ router.post('/submitForgot', async (req, res) => {
     }
 });
 
+// query with valid reset password tokens.
 router.get('/resetPassword', (req, res) => {
-    res.render("resetPage", {email: req.query.email, token: req.query.token});
+    res.render("resetPage", { email: req.query.email, token: req.query.token });
 });
 
-
+// resets the password to databse
 router.post('/resetPassword', async (req, res) => {
+    // variables taken from html
     var email = req.body.temp1;
     var token = req.body.temp2;
     var password = req.body.password;
     var passwordConfirm = req.body.passwordConfirm;
 
+    // ensures passwords match
     if (password.localeCompare(passwordConfirm) != 0) {
         res.render("errorPage", { error: "passwords don't match" });
         return;
     }
 
+    // password joi validation 
     const schema = Joi.object({
         password: Joi.string().max(20).required(),
     });
     const validationResult = schema.validate({ password });
 
+    // invalid joi validation
     if (validationResult.error != null) {
         res.render("errorPage", { error: validationResult.error });
         return;
     }
 
+    // encryptts password
     var hashedPassword = await bcrypt.hash(password, saltRounds);
 
+    // checks for valid reset token
     const tokenResult = await tokenCollection.find({ email: email, token: token }).project({ email: 1, token: 1, expiry: 1, _id: 1 }).toArray();
-
     if (tokenResult.length == 0) {
         res.render("errorPage", { error: "token not found" });
         return;
+    } else if (new Date(Date.now()) <= tokenResult[0].expiry) {
+        // valid token updates password
+        await userCollection.updateOne({ email: email }, { $set: { password: hashedPassword } });
+        await tokenCollection.updateOne({ token: token }, { $set: { expiry: new Date(Date.now()) } });
+        res.redirect('/login');
+        return;
     } else {
-
-        if (new Date(Date.now()) <= tokenResult[0].expiry) {
-
-            await userCollection.updateOne({ email: email }, { $set: { password: hashedPassword } });
-            await tokenCollection.updateOne({ token: token }, { $set: { expiry: new Date(Date.now()) } });
-            res.redirect('/login');
-            return;
-
-        } else {
-            res.render("errorPage", { error: "Token expired" });
-        }
+        res.render("errorPage", { error: "Token expired" });
     }
+    
 })
 
 module.exports = router;

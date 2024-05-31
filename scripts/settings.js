@@ -1,6 +1,6 @@
+// basic render and rediction for settings page
 const express = require("express");
 const router = express.Router();
-
 
 router.get('/', (req, res) => {
     res.render('settingsPage');
