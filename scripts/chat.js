@@ -10,13 +10,13 @@ var tempEgg = 0;
 $(function () {
     $('#chatForm').on("submit", function (event) {
         event.preventDefault();
-        $( "#chatButton" ).prop( "disabled", true );
+        $("#chatButton").prop("disabled", true);
 
         // Getting time
         let date = new Date;
         let time = date.getHours() + ":" + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
-        
-        
+
+
         // Get the input value
         const userInput = $('#chatbotTextBox').val();
 
@@ -68,10 +68,8 @@ $(function () {
         $('#chatbotTextBox').val("");
 
         var box = $(`#testing${userCounter}`);
-        // console.log(box[0].scrollHeight);
         box[0].scrollIntoView();
         userCounter++;
-        // window.scrollTo(0, box[0].scrollHeight);
 
         // Send AJAX request to the server
         $.ajax({
@@ -88,8 +86,8 @@ $(function () {
                 const obj = JSON.parse(response.output);
                 let outputString = obj.message;
                 let egg = JSON.parse(response.eggNum);
-                
-                if(response.sendEmail=="true"){
+
+                if (response.sendEmail == "true") {
                     $("#emailDate").val(response.emailDate);
                     $("#emailTime").val(response.emailTime);
                     $("#emailIssue").val(response.emailIssue);
@@ -118,23 +116,19 @@ $(function () {
                     </div>
                 </div>`);
                 box = $(`#gptOutput${gptCounter}`);
-                // console.log(box[0].id);
                 box[0].scrollIntoView(false);
 
-                $( "#chatButton" ).prop( "disabled", false );
+                $("#chatButton").prop("disabled", false);
 
                 gptCounter++;
 
-                // console.log(egg);
-                if(egg != tempEgg && egg != 0){
+                if (egg != tempEgg && egg != 0) {
                     tempEgg = egg;
                 }
                 console.log(tempEgg);
-                if(tempEgg != 0){
+                if (tempEgg != 0) {
                     //change background here
-                    // $( "#bigwrap" ).addClass("bg-opacity-10");
                     $('#bigwrap').css('background-image', 'url(/egg/office.jpg)');
-                    // $('img').css('opacity', 0.5);
                     $('#bigwrap').css('background-size', 'cover');
 
                 }

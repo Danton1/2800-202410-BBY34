@@ -37,14 +37,14 @@ MediKate
 
     <!-- Send button -->
     <div class="w-full mt-4 flex flex-col items-center text-gray-900 text-lg font-bold">
-        <button onclick="e()" class="w-full bg-sky-400 py-3 rounded-2xl hover:bg-sky-300 hover:text-gray-800 duration-200">
+        <button onclick="sendEmail()" class="w-full bg-sky-400 py-3 rounded-2xl hover:bg-sky-300 hover:text-gray-800 duration-200">
             Send <i class="fa-solid fa-paper-plane"></i>
         </button>
     </div>
 </div>
 
 <script>
-    function e(){
+    function sendEmail(){
         var content = document.querySelector("#tempContent");
         document.querySelector("#emailContent").value = content.value;
         console.log(content.value);

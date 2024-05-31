@@ -79,8 +79,6 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
     // USES
-
-// app.use(express.urlencoded({extended: false}));
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 app.use(express.static(__dirname + "/public"));
@@ -253,8 +251,6 @@ app.get("*", (req,res) => {
 
 app.post('/chatbot', async (req, res) => {
     let input;
-    console.log(counter);
-    
     
     if(counter == 0){
         const user = await userCollection.findOne({ email: req.session.email });
@@ -270,9 +266,7 @@ app.post('/chatbot', async (req, res) => {
     } else {
         input = req.body.userInput;
     }
-    console.log(input);
     counter++;
-    // console.log("in the post function");
     const processedData = `${input}`;
     const output = await runPrompt(input);
     const egg = JSON.parse(output).isEasterEgg;
@@ -280,10 +274,8 @@ app.post('/chatbot', async (req, res) => {
     const date = JSON.parse(output).emailDate;
     const issue = JSON.parse(output).emailIssue;
     const isSend = JSON.parse(output).sendEmail;
-    // console.log("egg: " + egg);
     var eggNum;
     if(egg === "true"){
-        // console.log("aaa");
         eggNum = Math.floor(Math.random() * 7) + 1;
     } else{
         eggNum = 0;
@@ -296,15 +288,11 @@ app.post('/chatbot', async (req, res) => {
         emailTime: time,
         emailDate: date,
         emailIssue: issue,
-        // userName: req.session.firstName + " " + req.session.lastName,
-        // userEmail: req.session.email
     }
     // Send the processed data back to the client
 
-    // console.log(eggNum);
     switch (eggNum) {
         case 1:
-            // console.log("in switch");
             assistantID = process.env.WHO_KEY;
             cancel = await openai.beta.threads.del(myThread.id);
             myThread = await openai.beta.threads.create();
@@ -314,7 +302,6 @@ app.post('/chatbot', async (req, res) => {
             );
             break;
         case 2:
-            // console.log("in switch");
             assistantID = process.env.PHIL_KEY;
             cancel = await openai.beta.threads.del(myThread.id);
             myThread = await openai.beta.threads.create();
@@ -324,7 +311,6 @@ app.post('/chatbot', async (req, res) => {
             );
             break;
         case 3:
-            // console.log("in switch");
             assistantID = process.env.DRE_KEY;
             cancel = await openai.beta.threads.del(myThread.id);
             myThread = await openai.beta.threads.create();
@@ -334,7 +320,6 @@ app.post('/chatbot', async (req, res) => {
             );
             break;
         case 4:
-            // console.log("in switch");
             assistantID = process.env.PEPPER_KEY;
             cancel = await openai.beta.threads.del(myThread.id);
             myThread = await openai.beta.threads.create();
@@ -344,7 +329,6 @@ app.post('/chatbot', async (req, res) => {
             ); 
             break;
         case 5:
-            // console.log("in switch");
             assistantID = process.env.STRANGE_KEY;
             cancel = await openai.beta.threads.del(myThread.id);
             myThread = await openai.beta.threads.create();
@@ -354,7 +338,6 @@ app.post('/chatbot', async (req, res) => {
             ); 
             break;
         case 6:
-            // console.log("in switch");
             assistantID = process.env.HOUSE_KEY;
             cancel = await openai.beta.threads.del(myThread.id);
             myThread = await openai.beta.threads.create();
@@ -364,7 +347,6 @@ app.post('/chatbot', async (req, res) => {
             );
             break;
         case 7:
-            // console.log("in switch");
             assistantID = process.env.ZOID_KEY;
             cancel = await openai.beta.threads.del(myThread.id);
             myThread = await openai.beta.threads.create();
@@ -374,7 +356,6 @@ app.post('/chatbot', async (req, res) => {
             );
             break;
         default:
-            // console.log("default");
             break;
     }
 
@@ -384,7 +365,7 @@ app.post('/chatbot', async (req, res) => {
 const runPrompt = async (input) => {
     const prompt = input;
 
-    if(!myThread){ // haven't tested
+    if(!myThread){
         return({"message": "error"});
     }
 
@@ -395,8 +376,6 @@ const runPrompt = async (input) => {
             content: prompt,
         }
     );
-    console.log(assistantID);
-    console.log(myThread.id);
     const myRun = await openai.beta.threads.runs.create(
         myThread.id,
         { assistant_id: assistantID }
@@ -416,10 +395,6 @@ const runPrompt = async (input) => {
                 const allMessages = await openai.beta.threads.messages.list(
                     myThread.id
                 );
-
-                // console.log("User: ", myThreadMessage.content[0].text.value);
-                // console.log("User: ", myThreadMessage);
-                console.log("Assistant: ", allMessages.data[0].content[0].text.value);
 
                 return allMessages.data[0].content[0].text.value;
             } else if (
@@ -442,7 +417,6 @@ app.post('/submitEmail', async(req,res) => {
     var issue = req.body.emailIssue;
     var userName= req.session.firstName + " " + req.session.lastName;
     var userEmail=  req.session.email;
-    // console.log();
     res.render('emailerPage', {emailDate: date, emailTime:time, emailIssue: issue,
          userName: userName, userEmail: userEmail });
 });
@@ -472,7 +446,7 @@ app.post('/submitLogin', async (req, res) => {
     let getUser = userCollection.findOne({ email: email }).then((user) => {
         if (!user) {
             //if user does not exist, the authentication failed
-            res.render("errorPage", { prompt: "Invalid email account" });
+            res.render("errorPage", { error: "Invalid email account" });
             return;
         }
         //assign the user to getUser variable
@@ -516,6 +490,34 @@ app.post('/profile/personalInfo/edit', async (req, res) => {
     if (isValidSession(req)) {
         try {
             const { firstName, lastName, birthDate, country, city } = req.body;
+
+            const schema = Joi.object({
+                startTime: Joi.date().required(),
+                endTime: Joi.date().required(),
+                firstName: Joi.string().max(20).required(),
+                lastName: Joi.string().max(20).required(),
+                birthDate: Joi.date().required().min(Joi.ref('startTime')).max(Joi.ref('endTime')),
+                country: Joi.string().max(20).required(),
+                city: Joi.string().max(20).required(),
+            });
+            const validationResult = schema.validate({ startTime: '1900-01-01T00:00:00.000', endTime:'2054-01-01T00:00:00.000', firstName, lastName, birthDate, country, city});
+            if (validationResult.error != null) {
+                var err = validationResult.error.details[0];
+                if (err.type.localeCompare('string.empty') == 0) {
+                    res.render("errorPage", { error: `${err.path[0]} is empty.` });
+                    return;
+                } else if(err.type.localeCompare('date.max') == 0){
+                    res.render("errorPage", { error: `Date is too large.` });
+                    return;
+                } else if(err.type.localeCompare('date.min') == 0){
+                    res.render("errorPage", { error: `Date is too small.` });
+                    return;
+                }
+                res.render("errorPage", { error: `${err.message}` });
+                return;
+            }
+
+
             await userCollection.updateOne(
                 { email: req.session.email },
                 { $set: { firstName, lastName, birthDate, country, city } }
