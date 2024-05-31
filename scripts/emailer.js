@@ -1,37 +1,17 @@
+// imports 
 const express = require("express");
 const nodemailer = require('nodemailer');
 const router = express.Router();
-
-const session = require('express-session');
 const MongoStore = require('connect-mongo');
-const bcrypt = require('bcrypt');
-const saltRounds = 12;
-
-const Joi = require("joi");
-
-const mongodb_host = process.env.MONGODB_HOST;
-const mongodb_user = process.env.MONGODB_USER;
-const mongodb_password = process.env.MONGODB_PASSWORD;
-const mongodb_database = process.env.MONGODB_DATABASE;
-const mongodb_session_secret = process.env.MONGODB_SESSION_SECRET;
-
-var { database } = include('databaseConnection');
-const userCollection = database.db(mongodb_database).collection('users');
-
-var mongoStore = MongoStore.create({
-    mongoUrl: `mongodb+srv://${mongodb_user}:${mongodb_password}@${mongodb_host}/sessions`,
-    crypto: {
-        secret: mongodb_session_secret
-    }
-})
 
 // USES
 router.use(express.urlencoded({ extended: true }));
 router.use(express.static(__dirname + "/public"));
 
+// Sends user email to doctor
 router.post('/sendEmail', async (req, res) => {
+    // gets email from html
     var userEmail = req.body.useremail;
-
 
     //email not valid
     if (userEmail == null) {
@@ -56,10 +36,11 @@ router.post('/sendEmail', async (req, res) => {
             }
         });
 
+        // formats string to html
         var str = req.body.tempContent;
         str = str.replace(/(?:\r\n|\r|\n)/g, '<br>');
 
-        // console.log(str);
+        // Nodemailer email configuration
         let mailOptions = {
             from: userEmail,
             to: userEmail,
@@ -78,17 +59,14 @@ router.post('/sendEmail', async (req, res) => {
         // Send email
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
-                res.render("errorPage", {error: "Email failed to send, please try again!"});
+                res.render("errorPage", { error: "Email failed to send, please try again!" });
                 return;
             } else {
-                res.render("emailSuccess"); 
+                res.render("emailSuccess");
                 return;
             }
         });
-
     }
 });
-
-
 
 module.exports = router;
