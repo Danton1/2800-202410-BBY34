@@ -1,4 +1,4 @@
-<%- include("../templates/headerTemplate")%>
+<%- include("templates/headerTemplate")%>
 
 <div class="max-w-[450px] w-full min-h-svh mx-auto py-[50px] px-[35px] flex flex-col justify-center items-center text-sky-100 text-md font-medium text-center">
     <h1 class="text-sky-300 text-3xl font-bold mb-5">Widgets</h1>
@@ -10,11 +10,11 @@
             <div id="temperature" class="w-full hidden py-4 px-5 flex flex-col items-center bg-gray-600 border-b border-gray-800">
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Enabled</span>
-                    <%- include("../templates/widgetSettingsInputTemplate", {id: "temperatureEnabled"}) %>
+                    <%- include("templates/widgetSettingsInputTemplate", {id: "temperatureEnabled"}) %>
                 </div>
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Units</span>
-                    <%- include("../templates/widgetSettingsSelectTemplate", {
+                    <%- include("templates/widgetSettingsSelectTemplate", {
                         id: "temperatureUnits",
                         options: [
                             { value: "c", label: "Celsius" },
@@ -30,39 +30,39 @@
             <div id="airQuality" class="w-full hidden py-4 px-5 items-center bg-gray-600 border-b border-gray-800">
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Enabled</span>
-                    <%- include("../templates/widgetSettingsInputTemplate", {id: "airQualityEnabled"}) %>
+                    <%- include("templates/widgetSettingsInputTemplate", {id: "airQualityEnabled"}) %>
                 </div>
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Carbon Monoxide</span>
-                    <%- include("../templates/widgetSettingsInputTemplate", {id: "coEnabled"}) %>
+                    <%- include("templates/widgetSettingsInputTemplate", {id: "coEnabled"}) %>
                 </div>
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Nitrogen Monoxide</span>
-                    <%- include("../templates/widgetSettingsInputTemplate", {id: "noEnabled"}) %>
+                    <%- include("templates/widgetSettingsInputTemplate", {id: "noEnabled"}) %>
                 </div>
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Nitrogen Dioxide</span>
-                    <%- include("../templates/widgetSettingsInputTemplate", {id: "no2Enabled"}) %>
+                    <%- include("templates/widgetSettingsInputTemplate", {id: "no2Enabled"}) %>
                 </div>
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Ozone</span>
-                    <%- include("../templates/widgetSettingsInputTemplate", {id: "o3Enabled"}) %>
+                    <%- include("templates/widgetSettingsInputTemplate", {id: "o3Enabled"}) %>
                 </div>
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Sulphur Dioxide</span>
-                    <%- include("../templates/widgetSettingsInputTemplate", {id: "so2Enabled"}) %>
+                    <%- include("templates/widgetSettingsInputTemplate", {id: "so2Enabled"}) %>
                 </div>
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Fine Particulates</span>
-                    <%- include("../templates/widgetSettingsInputTemplate", {id: "pm2_5Enabled"}) %>
+                    <%- include("templates/widgetSettingsInputTemplate", {id: "pm2_5Enabled"}) %>
                 </div>
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Course Particulates</span>
-                    <%- include("../templates/widgetSettingsInputTemplate", {id: "pm10Enabled"}) %>
+                    <%- include("templates/widgetSettingsInputTemplate", {id: "pm10Enabled"}) %>
                 </div>
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Ammonia</span>
-                    <%- include("../templates/widgetSettingsInputTemplate", {id: "nh3Enabled"}) %>
+                    <%- include("templates/widgetSettingsInputTemplate", {id: "nh3Enabled"}) %>
                 </div>
             </div>
             <button class="w-full h-full py-4 px-5 items-center border-b border-gray-800 hover:bg-gray-800 duration-150" onclick="toggleAccordion('location')">
@@ -71,7 +71,7 @@
             <div id="location" class="w-full hidden py-4 px-5 items-center bg-gray-600 border-b border-gray-800">
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Enabled</span>
-                    <%- include("../templates/widgetSettingsInputTemplate", {id: "locationEnabled"}) %>
+                    <%- include("templates/widgetSettingsInputTemplate", {id: "locationEnabled"}) %>
                 </div>
             </div>
         </div>
@@ -84,13 +84,13 @@
     </div>
     <div class="w-full grid justify-items-center">
         <div class="w-full grid bg-sky-400 shadow-lg rounded-2xl m-2 justify-items-center hover:bg-sky-300 duration-200 text-lg font-bold"></div>
-        <a class="w-full grid bg-sky-400 shadow-lg rounded-2xl m-2 justify-items-center hover:bg-sky-300 duration-200 text-lg font-bold" href="../settings">
+        <a class="w-full grid bg-sky-400 shadow-lg rounded-2xl m-2 justify-items-center hover:bg-sky-300 duration-200 text-lg font-bold" onclick="history.back()">
             <span class="w-full h-full py-4 px-5 text-gray-900">GO BACK</span>
         </a>
     </div>
 </div>
 
-<%- include("../templates/footerTemplate") %> 
+<%- include("templates/footerTemplate") %> 
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
