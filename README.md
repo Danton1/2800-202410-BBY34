@@ -82,21 +82,22 @@ We have developed a medical application with climate change related health infor
 │   │   ├── strange.webp
 │   │   ├── who.jpg
 │   │   └── zoid.jpg
+│   ├── js
+│   │   ├── indexPage.js
+│   │   ├── modal.js
+│   │   └── notifications.js
+│   ├── stylesheets
+│   │   ├── main.css
+│   │   ├── style.css
+│   │   └── tailwind.css
 │   ├── favicon.ico
 │   └── favicon.png
 ├── scripts
 │   ├── chat.js
 │   ├── emailer.js
 │   ├── forgotPage.js
-│   ├── indexPage.js
-│   ├── modal.js
-│   ├── notifications.js
 │   ├── settings.js
 │   └── signUpPage.js
-├── stylesheets
-│   ├── main.css
-│   ├── style.css
-│   └── tailwind.css
 ├── tailwind.config.js
 ├── utils.js
 └── views

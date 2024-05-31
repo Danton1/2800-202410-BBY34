@@ -240,7 +240,7 @@ app.get('/profile/medHistory', async (req,res) => {
 // Get for Settings
 app.get('/settings/widgets', (req,res) => {
     if(isValidSession(req)){
-        res.render('settings/widgetsPage', {widgetSettings: req.session.widgetSettings});
+        res.render('widgetsPage', {widgetSettings: req.session.widgetSettings});
         return;
     }
     res.redirect('/login');
@@ -823,12 +823,12 @@ async function checkActiveJobs(email) {
         // Iterate over scheduled tasks
         for (const task of scheduledTasks) {
             const jobName = task.taskName;
-            const schedule = task.schedule;
+            const cronSchedule = task.schedule;
 
             // Check if the job is active
-            if (!schedule.scheduledJobs[jobName]) {
+            if (!schedule.scheduledJobs || !schedule.scheduledJobs[jobName]) {
                 // If not active, schedule a new job
-                schedule.scheduleJob(jobName, schedule, () => {
+                const job = schedule.scheduleJob(jobName, schedule, () => {
                     // Schedule notification using Node-schedule based on mongoDB data
                     const medication = user.medication.find(med => med.name === task.taskName);
                     sendMedicationNotification(email, medication);
