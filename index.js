@@ -1,17 +1,17 @@
 require("./utils.js");
-require('dotenv').config(); 
-const express = require('express');
-const session = require('express-session');
-const MongoStore = require('connect-mongo');
-const bcrypt = require('bcrypt');
+require("dotenv").config(); 
+const express = require("express");
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
+const bcrypt = require("bcrypt");
 const saltRounds = 12;
 const webpush = require("web-push");
-const bodyParser = require('body-parser');
-const { database } = require('./databaseConnection');
-const { MongoClient, ObjectId } = require('mongodb');
+const bodyParser = require("body-parser");
+const { database } = require("./databaseConnection");
+const { MongoClient, ObjectId } = require("mongodb");
 const port = process.env.PORT || 3000;
 
-const schedule = require('node-schedule');
+const schedule = require("node-schedule");
 
 const app = express();
 
@@ -27,14 +27,14 @@ const { Configuration, OpenAI } = require("openai");
 const openai = new OpenAI({ apiKey: process.env.GPT_KEY });
 
 /*Imported routes js files*/
-const signUpRoute = require('./scripts/signUpPage');
-app.use('/signUp', signUpRoute);
-const forgotRoute = require('./scripts/forgotPage');
-app.use('/forgot', forgotRoute);
-const settingsRoute = require('./scripts/settings');
-app.use('/settings', settingsRoute);
-const emailerRoute = require('./scripts/emailer');
-app.use('/emailer', emailerRoute);
+const signUpRoute = require("./scripts/signUpPage");
+app.use("/signUp", signUpRoute);
+const forgotRoute = require("./scripts/forgotPage");
+app.use("/forgot", forgotRoute);
+const settingsRoute = require("./scripts/settings");
+app.use("/settings", settingsRoute);
+const emailerRoute = require("./scripts/emailer");
+app.use("/emailer", emailerRoute);
 /*Imported routes js files end*/
 
 /* secret information section */
@@ -51,10 +51,10 @@ const vapidEmail = process.env.VAPID_EMAIL;
 /* END secret section */
 
 // Push notification setup
-webpush.setVapidDetails('mailto:'+vapidEmail, vapidPublicKey, vapidPrivateKey);
+webpush.setVapidDetails("mailto:"+vapidEmail, vapidPublicKey, vapidPrivateKey);
 
-const userCollection = database.db(mongodb_database).collection('users');
-const tokenCollection = database.db(mongodb_database).collection('forgotToken');
+const userCollection = database.db(mongodb_database).collection("users");
+const tokenCollection = database.db(mongodb_database).collection("forgotToken");
 
 
 var mongoStore = MongoStore.create({
@@ -64,10 +64,10 @@ var mongoStore = MongoStore.create({
     }
 });
 
-app.set('view engine', 'ejs');
+app.set("view engine", "ejs");
 
 // Cloudinary and multer for profile picture upload
-const cloudinary = require('cloudinary').v2;
+const cloudinary = require("cloudinary").v2;
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
@@ -75,7 +75,7 @@ cloudinary.config({
     secure: true
 });
 
-const multer = require('multer');
+const multer = require("multer");
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
@@ -84,8 +84,8 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 app.use(express.static(__dirname + "/public"));
 
-app.get('/chat.js', function (req, res) {
-    res.sendFile(__dirname + '/scripts/chat.js');
+app.get("/chat.js", function (req, res) {
+    res.sendFile(__dirname + "/scripts/chat.js");
 });
 
 app.use(bodyParser.json());
@@ -100,6 +100,11 @@ app.use(session({
 
 /* Authorization and authentication functions */
 
+/**
+ * Checks if the user session is valid
+ * @param {object} req - The request object
+ * @returns {boolean} - True if the session is valid, false otherwise
+ */
 function isValidSession(req) {
     if (req.session.authenticated) {
         return true;
@@ -107,6 +112,12 @@ function isValidSession(req) {
     return false;
 }
 
+/**
+ * Checks if user is logged in, if not, redirects to login page
+ * @param {object} req - The request object
+ * @param {object} res - The response object
+ * @param {function} next - The next middleware function
+ */
 function sessionValidation(req, res, next) {
     if (isValidSession(req)) {
         next();
@@ -116,13 +127,25 @@ function sessionValidation(req, res, next) {
     }
 }
 
-    function isAdmin(req) {
-        if (req.session.user_type == 'admin') {
-            return true;
-        }
-        return false;
+/**
+ * Checks if the user is an admin
+ * @param {object} req - The request object
+ * @returns {boolean} - True if the user is an admin, false otherwise
+ */
+function isAdmin(req) {
+    if (req.session.user_type == 'admin') {
+        return true;
     }
+    return false;
+}
 
+/**
+ * Middleware to check if user is authorized as an admin
+ * Redirects to 403 page if not authorized
+ * @param {object} req - The request object
+ * @param {object} res - The response object
+ * @param {function} next - The next middleware function
+ */
 function adminAuthorization(req, res, next) {
     console.log(req.session.user_type);
     if (!isAdmin(req)) {
@@ -135,8 +158,9 @@ function adminAuthorization(req, res, next) {
     }
 }
 
-    // GETS
+/* GETS */
 
+// Get for home page
 app.get('/', (req,res) => {
     if(isValidSession(req)){
         checkActiveJobs(req.session.email);
