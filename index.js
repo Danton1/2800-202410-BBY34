@@ -830,7 +830,7 @@ async function checkActiveJobs(email) {
                 // If not active, schedule a new job
                 const job = schedule.scheduleJob(jobName, schedule, () => {
                     // Schedule notification using Node-schedule based on mongoDB data
-                    const medication = user.medication.find(med => med.name === task.taskName);
+                    const medication = user.medications.find(med => med.name === task.taskName);
                     sendMedicationNotification(email, medication);
                 });
             }
