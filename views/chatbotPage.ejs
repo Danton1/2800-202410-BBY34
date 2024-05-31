@@ -6,9 +6,9 @@
     <h1 class="text-sky-300 text-3xl font-bold mb-2">Dr. Kate</h1>
 
     <form class="hidden" method="post" id="bookAppointment" action="/submitEmail">
-        <input id="emailTime" name="emailTime"></input>
-        <input id="emailDate" name="emailDate"></input>
-        <input id="emailIssue" name="emailIssue"></input>
+        <input id="emailTime" name="emailTime">
+        <input id="emailDate" name="emailDate">
+        <input id="emailIssue" name="emailIssue">
     </form>
 
     <div class="w-full h-[calc(100svh-175px)] flex flex-col justify-end space-y-4 pb-3 from-gray-900 to-[rbga(0, 0, 0, 0)] overflow-hidden">
@@ -21,7 +21,6 @@
         <form class="chatbotTextBoxWrap px-5 py-4 rounded-xl bg-gray-700 flex" id="chatForm">
             <input type="text" id="chatbotTextBox" contenteditable rows="1" style="scrollbar-width: none;"
             class="w-full min-h-[25px] max-h-[100px] bg-gray-700 resize-none overflow-y-scroll text-sky-100 empty:before:content-['Ask_Kate...'] focus:outline-none">
-            </input>
             <button id="chatButton" class="" type="submit"><i class="fa-regular fa-paper-plane"></i></button>
         </form>
     </div>

@@ -6,8 +6,8 @@
     <!-- List of personal information -->
     <form id="sendEmail" action="/emailer/sendEmail" method="POST"
         class="w-full h-4/6 flex flex-col items-center space-y-4 text-md">
-        <input name="username" class="hidden" value="<%= userName%>"> </input>
-        <input name="useremail" class="hidden" value = "<%= userEmail%>"></input>
+        <input name="username" class="hidden" value="<%= userName%>">
+        <input name="useremail" class="hidden" value = "<%= userEmail%>">
 
         <div class="w-full">
             <h1 class="mb-2 text-lg">Email</h1>
@@ -19,7 +19,7 @@
         <div class="w-full">
             <h1 class="mb-2 text-lg">Content</h1>
             <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl flex" style="height: 50vh">
-                <input id="emailContent" name="emailContent" value="" class="hidden"></input>
+                <input id="emailContent" name="emailContent" value="" class="hidden">
                 <textarea name="tempContent" id="tempContent" class="w-full text-clip resize-none bg-gray-700 focus:outline-none" contenteditable="true" style="scrollbar-width: none;">
 Hello Dr. Giggles,
 
