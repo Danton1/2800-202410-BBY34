@@ -79,7 +79,7 @@ const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-    // USES
+/* USES */
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 app.use(express.static(__dirname + "/public"));
@@ -250,7 +250,7 @@ app.get("*", (req,res) => {
 	res.render("404Page");
 });
 
-    // POSTS
+/* POSTS */
 
 app.post('/chatbot', async (req, res) => {
     let input;
@@ -365,6 +365,11 @@ app.post('/chatbot', async (req, res) => {
     res.send(data);
 });
 
+/**
+ * Function to run the prompt using OpenAI API
+ * @param {*} input - The input prompt
+ * @returns The response from OpenAI API
+ */
 const runPrompt = async (input) => {
     const prompt = input;
 
@@ -709,7 +714,6 @@ app.post('/deleteMedication', async (req, res) => {
         res.redirect('/login');
     }
 });
-
 
 
 /** Function to send medication notification
