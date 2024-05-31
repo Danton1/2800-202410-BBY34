@@ -1,5 +1,4 @@
-const publicVapidKey = 'BCsw8is7lA0YHBGCNaFcVyt2ynlL2k0pz_57K-Hdb0JUniD8czp2rOYgmlgRrO0YOxcFGWgJL4VPj4oPxWtO4Lw';
-
+publicVapidKey = 'BCsw8is7lA0YHBGCNaFcVyt2ynlL2k0pz_57K-Hdb0JUniD8czp2rOYgmlgRrO0YOxcFGWgJL4VPj4oPxWtO4Lw';
 // Check for service worker
 if ('serviceWorker' in navigator) {
   send().catch(err => console.error(err));
@@ -42,3 +41,4 @@ function urlBase64ToUint8Array(base64String) {
     }
     return outputArray;
   }
+

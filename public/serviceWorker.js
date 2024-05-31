@@ -9,3 +9,11 @@ self.addEventListener('push', function(event) {
         self.registration.showNotification(data.title, options)
     );
 });
+
+self.addEventListener('notificationclick', event => {
+    event.notification.close();
+    event.waitUntil(
+        // URL to open when notification is clicked
+        clients.openWindow('https://medikate.onrender.com/') 
+    );
+});

@@ -1,0 +1,54 @@
+<%- include("templates/headerTemplate")%>
+<div class="max-w-[450px] w-100 min-h-svh mx-auto px-[30px] py-[50px] bg-gray-900 flex flex-col pb-[90px] items-center justify-center text-sky-100 text-md font-medium">
+    <!-- Page title -->
+    <h1 class="text-sky-300 text-3xl font-bold mb-3">Emailer</h1>
+
+    <!-- List of personal information -->
+    <form id="sendEmail" action="/emailer/sendEmail" method="POST"
+        class="w-full h-4/6 flex flex-col items-center space-y-4 text-md">
+        <input name="username" class="hidden" value="<%= userName%>">
+        <input name="useremail" class="hidden" value = "<%= userEmail%>">
+
+        <div class="w-full">
+            <h1 class="mb-2 text-lg">Email</h1>
+            <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl flex">
+                drgiggles@medicenter.net
+            </div>
+        </div>
+
+        <div class="w-full">
+            <h1 class="mb-2 text-lg">Content</h1>
+            <div class="w-full bg-gray-700 py-4 px-5 rounded-2xl flex" style="height: 50vh">
+                <input id="emailContent" name="emailContent" value="" class="hidden">
+                <textarea name="tempContent" id="tempContent" class="w-full text-clip resize-none bg-gray-700 focus:outline-none" contenteditable="true" style="scrollbar-width: none;">
+Hello Dr. Giggles,
+
+<%=userName%> is requesting to book an appointment at <%= emailTime%> on <%=emailDate%>. They are looking for help regarding the following issue: <%=emailIssue%>
+
+Thank you for your help and you can reach them at <%=userEmail%>
+
+Regards,
+MediKate
+(AI Health Assistant)
+                </textarea>
+            </div>
+        </div>
+    </form>
+
+    <!-- Send button -->
+    <div class="w-full mt-4 flex flex-col items-center text-gray-900 text-lg font-bold">
+        <button onclick="sendEmail()" class="w-full bg-sky-400 py-3 rounded-2xl hover:bg-sky-300 hover:text-gray-800 duration-200">
+            Send <i class="fa-solid fa-paper-plane"></i>
+        </button>
+    </div>
+</div>
+
+<script>
+    function sendEmail(){
+        var content = document.querySelector("#tempContent");
+        document.querySelector("#emailContent").value = content.value;
+        console.log(content.value);
+        document.querySelector("#sendEmail").submit();
+    }
+</script>
+<%- include("templates/footerTemplate")%>

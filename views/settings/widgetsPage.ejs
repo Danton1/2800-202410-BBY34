@@ -13,10 +13,6 @@
                     <%- include("../templates/widgetSettingsInputTemplate", {id: "temperatureEnabled"}) %>
                 </div>
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
-                    <span>Show Forecast</span>
-                    <%- include("../templates/widgetSettingsInputTemplate", {id: "temperatureForcastEnabled"}) %>
-                </div>
-                <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Units</span>
                     <%- include("../templates/widgetSettingsSelectTemplate", {
                         id: "temperatureUnits",
@@ -35,10 +31,6 @@
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Enabled</span>
                     <%- include("../templates/widgetSettingsInputTemplate", {id: "airQualityEnabled"}) %>
-                </div>
-                <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
-                    <span>Show Forecast</span>
-                    <%- include("../templates/widgetSettingsInputTemplate", {id: "airQualityForcastEnabled"}) %>
                 </div>
                 <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
                     <span>Carbon Monoxide</span>
@@ -77,13 +69,10 @@
                 Location
             </button>
             <div id="location" class="w-full hidden py-4 px-5 items-center bg-gray-600 border-b border-gray-800">
-                <%- include("../templates/widgetSettingsInputTemplate", {id: "locationEnabled"}) %>
-            </div>
-            <button class="w-full h-full py-4 px-5 items-center border-b border-gray-800 hover:bg-gray-800 duration-150" onclick="toggleAccordion('medications')">
-                Medications
-            </button>
-            <div id="medications" class="w-full hidden py-4 px-5 items-center bg-gray-600 border-b border-gray-800">
-                <%- include("../templates/widgetSettingsInputTemplate", {id: "medicationsEnabled"}) %>
+                <div class="w-full flex justify-between items-center py-2 px-5 bg-gray-700 hover:bg-gray-800 duration-150">
+                    <span>Enabled</span>
+                    <%- include("../templates/widgetSettingsInputTemplate", {id: "locationEnabled"}) %>
+                </div>
             </div>
         </div>
     </div>
@@ -137,13 +126,11 @@
 
         if (widgetSettings.temperature) {
             document.getElementById('temperatureEnabled').checked = widgetSettings.temperature.enabled || false;
-            document.getElementById('temperatureForcastEnabled').checked = widgetSettings.temperature.showForecast || false;
             document.getElementById('temperatureUnits').value = widgetSettings.temperature.units || '';
         }
 
         if (widgetSettings.airQuality) {
             document.getElementById('airQualityEnabled').checked = widgetSettings.airQuality.enabled || false;
-            document.getElementById('airQualityForcastEnabled').checked = widgetSettings.airQuality.showForecast || false;
 
             const components = widgetSettings.airQuality.components || {};
             document.getElementById('coEnabled').checked = components.co || false;
@@ -154,14 +141,19 @@
             document.getElementById('pm2_5Enabled').checked = components.pm2_5 || false;
             document.getElementById('pm10Enabled').checked = components.pm10 || false;
             document.getElementById('nh3Enabled').checked = components.nh3 || false;
+        } else {
+            document.getElementById('coEnabled').checked = false;
+            document.getElementById('noEnabled').checked = false;
+            document.getElementById('no2Enabled').checked = false;
+            document.getElementById('o3Enabled').checked = false;
+            document.getElementById('so2Enabled').checked = false;
+            document.getElementById('pm2_5Enabled').checked = false;
+            document.getElementById('pm10Enabled').checked = false;
+            document.getElementById('nh3Enabled').checked = false;
         }
 
         if (widgetSettings.location) {
             document.getElementById('locationEnabled').checked = widgetSettings.location.enabled || false;
-        }
-
-        if (widgetSettings.medications) {
-            document.getElementById('medicationsEnabled').checked = widgetSettings.medications.enabled || false;
         }
     }
 
@@ -174,12 +166,10 @@
         const settings = {
             temperature: {
                 enabled: document.getElementById('temperatureEnabled').checked,
-                showForecast: document.getElementById('temperatureForcastEnabled').checked,
                 units: document.getElementById('temperatureUnits').value
             },
             airQuality: {
                 enabled: document.getElementById('airQualityEnabled').checked,
-                showForecast: document.getElementById('airQualityForcastEnabled').checked,
                 components: {
                     co: document.getElementById('coEnabled').checked,
                     no: document.getElementById('noEnabled').checked,
@@ -193,9 +183,6 @@
             },
             location: {
                 enabled: document.getElementById('locationEnabled').checked
-            },
-            medications: {
-                enabled: document.getElementById('medicationsEnabled').checked
             }
         };
         return settings;

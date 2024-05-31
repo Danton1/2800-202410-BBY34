@@ -1,0 +1,104 @@
+<div id='<%= medication.name + "Modal"%>' class="medicationModals fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div id='<%= medication.name + "info"%>' class="max-w-[450px] w-[80%] bg-gray-800 border-2 border-gray-600 rounded-lg shadow-lg p-5 transform transition duration-500 text-cyan-100 flex flex-col justify-center items-center">
+        <button onclick="closeModal('<%= medication.name%>' + 'Modal')" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+        <h2 class="modalTitle text-2xl font-bold mb-4"><%= medication.name%></h2>
+        <p class="modalDescription text-gray-400 text-xl"><%= medication.dosage %></p>
+        <p class="modalDescription text-gray-400 text-xl"><%= medication.frequency %> <%= medication.period %></p>
+        <div class="flex flex-col items-center">
+            <div class="w-full flex flex-wrap justify-center items-center mt-4 gap-3">
+                <button id='<%= medication.name + "edit"%>' class="px-8 bg-sky-500 hover:bg-sky-700 text-white py-2 rounded-xl transition duration-300"><i class="fa-solid fa-pen"></i> Edit</button>
+                <form action="/deleteMedication" method="POST">
+                    <input type="text" name="oldNameDelete" value="<%= medication.name %>" hidden>
+                    <button id='<%= medication.name + "delete"%>' class="px-8 bg-red-500 hover:bg-red-700 text-white py-2 rounded-xl transition duration-300">Delete <i class="fa-solid fa-trash-can"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id='<%= medication.name + "form"%>' class="max-w-[450px] w-[80%] bg-gray-800 border-2 border-gray-600 rounded-lg shadow-lg p-5 transform transition duration-500 text-cyan-100 flex flex-col justify-center items-center hidden">
+        <h2 class="modalTitle text-2xl font-bold mb-4"><i class="fa-solid fa-pen"></i> Edit</h2>
+        <form action="/editMedication" method="POST" class="w-full">
+            <input type="text" name="oldName" value="<%= medication.name %>" hidden>
+            <input type="text" name="newName" placeholder="<%= medication.name %>" value="<%= medication.name %>" class="w-full bg-gray-700 py-3 px-4 rounded-xl placeholder-gray-400 text-sky-100 focus:outline-none mb-3">
+            <input type="text" name="newDosage" placeholder="<%= medication.dosage %>" value="<%= medication.dosage %>" class="w-full bg-gray-700 py-3 px-4 rounded-xl placeholder-gray-400 text-sky-100 focus:outline-none mb-3">
+            <div class="flex flex-row">
+                <select name="newFrequency" class="select w-full bg-gray-700 px-4 rounded-xl placeholder-gray-400 text-sky-100 text-[1rem] focus:outline-none mb-3">
+                    <% if (medication.frequency == "1x") { %>
+                        <option selected value="1x">Once</option>
+                    <% } else { %>
+                        <option value="1x">Once</option>
+                    <% } %>
+
+                    <% if (medication.frequency == "2x") { %>
+                        <option selected value="2x">Twice</option>
+                    <% } else { %>
+                        <option value="2x">Twice</option>
+                    <% } %>
+
+                    <% if (medication.frequency == "3x") { %>
+                        <option selected value="3x">3 times</option>
+                    <% } else { %>
+                        <option value="3x">3 times</option>
+                    <% } %>
+
+                    <% if (medication.frequency == "4x") { %>
+                        <option selected value="4x">4 times</option>
+                    <% } else { %>
+                        <option value="4x">4 times</option>
+                    <% } %>
+
+                    <% if (medication.frequency == "8x") { %>
+                        <option selected value="8x">8 times</option>
+                    <% } else { %>
+                        <option value="8x">8 times</option>
+                    <% } %>
+
+                    <% if (medication.frequency == "12x") { %>
+                        <option selected value="12x">12 times</option>
+                    <% } else { %>
+                        <option value="12x">12 times</option>
+                    <% } %>
+                    
+                </select>
+                <p class="py-3 px-3">every</p>
+                <select name="newPeriod" class="select w-full bg-gray-700 px-4 rounded-xl  text-sky-100 text-[1rem] focus:outline-none mb-3">
+                    <% if (medication.period == "daily") { %>
+                        <option selected value="daily">Day</option>
+                    <% } else { %>
+                        <option value="daily">Day</option>
+                    <% } %>
+
+                    <% if (medication.period == "weekly") { %>
+                        <option selected value="weekly">Week</option>
+                    <% } else { %>
+                        <option value="weekly">Week</option>
+                    <% } %>
+
+                    <% if (medication.period == "monthly") { %>
+                        <option selected value="monthly">Month</option>
+                    <% } else { %>
+                        <option value="monthly">Month</option>
+                    <% } %>
+                </select>
+            </div>
+            <div class="w-full flex flex-wrap justify-center items-center mt-4 gap-3">
+                <button id='<%= medication.name + "save"%>' class="px-8 bg-emerald-500 hover:bg-emerald-700 text-white py-2 rounded-xl hover:bg-green-300 duration-200"><i class="fa-solid fa-download"></i> Save</button>
+                <div onclick="closeForm('<%= medication.name %>')" id='<%= medication.name + "cancel"%>' class="px-8 bg-red-500 hover:bg-red-700 text-white py-2 rounded-xl transition duration-200">Cancel</div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    function closeForm(id) {
+        document.getElementById(`${id}form`).classList.add('hidden');
+        document.getElementById(`${id}edit`).classList.remove('hidden');
+        document.getElementById(`${id}delete`).classList.remove('hidden');
+        document.getElementById(`${id}info`).classList.remove('hidden');
+    }
+    document.getElementById('<%= medication.name + "edit"%>').addEventListener('click', function() {
+        console.log('<%= medication.name%>');
+        document.getElementById('<%= medication.name + "edit"%>').classList.add('hidden');
+        document.getElementById('<%= medication.name + "delete"%>').classList.add('hidden');
+        document.getElementById('<%= medication.name + "info"%>').classList.add('hidden');
+        document.getElementById('<%= medication.name + "form"%>').classList.remove('hidden');
+    });
+</script>

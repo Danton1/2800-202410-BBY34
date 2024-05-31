@@ -1,38 +1,41 @@
 <%- include("templates/headerTemplate") %> 
+    <main class="h-100% min-h-[100vh]">
+      
+      <header>
+        <div class="bg-gradient-to-r from-[#18212f] to-gray-800">
+          <div class="container mx-auto px-6 py-3 flex items-center justify-between">
+            <div class="flex items-center justify-center mx-auto">
+              <img src="favicon.png" alt="logo" class="w-12 h-12 mr-2"/>
+              <h1 class="text-white text-xl md:text-2xl font-bold">MediKate</h1>
+            </div>
+          </div>
+        </div>
+      </header>
+      
 
-
-    <div class="w-full h-full bg-gradient-to-br from-gray-900 to-gray-700">
+    <div class="w-full h-full bg-gradient-to-tr from-gray-900 to-gray-800">
         <div class="py-5"></div>
-        <div class="leading-none pt-1 flex text-3xl md:text-4xl font-sans text-center speech-bubble z-10 w-[75%] sm:w-fit h-36">
-            <h1 class="m-auto font-bold text-center text-cyan-500">
-                <% const hour = new Date().getHours().toLocaleString({timeZone: 'PST'}); %>
-                <% console.log(hour); %>
-                <% if (hour >= 5 && hour < 12) { %>
+        <div class="w-[80%] leading-none pt-1 flex text-3xl md:text-4xl font-sans text-center speech-bubble z-10 sm:w-[75%] sm:w-fit h-32">
+            <h1 class="m-auto font-bold text-center text-cyan-500 rotate-[1.4deg]">
+                <% const hour = new Date().getHours(); %>
+                <% if (hour >= 12 && hour < 19) { %>
                     Good morning, <%= username %>
-                <% } else if (hour >= 12 && hour < 18) { %>
+                <% } else if ((hour >= 19 && hour < 24) || hour == 0 || hour == 1) { %>
                     Good afternoon, <%= username %>
                 <% } else { %>
                     Good evening, <%= username %>
                 <% } %>
             </h1>
         </div>
-        <div class="position absolute -right-0 sm:right-16 -mt-6 md:right-1/4">
-            <img src="cute_robot_doctor.png" alt="Robot doctor" class="w-80"/>
+        <div class="position absolute right-[0%] sm:right-[5%] sm:translate-x-[-50%] -mt-6 md:right-[10%] md:translate-x-[-50%] lg:right-[23%] lg:translate-x-[-50%]">
+            <img src="cute_robot_doctor.png" alt="Robot doctor" class="w-60"/>
         </div>
-        <div class="py-12"></div>
-        <section class="text-gray-700 body-font sm:max-w-[90%] mx-auto">
+        <div class="py-7"></div>
+        <section class="text-gray-700 body-font mx-auto">
             <div class="container px-5 py-24 mx-auto text-cyan-50">
-                <div class="flex flex-wrap -m-4 text-center">
+                <div class="flex flex-wrap justify-center -m-4 text-center">
 
                 <% let cards = [
-                  {
-                    id: "medicationCard",
-                    title: "Amoxicillin",
-                    content: "1 minute left",
-                    path: "M420-260h120v-100h100v-120H540v-100H420v100H320v120h100v100ZM280-120q-33 0-56.5-23.5T200-200v-440q0-33 23.5-56.5T280-720h400q33 0 56.5 23.5T760-640v440q0 33-23.5 56.5T680-120H280Zm0-80h400v-440H280v440Zm-40-560v-80h480v80H240Zm40 120v440-440Z",
-                    bgImg: null,
-                    icon: null
-                  },
                   {
                     id: "airQualityCard",
                     title: "loading...",
@@ -69,10 +72,11 @@
   </div>
 
 <%- include("templates/footerTemplate") %> 
-    
 
-<script src="js/indexWidgets.js"></script>
+<script src="js/indexPage.js"></script>
+<script src="js/modal.js"></script>
 <script>
+
   function populateAPIWidgets(apiKey) {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
@@ -95,8 +99,10 @@
   }
 
   function populateLocationWidget(widgetSettings, apiKey, lat, lon) {
-    const apiURL = `http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+    const apiURL = `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&appid=${apiKey}`;
     const widget = document.getElementById('locationCard');
+    const modal = document.getElementById('locationCardModal');
+    modal.querySelector(".modalTitle").textContent = "Location";
 
     if (widgetSettings.location && !widgetSettings.location.enabled) {
       widget.style.display = "none";
@@ -110,6 +116,7 @@
         const stateName = locationData[0].state;
         widget.querySelector(".indexCardTitle").textContent = cityName;
         widget.querySelector(".indexCardContent").textContent = stateName;
+        modal.querySelector(".modalDescription").innerHTML = cityName + ", " + stateName + "<br> Latitude: " + lat + "<br> Longitude: " + lon;
       })
       .catch(error => {
         console.error('Error fetching location data:', error);
@@ -117,8 +124,10 @@
   }
 
   function populateAirQualityWidget(widgetSettings, apiKey, lat, lon) {
-    const apiURL = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+    const apiURL = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`;
     const widget = document.getElementById('airQualityCard');
+    const modal = document.getElementById('airQualityCardModal');
+    modal.querySelector(".modalTitle").textContent = "Air Quality";
 
     if (widgetSettings.airQuality && !widgetSettings.airQuality.enabled) {
       widget.style.display = "none";
@@ -148,6 +157,12 @@
           { pollutant: 'nh3', concentration: compNH3 }
         ];
 
+        let componentsString = "";
+
+        if (widgetSettings.airQuality) {
+          componentsString += generateComponentsStringFromSettings(widgetSettings, components);
+        }
+
         const pollutants = components.map(item => item.pollutant);
         const concentrations = components.map(item => item.concentration);
         const airQualityIndex = calculateHighestUKAQI(pollutants, concentrations);
@@ -157,10 +172,65 @@
 
         widget.querySelector(".indexCardTitle").textContent = airQualityIndexString;
         widget.querySelector(".indexCardContent").textContent = airQualityString;
+        modal.querySelector(".modalDescription").innerHTML = "AQI: " + airQualityIndex + " | " + airQualityString + "<br>" + componentsString + " ";
       })
       .catch(error => {
         console.error('Error fetching air quality data:', error);
       });
+  }
+  
+  function generateComponentsStringFromSettings(widgetSettings, components) {
+    let string = "";
+    const pollutants = components.map(item => item.pollutant);
+    const concentrations = components.map(item => item.concentration);
+
+    for (i = 0; i < components.length; i++) {
+      switch (pollutants[i]) {
+      case 'so2':
+        if (widgetSettings.airQuality.components.so2) {
+          string += "Sulphur Dioxide: " + concentrations[i] + "μg/m3 " + "<br>";
+        }
+        break;
+      case 'no2':
+        if (widgetSettings.airQuality.components.no2) {
+          string += "Nitrogen Dioxide: " + concentrations[i] + "μg/m3 " + "<br>";
+        }
+        break;
+      case 'pm2_5':
+        if (widgetSettings.airQuality.components.pm2_5) {
+          string += "Fine Particulates: " + concentrations[i] + "μg/m3 " + "<br>";
+        }
+        break;
+      case 'pm10':
+        if (widgetSettings.airQuality.components.pm10) {
+          string += "Course Particulates: " + concentrations[i] + "μg/m3 " + "<br>";
+        }
+        break;
+      case 'o3':
+        if (widgetSettings.airQuality.components.o3) {
+          string += "Ozone: " + concentrations[i] + "μg/m3 " + "<br>";
+        }
+        break;
+      case 'co':
+        if (widgetSettings.airQuality.components.co) {
+          string += "Carbon Monoxide: " + concentrations[i] + "μg/m3 " + "<br>";
+        }
+        break;
+      case 'no':
+        if (widgetSettings.airQuality.components.no) {
+          string += "Nitrogen Monoxide: " + concentrations[i] + "μg/m3 " + "<br>";
+        }
+        break;
+      case 'nh3':
+        if (widgetSettings.airQuality.components.nh3) {
+          string += "Ammonia: " + concentrations[i] + "μg/m3" + "<br>";
+        }
+        break;
+      default:
+        return null;
+      }
+    }
+    return string;
   }
 
   function getUKAQIDescription(aqi) {
@@ -290,6 +360,8 @@
 
   function populateTemperatureWidget(widgetSettings, apiKey, lat, lon) {
     const widget = document.getElementById('outdoorTemperatureCard');
+    const modal = document.getElementById('outdoorTemperatureCardModal');
+    modal.querySelector(".modalTitle").textContent = "Temperature";
 
     let units = 'metric';
     let unitSign = '°C';
@@ -317,6 +389,10 @@
 
         widget.querySelector(".indexCardTitle").textContent = temperatureString;
         widget.querySelector(".indexCardContent").textContent = weatherString;
+        modal.querySelector(".modalDescription").innerHTML = temperatureString + " | "  + weatherString + " " + 
+          "<br> Feels like: " + data.main.feels_like + unitSign + " " + 
+          "<br> Pressure: " + data.main.pressure + "hPa " + 
+          "<br> Humidity: " + data.main.humidity + "%";
       })
       .catch(error => {
         console.error('Error fetching temperature data:', error);
@@ -357,5 +433,4 @@
   populateAPIWidgets(apiKey);
 </script>
 
-<script src="js/notifications.js"></script>
 <%- include("templates/footerTemplate") %> 

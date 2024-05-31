@@ -2,17 +2,48 @@
 <div class="max-w-[450px] w-100 min-h-svh mx-auto px-[30px] py-[50px] bg-gray-900 flex flex-col pb-[90px] items-center justify-center space-y-5 text-sky-100 text-md font-medium">
     <!-- User profile img and name -->
     <div class="flex flex-col items-center">
-        <div class="w-[120px] h-[120px] flex justify-center items-center rounded-full bg-sky-300">
-            <img src="#" alt="Profile img" class="w-full h-full object-cover text-black">
+        <div class="w-[120px] h-[120px] flex justify-center items-center rounded-full bg-sky-300 drop-shadow-md">
+            <% if (user.profile_pic) { %>
+                <img src="<%= user.profile_pic %>" alt="Profile img" class="w-full h-full rounded-full border border-sky-500 object-cover drop-shadow-xl text-black">
+            <% } else { %>
+                <img src="defaultProfilePic.png" alt="Profile img" class="w-full h-full object-cover text-black">
+            <% } %>
         </div>
         <h1 class="text-2xl text-sky-300"><%= user.firstName %> <%= user.lastName %></h1>
     </div>
+    
+    <!-- Profile picture form -->
+    <form action="/uploadProfilePic" method="post" enctype="multipart/form-data" class="my-[5px!important]">
+        <input type="hidden" name="user_id" value="<%= user._id %>">
+        <div class="field is-horizontal">
+            <div id="picture-upload" class="file flex flex-col justify-center space-y-1">
+                <span class="file-cta">
+                    <span class="file-icon">
+                        <i class="fas fa-image"></i>
+                    </span>
+                    <span class="file-label">Choose a new profile picture...</span>
+                </span>
+                <input id="newProfilePic" class="file-input file-input-sm file-input-bordered file-input-info w-full focus:outline-none" accept="image/png, image/jpeg" type="file" name="image"/>
+            </div>
+            <div class="field w-full flex">
+                <button class="btn btn-info mx-auto text-base h-[auto] min-h-[unset] py-1 px-10 rounded-xl text-gray-900 font-extrabold mt-5 hover:bg-sky-300 duration-200 hidden">
+                    <i class="fas fa-upload"></i>
+                    <span>Update picture</span>
+                </button>
+            </div>
+        </div>
+    </form>
+    
 
     <!-- Account info -->
     <div class="w-full bg-gray-700 shadow-lg py-5 px-5 flex flex-col space-y-3 rounded-2xl">
         <h1>Account Information</h1>
         <div class="w-full bg-gray-800 py-3 px-4 rounded-xl"><%= user.email %></div>
-        <div class="w-full bg-gray-800 py-3 px-4 rounded-xl flex justify-between items-center">Edit Password <i class="fa-solid fa-pen"></i></div>
+        <div class="w-full bg-gray-800 py-3 px-4 rounded-xl flex justify-between items-center hover:bg-gray-900 duration-300">
+            <a href="/profile/changePw" class="w-full h-full flex justify-between items-center">
+                Edit Password <i class="fa-solid fa-pen"></i>
+            </a>
+        </div>
     </div>
 
     <!-- Btn to go to personal info -->
@@ -36,4 +67,17 @@
         </a>
     </div>
 </div>
+
+<script>
+    const fileInput = document.getElementById('newProfilePic');
+    const uploadBtn = document.querySelector('.btn-info');
+    const fileUpload = document.getElementById('picture-upload');
+
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files.length > 0) {
+            uploadBtn.classList.remove('hidden');
+            // fileUpload.classList.add('hidden');
+        }
+    });
+</script>
 <%- include("templates/footerTemplate")%>

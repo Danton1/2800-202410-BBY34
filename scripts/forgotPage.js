@@ -31,15 +31,6 @@ var mongoStore = MongoStore.create({
 router.use(express.urlencoded({ extended: false }));
 router.use(express.static(__dirname + "/public"));
 
-// router.use(session({ 
-//     secret: node_session_secret,
-// 	store: mongoStore, //default is memory store 
-// 	saveUninitialized: false, 
-// 	resave: true
-// }));
-
-
-
 router.get('/', (req, res) => {
     res.render("forgotPage");
 });
@@ -106,14 +97,12 @@ router.post('/submitForgot', async (req, res) => {
                 res.render("errorPage", {error: "Email failed to send, please try again!"});
                 return;
             } else {
-                res.render("errorPage", {error: "Email was sent successfully"}); //temporary, should make an ejs file later
+                res.render("emailSuccess"); 
                 return;
             }
         });
 
     }
-
-    // res.render("forgotPage");
 });
 
 router.get('/resetPassword', (req, res) => {

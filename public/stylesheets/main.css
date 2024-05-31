@@ -10,6 +10,7 @@ body {
   position: relative;
   margin: .5em auto;
   padding: 1em;
+  padding-bottom: 0.5em;
   border-radius: .25em;
   transform: rotate(-4deg) rotateY(15deg);
   background: #629bdd;
@@ -73,6 +74,38 @@ body {
 #personalInfoForm input:-webkit-autofill:hover,
 #personalInfoForm input:-webkit-autofill:focus,
 #personalInfoForm input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: #e0f2fe;
+}
+
+#medHistoryWrap input:-webkit-autofill,
+#medHistoryWrap input:-webkit-autofill:hover,
+#medHistoryWrap input:-webkit-autofill:focus,
+#medHistoryWrap input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: #e0f2fe;
+}
+
+#contactInfoForm input:-webkit-autofill,
+#contactInfoForm input:-webkit-autofill:hover,
+#contactInfoForm input:-webkit-autofill:focus,
+#contactInfoForm input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: #e0f2fe;
+}
+
+#MedicationModal input:-webkit-autofill,
+#MedicationModal input:-webkit-autofill:hover,
+#MedicationModal input:-webkit-autofill:focus,
+#MedicationModal input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: #e0f2fe;
+}
+
+.medicationModals input:-webkit-autofill,
+.medicationModals input:-webkit-autofill:hover,
+.medicationModals input:-webkit-autofill:focus,
+.medicationModals input:-webkit-autofill:active {
   transition: background-color 5000s ease-in-out 0s;
   -webkit-text-fill-color: #e0f2fe;
 }
