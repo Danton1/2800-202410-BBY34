@@ -55,14 +55,15 @@ webpush.setVapidDetails('mailto:'+vapidEmail, vapidPublicKey, vapidPrivateKey);
 const userCollection = database.db(mongodb_database).collection('users');
 const tokenCollection = database.db(mongodb_database).collection('forgotToken');
 
-    app.set('view engine', 'ejs');
 
 var mongoStore = MongoStore.create({
     mongoUrl: `mongodb+srv://${mongodb_user}:${mongodb_password}@${mongodb_host}/sessions`,
     crypto: {
         secret: mongodb_session_secret
     }
-})
+});
+
+app.set('view engine', 'ejs');
 
 // Cloudinary and multer for profile picture upload
 const cloudinary = require('cloudinary').v2;
@@ -70,12 +71,12 @@ cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET,
-    secure: true,
+    secure: true
 });
 
 const multer = require('multer');
 const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 
     // USES
 
@@ -204,7 +205,7 @@ app.get('/profile/contactInfo', async (req,res) => {
 app.get('/profile/medHistory', async (req,res) => {
     if(isValidSession(req)){
         const user = await userCollection.findOne({ email: req.session.email });
-        res.render('medicalHistoryPage', {user: user});
+        res.render('medicalHistoryPage', { user });
         return;
     }
     res.redirect('/login');
@@ -229,7 +230,7 @@ app.get('/settings/signOut', (req, res) => {
 // Get for chatbot
 let myThread;
 let assistantID;
-let counter = 0;;
+let counter = 0;
 app.get('/chatbot', async (req, res) => {
     if(isValidSession(req)){
         assistantID = process.env.KATE_KEY;
@@ -261,7 +262,7 @@ app.post('/chatbot', async (req, res) => {
         req.session.medications = user.medications;
         req.session.illnesses = user.illnesses;
         req.session.allergies = user.allergies;
-        input = "User's medications: "
+        input = "User's medications: ";
         for(let i = 0; i < req.session.medications.length; i++){
             input += req.session.medications[i].name + " ";
         }
