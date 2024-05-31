@@ -16,6 +16,7 @@
     <li><a href="#Installation"> ➤ Installation </a></li>
     <li><a href="#Features"> ➤ Features</a></li>
     <li><a href="#Credits"> ➤ Credits</a></li>
+    <li><a href="#AI_use"> ➤ AI Use</a></li>
     <li><a href="#Team-Contact-Information"> ➤ Team Contact Information</a></li>
   </ol>
 </details>
@@ -230,6 +231,26 @@ You can find the testing plan [here](https://docs.google.com/spreadsheets/d/1oQk
 <!-- CREDITS -->
 <h2 id="Credits"> 📜 Credits</h2>
 
+- **https://github.com/andreasbm/readme**
+- **https://github.com/ma-shamshiri/Pacman-Game/edit/master/README.md**
+- **https://github.com/ai/size-limit/edit/main/README.md**
+
+
+![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)
+<!-- AI USE -->
+<h2 id="AI_use"> 🤖 AI Use</h2>
+
+#### 1. Did you use AI to help create your app?  
+Yes, we used AI to assist in the development of our app. We used AI to generate suggestions and logic to solving specific coding problems. Although AI could not always resolve the issues directly, it provided valuable insights that we incorporated into our functions. We studied the AI's logic and adapted it to fit our requirements, making sure to understood and implemented the solutions ourselves.
+
+#### 2. Did you use AI to create data sets or clean data sets?
+No, we did not use AI to create or clean data sets. Our use of AI was mainly for problem-solving and providing suggestions during the app development process.
+
+#### 3. Does your app use AI? 
+No, our app does not use AI directly. The AI was used solely as a tool during the development phase to help solve coding challenges and provide suggestions.
+
+#### 4. Did you encounter any limitations? What were they, and how did you overcome them?
+Yes, we encountered several limitations while using AI. The AI often could not resolve the issues directly, even when provided with all the necessary EJS and JavaScript files. To overcome this, we used AI to generate suggestions for very specific problems. We then took these suggestions, studied the logic behind them, and incorporated the AI's logic into our own functions rather than copying it directly. This approach allowed us to ensure that we could explain and understand every aspect of our code!
 
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)
 <!-- TEAM CONTACT INFORMATION -->
