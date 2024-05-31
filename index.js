@@ -98,14 +98,14 @@ app.use(session({
 }
 ));
 
-    // FUNCTIONS
+/* Authorization and authentication functions */
 
-    function isValidSession(req) {
-        if (req.session.authenticated) {
-            return true;
-        }
-        return false;
+function isValidSession(req) {
+    if (req.session.authenticated) {
+        return true;
     }
+    return false;
+}
 
 function sessionValidation(req, res, next) {
     if (isValidSession(req)) {
@@ -214,7 +214,6 @@ app.get('/profile/medHistory', async (req,res) => {
     
 
 // Get for Settings
-
 app.get('/settings/widgets', (req,res) => {
     if(isValidSession(req)){
         res.render('settings/widgetsPage', {widgetSettings: req.session.widgetSettings});
@@ -292,8 +291,8 @@ app.post('/chatbot', async (req, res) => {
         emailDate: date,
         emailIssue: issue,
     }
-    // Send the processed data back to the client
 
+    // Send the processed data back to the client
     switch (eggNum) {
         case 1:
             assistantID = process.env.WHO_KEY;
@@ -419,6 +418,7 @@ const runPrompt = async (input) => {
     return await retrieveRun();
 };
 
+// Post to send email
 app.post('/submitEmail', async(req,res) => {
     var date = req.body.emailDate;
     var time = req.body.emailTime;
@@ -429,10 +429,12 @@ app.post('/submitEmail', async(req,res) => {
          userName: userName, userEmail: userEmail });
 });
 
+// Post for change password
 app.post('/editPass', async (req, res) => {
     res.redirect('/getPassEdit');
 });
 
+// Post to login
 app.post('/submitLogin', async (req, res) => {
     var email = req.body.loginPageEmailInput;
     var password = req.body.loginPagePasswordInput;
@@ -742,6 +744,7 @@ async function sendMedicationNotification(email, medication) {
 /** Function to get the cron schedule based on the medication frequency and period
  * @param {string} frequency - The frequency of the medication
  * @param {string} period - The period of the medication
+ * @returns {string} The cron schedule for the medication notifications
  */
 function getCronSchedule(frequency, period) {
     const frequenciesPerDay = {
@@ -813,7 +816,7 @@ async function checkActiveJobs(email) {
     }
 }
 
-//post for Medical History (illness)
+//Post for Medical History (illness)
 app.post('/profile/medHistory/addIllness', async (req, res) => {
     if (isValidSession(req)) {
         try {
@@ -836,7 +839,7 @@ app.post('/profile/medHistory/addIllness', async (req, res) => {
     }
 });
 
-//post for illness info edit
+//Post for illness info edit
 app.post('/profile/medHistory/editIllness', async (req, res) => {
     if (isValidSession(req)) {
         try {
@@ -891,7 +894,7 @@ app.post('/profile/medHistory/deleteIllness', async (req, res) => {
     }
 });
 
-//post for Medical History (allergy)
+//Post for Medical History (allergy)
 app.post('/profile/medHistory/addAllergy', async (req, res) => {
     if (isValidSession(req)) {
         try {
@@ -914,7 +917,7 @@ app.post('/profile/medHistory/addAllergy', async (req, res) => {
     }
 });
 
-//post for allergy info edit
+//Post for allergy info edit
 app.post('/profile/medHistory/editAllergy', async (req, res) => {
     if (isValidSession(req)) {
         try {
@@ -1004,6 +1007,7 @@ app.post('/profile/contactInfo', async (req, res) => {
     }
 });
 
+// Post to update widget settings
 app.post('/settings/widgets/update', async (req, res) => {
     try {
         const settings = req.body;
@@ -1046,7 +1050,7 @@ app.post('/subscribe', async (req, res) => {
     }
 });
 
-    // LISTENS
+/* LISTENS */
 
 app.listen(port, () => {
     console.log("Node application listening on port " + port);
